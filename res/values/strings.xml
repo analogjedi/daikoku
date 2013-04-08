@@ -4,7 +4,6 @@
     <string name="app_name">Daikoku</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="btn_meal_plan">Schedule Meals</string>
-    <string name="title_activity_meal_plan">MealPlanActivity</string>
+    <string name="title_activity_meal_plan">Schedule Meals</string>
 
 </resources>

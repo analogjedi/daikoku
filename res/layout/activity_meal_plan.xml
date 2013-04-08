@@ -8,9 +8,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MealPlanActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentTop="true" >
+
+        <Button
+            android:id="@+id/btn_date_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="&lt;"
+            android:onClick="decrDate" />
+
+        <Button
+            android:id="@+id/lbl_date"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:gravity="center"
+            android:textSize="20sp"
+            android:onClick="pickDate" />
+
+        <Button
+            android:id="@+id/btn_date_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=">"
+            android:onClick="incrDate" />
+    </LinearLayout>
 
 </RelativeLayout>
