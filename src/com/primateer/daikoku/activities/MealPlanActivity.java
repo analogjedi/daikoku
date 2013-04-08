@@ -1,4 +1,4 @@
-package com.primateer.daikoku;
+package com.primateer.daikoku.activities;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -11,6 +11,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+
+import com.primateer.daikoku.R;
+import com.primateer.daikoku.dialogs.DatePickerFragment;
 
 public class MealPlanActivity extends FragmentActivity implements
 		DatePickerDialog.OnDateSetListener {

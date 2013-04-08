@@ -1,4 +1,4 @@
-package com.primateer.daikoku;
+package com.primateer.daikoku.dialogs;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -1,10 +1,12 @@
-package com.primateer.daikoku;
+package com.primateer.daikoku.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+
+import com.primateer.daikoku.R;
 
 public class MainActivity extends Activity {
 
