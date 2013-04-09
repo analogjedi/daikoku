@@ -1,5 +1,7 @@
 package com.primateer.daikoku;
 
+import com.primateer.daikoku.pojos.Amount;
+
 import android.database.Cursor;
 
 public class Application extends android.app.Application {
@@ -17,6 +19,9 @@ public class Application extends android.app.Application {
 
 		System.out.println("Initializing App!");
 		initDB();
+		
+		Amount energy = new Amount("366.5kcal");
+		System.out.println("Energy: " + energy);
 	}
 
 	private void initDB() {

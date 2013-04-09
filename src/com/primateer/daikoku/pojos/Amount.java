@@ -1,13 +1,42 @@
 package com.primateer.daikoku.pojos;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Amount {
 
 	public final double value;
 	public final String unit;
-	
+
+	private static final String doubleRegexp = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
+	private static final Pattern pattern = Pattern.compile("(" + doubleRegexp
+			+ ")(\\D.*)");
+
+	/**
+	 * Construct Amount from compound String.
+	 * 
+	 * @param amount
+	 *            Value followed directly by unit, e.g. "100g" for 100 grams.
+	 *            Floating point values are allowed.
+	 */
+	public Amount(String amount) {
+		Matcher m = pattern.matcher(amount.trim());
+		if (!m.matches()) {
+			throw new IllegalArgumentException("\"" + amount
+					+ "\" doesn't match Amount format.");
+		}
+		this.value = Double.parseDouble(m.group(1));
+		this.unit = m.group(3);
+	}
+
 	public Amount(double value, String unit) {
 		this.value = value;
 		this.unit = unit;
+	}
+	
+	@Override
+	public String toString() {
+		return this.value + this.unit;
 	}
 
 	@Override

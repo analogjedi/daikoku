@@ -1,33 +1,27 @@
-CREATE TABLE 'amount' (
-	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
-	'value' REAL NOT NULL,
-	'unit' TEXT NOT NULL
-);
-
 CREATE TABLE 'nutrition_info' (
 	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
-	'reference_amount' INTEGER NOT NULL
+	'reference_amount' TEXT NOT NULL
 );
 
 CREATE TABLE 'nutrient' (
 	'nutrition_info' INTEGER NOT NULL,
 	'type' TEXT NOT NULL,
-	'amount' INTEGER NOT NULL
+	'amount' TEXT NOT NULL
 );
 
 CREATE TABLE 'product' (
 	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
 	'label' TEXT NOT NULL,
 	'nutrition_info' INTEGER NOT NULL,
-	'amount' INTEGER NOT NULL,
-	'units' INTEGER
+	'amount' TEXT NOT NULL,
+	'units' REAL
 );
 
 CREATE TABLE 'ingredient' (
 	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
 	'label' TEXT NOT NULL,
 	'product' INTEGER NOT NULL,
-	'price' INTEGER NOT NULL,
+	'price' TEXT NOT NULL,
 	'total' REAL NOT NULL,
 	'available' REAL NOT NULL,
 	'reserved' REAL NOT NULL,
@@ -43,7 +37,7 @@ CREATE TABLE 'recipe' (
 CREATE TABLE 'recipe_ingredient' (
 	'recipe' INTEGER NOT NULL,
 	'product' INTEGER NOT NULL,
-	'amount' INTEGER NOT NULL
+	'amount' TEXT NOT NULL
 );
 
 CREATE TABLE 'meal' (
@@ -57,7 +51,7 @@ CREATE TABLE 'meal' (
 CREATE TABLE 'meal_nutrient' (
 	'meal' INTEGER NOT NULL,
 	'type' TEXT NOT NULL,
-	'amount' INTEGER NOT NULL
+	'amount' TEXT NOT NULL
 );
 
 CREATE TABLE 'vendor' (
@@ -69,5 +63,5 @@ CREATE TABLE 'offer' (
 	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
 	'vendor' INTEGER NOT NULL,
 	'product' INTEGER NOT NULL,
-	'price' INTEGER NOT NULL
+	'price' TEXT NOT NULL
 );
