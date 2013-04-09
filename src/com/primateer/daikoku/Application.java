@@ -25,7 +25,7 @@ public class Application extends android.app.Application {
 	}
 
 	private void initDB() {
-		System.out.println("Deleting DB!!!!!");
+		System.out.println("Deleting DB!");
 		this.getApplicationContext().deleteDatabase(Database.DB_NAME);
 		System.out.println("Initializing DB!");
 		Database db = new Database();

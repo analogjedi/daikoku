@@ -6,7 +6,9 @@ CREATE TABLE 'nutrition_info' (
 CREATE TABLE 'nutrient' (
 	'nutrition_info' INTEGER NOT NULL,
 	'type' TEXT NOT NULL,
-	'amount' TEXT NOT NULL
+	'amount' TEXT NOT NULL,
+	PRIMARY KEY ('nutrition_info','type'),
+	FOREIGN KEY ('nutrition_info') REFERENCES 'nutrition_info'('_id')
 );
 
 CREATE TABLE 'product' (
@@ -14,19 +16,17 @@ CREATE TABLE 'product' (
 	'label' TEXT NOT NULL,
 	'nutrition_info' INTEGER NOT NULL,
 	'amount' TEXT NOT NULL,
-	'units' REAL
+	'units' REAL NOT NULL,
+	FOREIGN KEY ('nutrition_info') REFERENCES 'nutrition_info'('_id')
 );
 
-CREATE TABLE 'ingredient' (
-	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
-	'label' TEXT NOT NULL,
-	'product' INTEGER NOT NULL,
-	'price' TEXT NOT NULL,
+CREATE TABLE 'supply' (
+	'product' INTEGER NOT NULL PRIMARY KEY,
 	'total' REAL NOT NULL,
 	'available' REAL NOT NULL,
 	'reserved' REAL NOT NULL,
 	'consumed' REAL NOT NULL,
-	'unit' TEXT NOT NULL
+	FOREIGN KEY ('product') REFERENCES 'product'('_id')
 );
 
 CREATE TABLE 'recipe' (
@@ -37,7 +37,10 @@ CREATE TABLE 'recipe' (
 CREATE TABLE 'recipe_ingredient' (
 	'recipe' INTEGER NOT NULL,
 	'product' INTEGER NOT NULL,
-	'amount' TEXT NOT NULL
+	'amount' TEXT NOT NULL,
+	PRIMARY KEY ('recipe','product'),
+	FOREIGN KEY ('recipe') REFERENCES 'recipe'('_id'),
+	FOREIGN KEY ('product') REFERENCES 'product'('_id')
 );
 
 CREATE TABLE 'meal' (
@@ -45,13 +48,16 @@ CREATE TABLE 'meal' (
 	'label' TEXT NOT NULL,
 	'recipe' INTEGER NOT NULL,
 	'state' INTEGER NOT NULL,
-	'due' TEXT NOT NULL
+	'due' TEXT NOT NULL,
+	FOREIGN KEY ('recipe') REFERENCES 'recipe'('_id')
 );
 
 CREATE TABLE 'meal_nutrient' (
 	'meal' INTEGER NOT NULL,
 	'type' TEXT NOT NULL,
-	'amount' TEXT NOT NULL
+	'amount' TEXT NOT NULL,
+	PRIMARY KEY ('meal','type'),
+	FOREIGN KEY ('meal') REFERENCES 'meal'('_id')
 );
 
 CREATE TABLE 'vendor' (
@@ -60,8 +66,11 @@ CREATE TABLE 'vendor' (
 );
 
 CREATE TABLE 'offer' (
-	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
+	'date' TEXT NOT NULL,
 	'vendor' INTEGER NOT NULL,
 	'product' INTEGER NOT NULL,
-	'price' TEXT NOT NULL
+	'price' TEXT NOT NULL,
+	PRIMARY KEY ('date','vendor','product'),
+	FOREIGN KEY ('vendor') REFERENCES 'vendor'('_id'),
+	FOREIGN KEY ('product') REFERENCES 'product'('_id')
 );
