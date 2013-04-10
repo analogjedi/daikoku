@@ -22,4 +22,16 @@ public class AmountTest extends TestCase {
 			fail("Parsing " + invalid[i] + " should throw an Exception.");
 		} catch (Exception e) {}
 	}
+	
+	public void testConvert() {
+		Amount onepound = new Amount("1lb");
+
+		assertEquals(1.0,onepound.convert("lb").value);
+		assertEquals("lb",onepound.convert("lb").unit);
+		
+		assertNull(onepound.convert("km"));
+		
+		assertEquals(0.45359237,onepound.convert("kg").value);
+		assertEquals("kg",onepound.convert("kg").unit);
+	}
 }

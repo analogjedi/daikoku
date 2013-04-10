@@ -1,5 +1,7 @@
 package com.primateer.daikoku.pojos;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +13,14 @@ public class Amount {
 	private static final String DOUBLE_REGEXP = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 	private static final Pattern AMOUNT_PATTERN = Pattern.compile("("
 			+ DOUBLE_REGEXP + ")([^\\d\\s].*)");
+
+	private static Map<String, Double> conversionRates;
+	static {
+		// TODO load from database
+		conversionRates = new HashMap<String, Double>();
+		conversionRates.put("lb2kg", 0.45359237);
+		conversionRates.put("kg2lb", 1 / conversionRates.get("lb2kg"));
+	}
 
 	/**
 	 * Parse Amount from compound String.
@@ -32,6 +42,27 @@ public class Amount {
 	public Amount(double value, String unit) {
 		this.value = value;
 		this.unit = unit;
+	}
+
+	/**
+	 * Convert to different unit of measurement.
+	 * 
+	 * @param unit
+	 *            identifier of the unit to convert to
+	 * @return new {@code Amount} or {@code null} if conversion not possible
+	 */
+	public Amount convert(String unit) {
+		// no unit change
+		if (unit.equals(this.unit)) {
+			return this;
+		}
+		// conversion possible
+		Double rate = conversionRates.get(this.unit + "2" + unit);
+		if (rate != null) {
+			return new Amount(this.value * rate, unit);
+		}
+		// conversion impossible
+		return null;
 	}
 
 	@Override
@@ -70,4 +101,5 @@ public class Amount {
 			return false;
 		return true;
 	}
+
 }
