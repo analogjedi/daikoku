@@ -2,8 +2,8 @@ package com.primateer.daikoku.pojos;
 
 import java.util.Map;
 
-public class NutritionInfo {
+public class Nutrition {
 
-	Amount referenceAmount;
+	Amount amount;
 	Map<String,Amount> nutrients;
 }

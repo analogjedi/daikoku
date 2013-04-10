@@ -1,7 +1,6 @@
 package com.primateer.daikoku.pojos;
 
 import java.util.Date;
-import java.util.Map;
 
 public class Meal {
 	
@@ -12,7 +11,8 @@ public class Meal {
 
 	String label;
 	Recipe recipe;
-	Map<String,Amount> additionalNutrients;
+	Nutrition extraNutrition;
+	Nutrition totalNutrition;
 	int state;
 	Date due;
 }

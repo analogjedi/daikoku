@@ -2,7 +2,7 @@ INSERT INTO 'vendor' ('_id','label') VALUES (0,'Aldi');
 INSERT INTO 'vendor' ('_id','label') VALUES (1,'Norma');
 INSERT INTO 'vendor' VALUES (2,'Netto');
 
-INSERT INTO 'nutrition_info' VALUES (0,'100g');
+INSERT INTO 'nutrition' VALUES (0,'100g');
 INSERT INTO 'nutrient' VALUES (0,'E','336kcal');
 INSERT INTO 'nutrient' VALUES (0,'P','23g');
 INSERT INTO 'nutrient' VALUES (0,'C','50g');

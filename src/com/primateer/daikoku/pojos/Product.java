@@ -3,7 +3,7 @@ package com.primateer.daikoku.pojos;
 public class Product {
 	
 	String label;
-	NutritionInfo nutrition;
+	Nutrition nutrition;
 	Amount amount;
 	int units;
 }

@@ -1,9 +1,9 @@
 package com.primateer.daikoku.pojos;
 
-import java.util.List;
+import java.util.Map;
 
 public class Recipe {
 	
 	String label;
-	List<Ingredient> components;
+	Map<Ingredient,Amount> components;
 }

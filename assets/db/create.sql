@@ -1,23 +1,23 @@
-CREATE TABLE 'nutrition_info' (
+CREATE TABLE 'nutrition' (
 	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
 	'reference_amount' TEXT NOT NULL
 );
 
 CREATE TABLE 'nutrient' (
-	'nutrition_info' INTEGER NOT NULL,
+	'nutrition' INTEGER NOT NULL,
 	'type' TEXT NOT NULL,
 	'amount' TEXT NOT NULL,
-	PRIMARY KEY ('nutrition_info','type'),
-	FOREIGN KEY ('nutrition_info') REFERENCES 'nutrition_info'('_id')
+	PRIMARY KEY ('nutrition','type'),
+	FOREIGN KEY ('nutrition') REFERENCES 'nutrition'('_id')
 );
 
 CREATE TABLE 'product' (
 	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
 	'label' TEXT NOT NULL,
-	'nutrition_info' INTEGER NOT NULL,
+	'nutrition' INTEGER NOT NULL,
 	'amount' TEXT NOT NULL,
 	'units' REAL NOT NULL,
-	FOREIGN KEY ('nutrition_info') REFERENCES 'nutrition_info'('_id')
+	FOREIGN KEY ('nutrition') REFERENCES 'nutrition'('_id')
 );
 
 CREATE TABLE 'supply' (
