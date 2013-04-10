@@ -10,7 +10,7 @@ public class Amount {
 
 	private static final String DOUBLE_REGEXP = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 	private static final Pattern AMOUNT_PATTERN = Pattern.compile("("
-			+ DOUBLE_REGEXP + ")(\\D.*)");
+			+ DOUBLE_REGEXP + ")([^\\d\\s].*)");
 
 	/**
 	 * Parse Amount from compound String.
