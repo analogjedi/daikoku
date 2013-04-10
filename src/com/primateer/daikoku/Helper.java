@@ -33,7 +33,7 @@ public class Helper {
 					+ "\" must be in YYYY-MM-DD format.");
 		}
 		Calendar c = Calendar.getInstance();
-		c.set(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)),
+		c.set(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2))-1,
 				Integer.parseInt(m.group(3)));
 		return c.getTime();
 	}
