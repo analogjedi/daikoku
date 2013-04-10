@@ -1,8 +1,5 @@
 package com.primateer.daikoku;
 
-import java.io.IOException;
-
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -32,12 +29,8 @@ public class Database extends SQLiteOpenHelper {
 					db.execSQL(instructions[i]);
 				}
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			Helper.logErrorStackTrace(this, e, "Failed to create database");
 		}
 	}
 

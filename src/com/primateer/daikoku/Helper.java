@@ -10,6 +10,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.util.Log;
+
 public class Helper {
 
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat(
@@ -33,12 +35,18 @@ public class Helper {
 					+ "\" must be in YYYY-MM-DD format.");
 		}
 		Calendar c = Calendar.getInstance();
-		c.set(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2))-1,
+		c.set(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)) - 1,
 				Integer.parseInt(m.group(3)));
 		return c.getTime();
 	}
 
 	public static String toString(Date date) {
 		return DATE_FORMAT.format(date);
+	}
+
+	public static void logErrorStackTrace(Object source, Exception e, String msg) {
+		String tag = source.getClass().getSimpleName();
+		Log.e(tag, msg + ": " + e.getClass().getSimpleName() + ":");
+		Log.e(tag, Log.getStackTraceString(e));
 	}
 }
