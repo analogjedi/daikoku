@@ -18,8 +18,13 @@ public class Amount {
 	static {
 		// TODO load from database
 		conversionRates = new HashMap<String, Double>();
-		conversionRates.put("lb2kg", 0.45359237);
-		conversionRates.put("kg2lb", 1 / conversionRates.get("lb2kg"));
+		addConversionRate("lb", "kg", 0.45359237);
+	}
+
+	private static void addConversionRate(String source, String target,
+			Double rate) {
+		conversionRates.put(source + ">" + target, rate);
+		conversionRates.put(target + ">" + source, 1 / rate);
 	}
 
 	/**
@@ -57,12 +62,27 @@ public class Amount {
 			return this;
 		}
 		// conversion possible
-		Double rate = conversionRates.get(this.unit + "2" + unit);
+		Double rate = conversionRates.get(this.unit + ">" + unit);
 		if (rate != null) {
 			return new Amount(this.value * rate, unit);
 		}
 		// conversion impossible
 		return null;
+	}
+
+	/**
+	 * Add two amounts together
+	 * 
+	 * @param other
+	 *            amount to add
+	 * @return new {@code} Amount or {@code null} if impossible
+	 */
+	public Amount add(Amount other) {
+		other = other.convert(this.unit);
+		if (other == null) {
+			return null;
+		}
+		return new Amount(this.value + other.value, this.unit);
 	}
 
 	@Override
@@ -101,5 +121,4 @@ public class Amount {
 			return false;
 		return true;
 	}
-
 }
