@@ -1,0 +1,55 @@
+package com.primateer.daikoku.model;
+
+import java.util.Map;
+
+import com.primateer.daikoku.pojos.Amount;
+import com.primateer.daikoku.pojos.Amount.UnitConversionException;
+
+public class Recipe {
+
+	private long id;
+	private String label;
+	private Map<Product, Amount> ingredients;
+
+	public Recipe add(Product product, Amount amount) {
+		return this;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public Map<Product, Amount> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(Map<Product, Amount> ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	public Amount getTotalNutrition(String type) throws UnitConversionException {
+		Amount total = null;
+		if (ingredients != null) {
+			for (Product product : ingredients.keySet()) {
+				Amount ia = product.getNutrition().get(type,
+						ingredients.get(product));
+				if (ia != null) {
+					total = ia.add(total);
+				}
+			}
+		}
+		return total;
+	}
+}

@@ -1,6 +1,7 @@
 package com.primateer.daikoku;
 
 import com.primateer.daikoku.pojos.Amount;
+import com.primateer.daikoku.pojos.Amount.UnitConversionException;
 
 import junit.framework.TestCase;
 
@@ -24,19 +25,23 @@ public class AmountTest extends TestCase {
 			}
 	}
 
-	public void testConvert() {
+	public void testConvert() throws UnitConversionException {
 		Amount onepound = new Amount("1lb");
 
 		assertEquals(1.0, onepound.convert("lb").value);
 		assertEquals("lb", onepound.convert("lb").unit);
 
-		assertNull(onepound.convert("km"));
+		try {
+			onepound.convert("km");
+			fail("Converting " + onepound + " to km should throw an Exception.");
+		} catch (UnitConversionException e) {
+		}
 
 		assertEquals(0.45359237, onepound.convert("kg").value);
 		assertEquals("kg", onepound.convert("kg").unit);
 	}
 
-	public void testAdd() {
+	public void testAdd() throws UnitConversionException {
 		Amount onepound = new Amount("1lb");
 		Amount onekilo = new Amount("1kg");
 
@@ -44,7 +49,11 @@ public class AmountTest extends TestCase {
 
 		assertEquals(new Amount("3.36077711kg"),
 				onekilo.add(onepound).add(onepound).add(onepound).add(onekilo));
-		
-		assertNull(onekilo.add(new Amount("30kcal")));
+
+		try {
+			onekilo.add(new Amount("30kcal"));
+			fail("Adding 30kcal to " + onekilo + " should throw an Exception.");
+		} catch (UnitConversionException e) {
+		}
 	}
 }

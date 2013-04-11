@@ -1,7 +1,10 @@
-package com.primateer.daikoku;
+package com.primateer.daikoku.db;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Helper;
 
 public class Database extends SQLiteOpenHelper {
 

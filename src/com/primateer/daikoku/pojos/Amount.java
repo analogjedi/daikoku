@@ -7,6 +7,12 @@ import java.util.regex.Pattern;
 
 public class Amount {
 
+	public class UnitConversionException extends Exception {
+		public UnitConversionException(String msg) {
+			super(msg);
+		}
+	}
+
 	public final double value;
 	public final String unit;
 
@@ -48,15 +54,30 @@ public class Amount {
 		this.value = value;
 		this.unit = unit;
 	}
+	
+	/**
+	 * Multiply this amount by a scalar factor
+	 * 
+	 * @param factor any double
+	 * @return new {@code Amount}, or {@code null} if factor is 0
+	 */
+	public Amount scale(double factor) {
+		if (factor == 0) {
+			return null;
+		}
+		return new Amount(this.value*factor, this.unit);
+	}
 
 	/**
 	 * Convert to different unit of measurement.
 	 * 
 	 * @param unit
 	 *            identifier of the unit to convert to
-	 * @return new {@code Amount} or {@code null} if conversion not possible
+	 * @return new {@code Amount}
+	 * @throws UnitConversionException
+	 *             if units are incompatible
 	 */
-	public Amount convert(String unit) {
+	public Amount convert(String unit) throws UnitConversionException {
 		// no unit change
 		if (unit.equals(this.unit)) {
 			return this;
@@ -67,22 +88,43 @@ public class Amount {
 			return new Amount(this.value * rate, unit);
 		}
 		// conversion impossible
-		return null;
+		throw new UnitConversionException("Cannot convert from " + this.unit
+				+ " to " + unit);
 	}
 
 	/**
-	 * Add two amounts together
+	 * Add two amounts together.
 	 * 
 	 * @param other
-	 *            amount to add
-	 * @return new {@code} Amount or {@code null} if impossible
+	 *            amount to add, {@code null} meaning zero
+	 * @return new {@code Amount}
+	 * @throws UnitConversionException
+	 *             if incompatbile
 	 */
-	public Amount add(Amount other) {
-		other = other.convert(this.unit);
+	public Amount add(Amount other) throws UnitConversionException {
+		// treat null amounts as zero
 		if (other == null) {
-			return null;
+			return this;
 		}
-		return new Amount(this.value + other.value, this.unit);
+		// return sum for compatible units
+		return new Amount(this.value + other.convert(this.unit).value,
+				this.unit);
+	}
+
+	/**
+	 * Divides this amount by another.
+	 * 
+	 * @param other
+	 *            amount to divide by
+	 * @return new {@code Amount}
+	 * @throws UnitConversionException
+	 *             if incompatible
+	 */
+	public double divideBy(Amount other) throws UnitConversionException {
+		if (other == null) {
+			throw new IllegalArgumentException("Cannot divide amount by null");
+		}
+		return this.value / other.convert(this.unit).value;
 	}
 
 	@Override
