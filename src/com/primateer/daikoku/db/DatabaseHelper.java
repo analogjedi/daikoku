@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 
-public class Database extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public static final String DB_NAME = "daikoku_db";
 	public static final int DB_VERSION = 1;
 
-	public Database() {
+	public DatabaseHelper() {
 		super(Application.getInstance().getApplicationContext(), DB_NAME, null,
 				DB_VERSION);
 	}

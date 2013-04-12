@@ -9,7 +9,7 @@ public abstract class Dao {
 	public static final String COL_LABEL = "label";
 	
 	protected SQLiteDatabase getDB() {
-		return new Database().getWritableDatabase();
+		return new DatabaseHelper().getWritableDatabase();
 	}
 	
 	protected static String whereId(long id) {

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.primateer.daikoku"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -27,6 +27,11 @@
             android:name="com.primateer.daikoku.activities.MealPlanActivity"
             android:label="@string/title_activity_meal_plan" >
         </activity>
+        <provider
+            android:name="com.primateer.daikoku.db.DatabaseProvider"
+            android:authorities="daikoku"
+            android:exported="true" tools:ignore="ExportedContentProvider">
+        </provider>
     </application>
 
 </manifest>

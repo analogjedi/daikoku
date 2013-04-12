@@ -1,6 +1,6 @@
 package com.primateer.daikoku.test;
 
-import com.primateer.daikoku.db.Database;
+import com.primateer.daikoku.db.DatabaseHelper;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +9,7 @@ import android.test.AndroidTestCase;
 public class DatabaseTest extends AndroidTestCase {
 
 	public void testDB() {
-		SQLiteDatabase db = new Database().getReadableDatabase();
+		SQLiteDatabase db = new DatabaseHelper().getReadableDatabase();
 		String[] cols = { "label" };
 		Cursor q = db.query("vendor", cols, null, null,
 				null, null, null, null);
