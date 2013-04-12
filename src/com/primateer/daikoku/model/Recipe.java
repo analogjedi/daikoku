@@ -1,5 +1,6 @@
 package com.primateer.daikoku.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.primateer.daikoku.pojos.Amount;
@@ -12,6 +13,7 @@ public class Recipe {
 	private Map<Product, Amount> ingredients;
 
 	public Recipe add(Product product, Amount amount) {
+		getIngredients().put(product, amount);
 		return this;
 	}
 
@@ -31,7 +33,10 @@ public class Recipe {
 		this.label = label;
 	}
 
-	public Map<Product, Amount> getIngredients() {
+	public Map<Product,Amount> getIngredients() {
+		if (ingredients == null) {
+			ingredients = new HashMap<Product,Amount>();
+		}
 		return ingredients;
 	}
 

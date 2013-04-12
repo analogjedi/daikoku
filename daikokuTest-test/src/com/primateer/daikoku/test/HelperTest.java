@@ -1,4 +1,6 @@
-package com.primateer.daikoku;
+package com.primateer.daikoku.test;
+
+import com.primateer.daikoku.Helper;
 
 import junit.framework.TestCase;
 

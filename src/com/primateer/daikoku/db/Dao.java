@@ -17,6 +17,6 @@ public abstract class Dao {
 	}
 	
 	protected static String where(String column, Object value) {
-		return column + " = " + value;
+		return column + " = '" + value.toString() + "'";
 	}
 }

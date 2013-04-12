@@ -1,5 +1,6 @@
 package com.primateer.daikoku.pojos;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,14 @@ public class Day {
 	}
 
 	public void addMeal(Meal meal) {
-		meals.add(meal);
+		getMeals().add(meal);
+	}
+	
+	public List<Meal> getMeals() {
+		if (meals == null) {
+			meals = new ArrayList<Meal>();
+		}
+		return meals;
 	}
 
 	public Object getTotalNutrition(String type) throws UnitConversionException {
@@ -24,7 +32,9 @@ public class Day {
 		if (meals != null) {
 			for (Meal meal : meals) {
 				Amount mealNutrition = meal.getTotalNutrition(type);
-				total = mealNutrition.add(total);
+				if (mealNutrition != null) {
+					total = mealNutrition.add(total);
+				}
 			}
 		}
 		return total;

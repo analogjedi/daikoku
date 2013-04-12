@@ -1,9 +1,14 @@
-package com.primateer.daikoku;
+package com.primateer.daikoku.test;
 
 import java.util.Date;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
 import android.test.AndroidTestCase;
 
+import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Meal;
 import com.primateer.daikoku.model.Model;
 import com.primateer.daikoku.model.Nutrition;
@@ -15,8 +20,14 @@ import com.primateer.daikoku.pojos.Day;
 
 public class MealPlanTest extends AndroidTestCase {
 
-	public void testDay() throws UnitConversionException {
+	public void testDay() throws UnitConversionException, NameNotFoundException {
 		Date today = new Date();
+
+		boolean DEBUGGABLE = (Application.getInstance().getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+		boolean TEST_ONLY = (Application.getInstance().getApplicationInfo().flags & ApplicationInfo.FLAG_TEST_ONLY) != 0;
+
+		System.out.println("debuggable: " + DEBUGGABLE);
+		System.out.println("test_only: " + TEST_ONLY);
 
 		Nutrition lentilsNutrition = new Nutrition();
 		lentilsNutrition.setNutrient("E", new Amount("336kcal"));
@@ -29,7 +40,7 @@ public class MealPlanTest extends AndroidTestCase {
 		lentils.setNutrition(lentilsNutrition);
 		lentils.setAmount(new Amount("500g"));
 		lentils.setUnits(0);
-		
+
 		Recipe recipeLentils = new Recipe();
 		recipeLentils.setLabel("bowl of lentils");
 		recipeLentils.add(lentils, new Amount("125g"));
@@ -51,13 +62,13 @@ public class MealPlanTest extends AndroidTestCase {
 		meal3.setRecipe(recipeLentils);
 		meal3.setDue(today);
 		meal3.setState(Meal.SCHEDULED);
-		
+
 		Model model = Model.getInstance();
 		model.register(meal1);
 		model.register(meal2);
 		model.register(meal3);
-		
+
 		Day day = model.getDay(today);
-		assertEquals(new Amount("69g"),day.getTotalNutrition("P"));
+		assertEquals(new Amount("69g"), day.getTotalNutrition("P"));
 	}
 }

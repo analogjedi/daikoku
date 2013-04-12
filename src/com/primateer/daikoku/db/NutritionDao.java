@@ -42,7 +42,7 @@ public class NutritionDao extends Dao {
 		Cursor q = db
 				.query(NUTRIENT_TABLE, null, where(NUTRIENT_COL_NUTRITION, id),
 						null, null, null, null, null);
-		for (q.moveToFirst(); q.isAfterLast(); q.moveToNext()) {
+		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
 			String type = q.getString(q.getColumnIndex(NUTRIENT_COL_TYPE));
 			Amount amount = new Amount(q.getString(q
 					.getColumnIndex(NUTRIENT_COL_AMOUNT)));

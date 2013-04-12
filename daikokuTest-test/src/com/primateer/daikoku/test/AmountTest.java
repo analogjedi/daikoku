@@ -1,4 +1,4 @@
-package com.primateer.daikoku;
+package com.primateer.daikoku.test;
 
 import com.primateer.daikoku.pojos.Amount;
 import com.primateer.daikoku.pojos.Amount.UnitConversionException;
