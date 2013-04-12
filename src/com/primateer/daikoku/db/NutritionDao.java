@@ -27,7 +27,7 @@ public class NutritionDao extends Dao {
 		if (q.moveToFirst()) {
 			vo = new Nutrition();
 			vo.setId(id);
-			vo.setAmount(new Amount(q.getString(q
+			vo.setReferenceAmount(new Amount(q.getString(q
 					.getColumnIndex(NUTRITION_COL_AMOUNT))));
 			vo.setNutrients(loadNutrients(id));
 		}
@@ -62,7 +62,7 @@ public class NutritionDao extends Dao {
 		if (id >= 0) {
 			vals.put(COL_ID, id);
 		}
-		vals.put(NUTRITION_COL_AMOUNT, vo.getAmount().toString());
+		vals.put(NUTRITION_COL_AMOUNT, vo.getReferenceAmount().toString());
 		id = db.insertWithOnConflict(NUTRIENT_TABLE, null, vals,
 				SQLiteDatabase.CONFLICT_REPLACE);
 		if (vo.getId() != id) {

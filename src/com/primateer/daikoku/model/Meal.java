@@ -64,15 +64,12 @@ public class Meal {
 	}
 
 	public Amount getTotalNutrition(String type) throws UnitConversionException {
-		Amount total = null;
+		Amount total = Amount.NULL;
 		if (extraNutrition != null) {
 			total = extraNutrition.getNutrients().get(type);
 		}
 		if (recipe != null) {
-			Amount recipeAmount = recipe.getTotalNutrition(type);
-			if (recipeAmount != null) {
-				total = recipeAmount.add(total);
-			}
+			total = total.add(recipe.getTotalNutrition(type));
 		}
 		return total;
 	}

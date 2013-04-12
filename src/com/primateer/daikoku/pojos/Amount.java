@@ -16,6 +16,9 @@ public class Amount {
 	public final double value;
 	public final String unit;
 
+
+	public static final Amount NULL = new Amount(0,"g");	
+
 	private static final String DOUBLE_REGEXP = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 	private static final Pattern AMOUNT_PATTERN = Pattern.compile("("
 			+ DOUBLE_REGEXP + ")([^\\d\\s].*)");
@@ -59,12 +62,9 @@ public class Amount {
 	 * Multiply this amount by a scalar factor
 	 * 
 	 * @param factor any double
-	 * @return new {@code Amount}, or {@code null} if factor is 0
+	 * @return new {@code Amount}
 	 */
 	public Amount scale(double factor) {
-		if (factor == 0) {
-			return null;
-		}
 		return new Amount(this.value*factor, this.unit);
 	}
 
@@ -78,11 +78,15 @@ public class Amount {
 	 *             if units are incompatible
 	 */
 	public Amount convert(String unit) throws UnitConversionException {
-		// no unit change
+		// no change
 		if (unit.equals(this.unit)) {
 			return this;
 		}
-		// conversion possible
+		// zero always converts
+		if (this.value == 0) {
+			return new Amount(0,unit);
+		}
+		// conversion via rate
 		Double rate = conversionRates.get(this.unit + ">" + unit);
 		if (rate != null) {
 			return new Amount(this.value * rate, unit);
@@ -103,7 +107,7 @@ public class Amount {
 	 */
 	public Amount add(Amount other) throws UnitConversionException {
 		// treat null amounts as zero
-		if (other == null) {
+		if (other == null || other.value == 0) {
 			return this;
 		}
 		// return sum for compatible units
@@ -121,9 +125,6 @@ public class Amount {
 	 *             if incompatible
 	 */
 	public double divideBy(Amount other) throws UnitConversionException {
-		if (other == null) {
-			throw new IllegalArgumentException("Cannot divide amount by null");
-		}
 		return this.value / other.convert(this.unit).value;
 	}
 

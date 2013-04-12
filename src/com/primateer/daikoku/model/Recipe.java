@@ -33,9 +33,9 @@ public class Recipe {
 		this.label = label;
 	}
 
-	public Map<Product,Amount> getIngredients() {
+	public Map<Product, Amount> getIngredients() {
 		if (ingredients == null) {
-			ingredients = new HashMap<Product,Amount>();
+			ingredients = new HashMap<Product, Amount>();
 		}
 		return ingredients;
 	}
@@ -45,14 +45,11 @@ public class Recipe {
 	}
 
 	public Amount getTotalNutrition(String type) throws UnitConversionException {
-		Amount total = null;
+		Amount total = Amount.NULL;
 		if (ingredients != null) {
 			for (Product product : ingredients.keySet()) {
-				Amount ia = product.getNutrition().get(type,
-						ingredients.get(product));
-				if (ia != null) {
-					total = ia.add(total);
-				}
+				total = total.add(product.getNutrition().get(type,
+						ingredients.get(product)));
 			}
 		}
 		return total;
