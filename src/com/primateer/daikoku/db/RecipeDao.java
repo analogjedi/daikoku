@@ -5,7 +5,6 @@ import java.util.Map;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.primateer.daikoku.model.Product;
 import com.primateer.daikoku.model.Recipe;
@@ -21,7 +20,6 @@ public class RecipeDao extends Dao {
 
 	public long insert(Recipe vo) {
 		long id = vo.getId();
-		SQLiteDatabase db = getDB();
 
 		// recipe table
 		ContentValues vals = new ContentValues();
@@ -29,8 +27,7 @@ public class RecipeDao extends Dao {
 			vals.put(COL_ID, id);
 		}
 		vals.put(COL_LABEL, vo.getLabel());
-		id = db.insertWithOnConflict(RECIPE_TABLE, null, vals,
-				SQLiteDatabase.CONFLICT_REPLACE);
+		id = getId(getResolver().insert(getUri(RECIPE_TABLE), vals));
 		if (vo.getId() != id) {
 			vo.setId(id);
 		}
@@ -48,19 +45,16 @@ public class RecipeDao extends Dao {
 				iv.put(INGREDIENT_COL_PRODUCT, productId);
 				iv.put(INGREDIENT_COL_AMOUNT, ingredients.get(product)
 						.toString());
-				db.insertWithOnConflict(INGREDIENT_TABLE, null, iv,
-						SQLiteDatabase.CONFLICT_REPLACE);
+				getResolver().insert(getUri(INGREDIENT_TABLE), iv);
 			}
 		}
 
-		db.close();
 		return id;
 	}
 
 	public Recipe load(long id) {
-		SQLiteDatabase db = getDB();
 		Recipe vo = null;
-		Cursor q = db.query(RECIPE_TABLE, null, whereId(id), null, null, null,
+		Cursor q = getResolver().query(getUri(RECIPE_TABLE), null, whereId(id),
 				null, null);
 		if (q.moveToFirst()) {
 			vo = new Recipe();
@@ -69,15 +63,13 @@ public class RecipeDao extends Dao {
 			vo.setIngredients(loadIngredients(id));
 		}
 		q.close();
-		db.close();
 		return vo;
 	}
 
 	private Map<Product, Amount> loadIngredients(long id) {
-		SQLiteDatabase db = getDB();
 		Map<Product, Amount> ingredients = new HashMap<Product, Amount>();
-		Cursor q = db.query(INGREDIENT_TABLE, null,
-				where(INGREDIENT_COL_RECIPE, id), null, null, null, null, null);
+		Cursor q = getResolver().query(getUri(INGREDIENT_TABLE), null,
+				where(INGREDIENT_COL_RECIPE, id), null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
 			Product product = new ProductDao().load(q.getLong(q
 					.getColumnIndex(INGREDIENT_COL_PRODUCT)));
@@ -86,7 +78,6 @@ public class RecipeDao extends Dao {
 			ingredients.put(product, amount);
 		}
 		q.close();
-		db.close();
 		return ingredients;
 	}
 }

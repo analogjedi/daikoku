@@ -5,7 +5,6 @@ import java.util.Map;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.primateer.daikoku.model.Nutrition;
 import com.primateer.daikoku.pojos.Amount;
@@ -21,9 +20,8 @@ public class NutritionDao extends Dao {
 
 	public Nutrition load(long id) {
 		Nutrition vo = null;
-		SQLiteDatabase db = getDB();
-		Cursor q = db.query(NUTRITION_TABLE, null, whereId(id), null, null,
-				null, null, null);
+		Cursor q = getResolver().query(getUri(NUTRITION_TABLE), null,
+				whereId(id), null, null);
 		if (q.moveToFirst()) {
 			vo = new Nutrition();
 			vo.setId(id);
@@ -32,16 +30,13 @@ public class NutritionDao extends Dao {
 			vo.setNutrients(loadNutrients(id));
 		}
 		q.close();
-		db.close();
 		return vo;
 	}
 
 	private Map<String, Amount> loadNutrients(long id) {
 		Map<String, Amount> result = new HashMap<String, Amount>();
-		SQLiteDatabase db = getDB();
-		Cursor q = db
-				.query(NUTRIENT_TABLE, null, where(NUTRIENT_COL_NUTRITION, id),
-						null, null, null, null, null);
+		Cursor q = getResolver().query(getUri(NUTRIENT_TABLE), null,
+				where(NUTRIENT_COL_NUTRITION, id), null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
 			String type = q.getString(q.getColumnIndex(NUTRIENT_COL_TYPE));
 			Amount amount = new Amount(q.getString(q
@@ -49,13 +44,11 @@ public class NutritionDao extends Dao {
 			result.put(type, amount);
 		}
 		q.close();
-		db.close();
 		return result;
 	}
 
 	public long insert(Nutrition vo) {
 		long id = vo.getId();
-		SQLiteDatabase db = getDB();
 
 		// nutrition table
 		ContentValues vals = new ContentValues();
@@ -63,8 +56,7 @@ public class NutritionDao extends Dao {
 			vals.put(COL_ID, id);
 		}
 		vals.put(NUTRITION_COL_AMOUNT, vo.getReferenceAmount().toString());
-		id = db.insertWithOnConflict(NUTRIENT_TABLE, null, vals,
-				SQLiteDatabase.CONFLICT_REPLACE);
+		id = getId(getResolver().insert(getUri(NUTRITION_TABLE), vals));
 		if (vo.getId() != id) {
 			vo.setId(id);
 		}
@@ -77,12 +69,10 @@ public class NutritionDao extends Dao {
 				nv.put(NUTRIENT_COL_NUTRITION, id);
 				nv.put(NUTRIENT_COL_TYPE, type);
 				nv.put(NUTRIENT_COL_AMOUNT, nutrients.get(type).toString());
-				db.insertWithOnConflict(NUTRIENT_TABLE, null, nv,
-						SQLiteDatabase.CONFLICT_REPLACE);
+				getResolver().insert(getUri(NUTRIENT_TABLE), nv);
 			}
 		}
 
-		db.close();
 		return id;
 	}
 

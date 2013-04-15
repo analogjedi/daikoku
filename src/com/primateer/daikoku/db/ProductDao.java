@@ -2,7 +2,6 @@ package com.primateer.daikoku.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.primateer.daikoku.model.Product;
 import com.primateer.daikoku.pojos.Amount;
@@ -16,8 +15,7 @@ public class ProductDao extends Dao {
 
 	public Product load(long id) {
 		Product vo = null;
-		SQLiteDatabase db = getDB();
-		Cursor q = db.query(TABLE, null, whereId(id), null, null, null, null,
+		Cursor q = getResolver().query(getUri(TABLE), null, whereId(id), null,
 				null);
 		if (q.moveToFirst()) {
 			vo = new Product();
@@ -29,15 +27,13 @@ public class ProductDao extends Dao {
 			vo.setUnits(q.getInt(q.getColumnIndex(COL_UNITS)));
 		}
 		q.close();
-		db.close();
 		return vo;
 	}
 
 	public long insert(Product vo) {
 		long id = vo.getId();
-		SQLiteDatabase db = getDB();
-		
-		ContentValues vals = new ContentValues(); 
+
+		ContentValues vals = new ContentValues();
 		if (id >= 0) {
 			vals.put(COL_ID, id);
 		}
@@ -49,12 +45,11 @@ public class ProductDao extends Dao {
 		vals.put(COL_NUTRITION, nutritionId);
 		vals.put(COL_AMOUNT, vo.getAmount().toString());
 		vals.put(COL_UNITS, vo.getUnits());
-		id = db.insertWithOnConflict(TABLE, null, vals, SQLiteDatabase.CONFLICT_REPLACE);
+		id = getId(getResolver().insert(getUri(TABLE), vals));
 		if (id != vo.getId()) {
 			vo.setId(id);
 		}
-		
-		db.close();
+
 		return id;
 	}
 }

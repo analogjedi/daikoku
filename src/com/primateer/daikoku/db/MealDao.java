@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.model.Meal;
@@ -26,7 +25,6 @@ public class MealDao extends Dao {
 	 * @return ID of created entry
 	 */
 	public long insert(Meal vo) {
-		SQLiteDatabase db = getDB();
 		ContentValues vals = new ContentValues();
 		long oldId = vo.getId();
 		if (oldId >= 0) {
@@ -40,8 +38,7 @@ public class MealDao extends Dao {
 		vals.put(COL_RECIPE, recipeId);
 		vals.put(COL_DUE, Helper.toString(vo.getDue()));
 		vals.put(COL_STATE, vo.getState());
-		long newId = db.insert(TABLE, null, vals);
-		db.close();
+		long newId = getId(getResolver().insert(getUri(TABLE), vals));
 		if (oldId != newId) {
 			vo.setId(newId);
 		}
@@ -49,15 +46,13 @@ public class MealDao extends Dao {
 	}
 
 	public List<Meal> loadAll(Date date) {
-		SQLiteDatabase db = getDB();
 		ArrayList<Meal> results = new ArrayList<Meal>();
-		Cursor q = db.query(TABLE, null, where(COL_DUE, Helper.toString(date)),
-				null, null, null, null, null);
+		Cursor q = getResolver().query(getUri(TABLE), null,
+				where(COL_DUE, Helper.toString(date)), null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
 			results.add(buildMeal(q));
 		}
 		q.close();
-		db.close();
 		return results;
 	}
 

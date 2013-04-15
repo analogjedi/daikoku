@@ -7,8 +7,10 @@ import com.primateer.daikoku.pojos.Amount;
 import com.primateer.daikoku.pojos.Amount.UnitConversionException;
 
 public class Nutrition {
+	
+	private static final Amount defaultAmount = new Amount(100,"g");
 
-	private long id;
+	private long id = -1;
 	private Amount referenceAmount;
 	private Map<String, Amount> nutrients;
 	
@@ -22,6 +24,9 @@ public class Nutrition {
 	}
 
 	public Amount getReferenceAmount() {
+		if (referenceAmount == null) {
+			return defaultAmount;
+		}
 		return referenceAmount;
 	}
 

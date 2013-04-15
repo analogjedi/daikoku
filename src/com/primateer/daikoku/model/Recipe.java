@@ -8,7 +8,7 @@ import com.primateer.daikoku.pojos.Amount.UnitConversionException;
 
 public class Recipe {
 
-	private long id;
+	private long id = -1;
 	private String label;
 	private Map<Product, Amount> ingredients;
 

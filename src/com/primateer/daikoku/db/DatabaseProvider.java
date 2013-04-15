@@ -50,7 +50,8 @@ public class DatabaseProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		long id = getDB(true).insert(getTable(uri), null, values);
+		long id = getDB(true).insertWithOnConflict(getTable(uri), null, values,
+				SQLiteDatabase.CONFLICT_REPLACE);
 		return Uri.withAppendedPath(uri, String.valueOf(id));
 	}
 

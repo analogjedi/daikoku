@@ -2,7 +2,6 @@ package com.primateer.daikoku.test;
 
 import java.util.Date;
 
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.test.ProviderTestCase2;
 
@@ -22,15 +21,15 @@ public class MealPlanTest extends ProviderTestCase2<DatabaseProvider> {
 	public MealPlanTest() {
 		super(DatabaseProvider.class, DatabaseProvider.AUTHORITY);
 	}
+	
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+		Application.setAlternateContext(getMockContext());
+	}
 
 	public void testDay() throws UnitConversionException, NameNotFoundException {
 		Date today = new Date();
-
-		boolean DEBUGGABLE = (Application.getInstance().getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
-		boolean TEST_ONLY = (Application.getInstance().getApplicationInfo().flags & ApplicationInfo.FLAG_TEST_ONLY) != 0;
-
-		System.out.println("debuggable: " + DEBUGGABLE);
-		System.out.println("test_only: " + TEST_ONLY);
 
 		Nutrition lentilsNutrition = new Nutrition();
 		lentilsNutrition.setNutrient("E", new Amount("336kcal"));
@@ -72,6 +71,6 @@ public class MealPlanTest extends ProviderTestCase2<DatabaseProvider> {
 		model.register(meal3);
 
 		Day day = model.getDay(today);
-		assertEquals(new Amount("69g"), day.getTotalNutrition("P"));
+		assertEquals(new Amount("86.25g"), day.getTotalNutrition("P"));
 	}
 }

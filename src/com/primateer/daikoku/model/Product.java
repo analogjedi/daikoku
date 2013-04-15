@@ -4,7 +4,7 @@ import com.primateer.daikoku.pojos.Amount;
 
 public class Product {
 
-	private long id;
+	private long id = -1;
 	private String label;
 	private Nutrition nutrition;
 	private Amount amount;
