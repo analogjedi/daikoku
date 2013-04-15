@@ -4,18 +4,14 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.test.ProviderTestCase2;
 
 import com.primateer.daikoku.db.DatabaseProvider;
+import com.primateer.daikoku.testutil.DatabaseTestCase;
 
-public class ContentProviderTest extends ProviderTestCase2<DatabaseProvider> {
+public class ContentProviderTest extends DatabaseTestCase {
 
 	ContentResolver resolver;
 	Uri uri;
-
-	public ContentProviderTest() {
-		super(DatabaseProvider.class, DatabaseProvider.AUTHORITY);
-	}
 
 	@Override
 	public void setUp() throws Exception {
