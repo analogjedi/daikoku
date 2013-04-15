@@ -3,10 +3,7 @@ package com.primateer.daikoku.test;
 import java.util.Date;
 
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.test.ProviderTestCase2;
 
-import com.primateer.daikoku.Application;
-import com.primateer.daikoku.db.DatabaseProvider;
 import com.primateer.daikoku.model.Meal;
 import com.primateer.daikoku.model.Model;
 import com.primateer.daikoku.model.Nutrition;
@@ -15,18 +12,9 @@ import com.primateer.daikoku.model.Recipe;
 import com.primateer.daikoku.pojos.Amount;
 import com.primateer.daikoku.pojos.Amount.UnitConversionException;
 import com.primateer.daikoku.pojos.Day;
+import com.primateer.daikoku.testutil.DatabaseTestCase;
 
-public class MealPlanTest extends ProviderTestCase2<DatabaseProvider> {
-
-	public MealPlanTest() {
-		super(DatabaseProvider.class, DatabaseProvider.AUTHORITY);
-	}
-	
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-		Application.setAlternateContext(getMockContext());
-	}
+public class MealPlanTest extends DatabaseTestCase {
 
 	public void testDay() throws UnitConversionException, NameNotFoundException {
 		Date today = new Date();
@@ -68,6 +56,7 @@ public class MealPlanTest extends ProviderTestCase2<DatabaseProvider> {
 		Model model = Model.getInstance();
 		model.register(meal1);
 		model.register(meal2);
+		model.register(meal2); //deliberate duplicate
 		model.register(meal3);
 
 		Day day = model.getDay(today);
