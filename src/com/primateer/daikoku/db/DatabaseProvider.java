@@ -16,7 +16,7 @@ public class DatabaseProvider extends ContentProvider {
 
 	private SQLiteDatabase getDB(boolean writable) {
 		if (dbHelper == null) {
-			dbHelper = new DatabaseHelper();
+			dbHelper = new DatabaseHelper(getContext());
 		}
 		if (writable) {
 			return dbHelper.getWritableDatabase();
@@ -25,6 +25,10 @@ public class DatabaseProvider extends ContentProvider {
 		}
 	}
 
+	private String getTable(Uri uri) {
+		return uri.getPathSegments().get(0);
+	}
+	
 	@Override
 	public boolean onCreate() {
 		// do nothing
@@ -34,8 +38,7 @@ public class DatabaseProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		String table = uri.getPathSegments().get(0);
-		return getDB(false).query(table, projection,
+		return getDB(false).query(getTable(uri), projection,
 				selection, selectionArgs, null, null, sortOrder);
 	}
 
@@ -47,8 +50,8 @@ public class DatabaseProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		// TODO Auto-generated method stub
-		return null;
+		long id = getDB(true).insert(getTable(uri), null, values);
+		return Uri.withAppendedPath(uri, String.valueOf(id));
 	}
 
 	@Override

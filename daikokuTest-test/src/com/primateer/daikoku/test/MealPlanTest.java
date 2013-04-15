@@ -4,9 +4,10 @@ import java.util.Date;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.test.AndroidTestCase;
+import android.test.ProviderTestCase2;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.db.DatabaseProvider;
 import com.primateer.daikoku.model.Meal;
 import com.primateer.daikoku.model.Model;
 import com.primateer.daikoku.model.Nutrition;
@@ -16,7 +17,11 @@ import com.primateer.daikoku.pojos.Amount;
 import com.primateer.daikoku.pojos.Amount.UnitConversionException;
 import com.primateer.daikoku.pojos.Day;
 
-public class MealPlanTest extends AndroidTestCase {
+public class MealPlanTest extends ProviderTestCase2<DatabaseProvider> {
+
+	public MealPlanTest() {
+		super(DatabaseProvider.class, DatabaseProvider.AUTHORITY);
+	}
 
 	public void testDay() throws UnitConversionException, NameNotFoundException {
 		Date today = new Date();

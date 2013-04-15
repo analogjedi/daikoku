@@ -1,9 +1,9 @@
 package com.primateer.daikoku.db;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -11,9 +11,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String DB_NAME = "daikoku_db";
 	public static final int DB_VERSION = 1;
 
-	public DatabaseHelper() {
-		super(Application.getInstance().getApplicationContext(), DB_NAME, null,
-				DB_VERSION);
+	public DatabaseHelper(Context context) {
+		super(context,DB_NAME,null,DB_VERSION);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.primateer.daikoku.test;
 
+import com.primateer.daikoku.Application;
 import com.primateer.daikoku.db.DatabaseHelper;
 
 import android.database.Cursor;
@@ -9,18 +10,18 @@ import android.test.AndroidTestCase;
 public class DatabaseTest extends AndroidTestCase {
 
 	public void testDB() {
-		SQLiteDatabase db = new DatabaseHelper().getReadableDatabase();
+		SQLiteDatabase db = new DatabaseHelper(Application.getInstance()
+				.getApplicationContext()).getReadableDatabase();
 		String[] cols = { "label" };
-		Cursor q = db.query("vendor", cols, null, null,
-				null, null, null, null);
+		Cursor q = db.query("vendor", cols, null, null, null, null, null, null);
 
 		q.moveToFirst();
-		assertEquals("Aldi",q.getString(q.getColumnIndex("label")));
+		assertEquals("Aldi", q.getString(q.getColumnIndex("label")));
 		q.moveToNext();
-		assertEquals("Norma",q.getString(q.getColumnIndex("label")));
+		assertEquals("Norma", q.getString(q.getColumnIndex("label")));
 		q.moveToNext();
-		assertEquals("Netto",q.getString(q.getColumnIndex("label")));
-		
+		assertEquals("Netto", q.getString(q.getColumnIndex("label")));
+
 		q.close();
 		db.close();
 	}
