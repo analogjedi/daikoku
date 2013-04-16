@@ -36,33 +36,34 @@ public class DatabaseProvider extends ContentProvider {
 	}
 
 	@Override
-	public Cursor query(Uri uri, String[] projection, String selection,
-			String[] selectionArgs, String sortOrder) {
+	public synchronized Cursor query(Uri uri, String[] projection,
+			String selection, String[] selectionArgs, String sortOrder) {
 		return getDB(false).query(getTable(uri), projection, selection,
 				selectionArgs, null, null, sortOrder);
 	}
 
 	@Override
-	public String getType(Uri uri) {
+	public synchronized String getType(Uri uri) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Uri insert(Uri uri, ContentValues values) {
+	public synchronized Uri insert(Uri uri, ContentValues values) {
 		long id = getDB(true).insertWithOnConflict(getTable(uri), null, values,
 				SQLiteDatabase.CONFLICT_REPLACE);
 		return Uri.withAppendedPath(uri, String.valueOf(id));
 	}
 
 	@Override
-	public int delete(Uri uri, String selection, String[] selectionArgs) {
+	public synchronized int delete(Uri uri, String selection,
+			String[] selectionArgs) {
 		return getDB(true).delete(getTable(uri), selection, selectionArgs);
 	}
 
 	@Override
-	public int update(Uri uri, ContentValues values, String selection,
-			String[] selectionArgs) {
+	public synchronized int update(Uri uri, ContentValues values,
+			String selection, String[] selectionArgs) {
 		return getDB(true).update(getTable(uri), values, selection,
 				selectionArgs);
 	}
