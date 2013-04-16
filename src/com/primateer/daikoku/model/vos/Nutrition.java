@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Settings;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 
 public class Nutrition extends ValueObject<Nutrition> {
-	
-	private static final Amount defaultAmount = new Amount(100,"g");
 
 	private Amount referenceAmount;
 	private Map<String, Amount> nutrients;
@@ -17,7 +16,7 @@ public class Nutrition extends ValueObject<Nutrition> {
 	
 	public Amount getReferenceAmount() {
 		if (referenceAmount == null) {
-			return defaultAmount;
+			return Settings.getInstance().getDefaultReferenceAmount();
 		}
 		return referenceAmount;
 	}

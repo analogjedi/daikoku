@@ -17,8 +17,6 @@ public class Amount {
 	public final String unit;
 
 
-	public static final Amount NULL = new Amount(0,"g");	
-
 	private static final String DOUBLE_REGEXP = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 	private static final Pattern AMOUNT_PATTERN = Pattern.compile("("
 			+ DOUBLE_REGEXP + ")([^\\d\\s].*)");

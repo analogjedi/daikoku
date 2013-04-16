@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Settings;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 
@@ -37,7 +38,7 @@ public class Recipe extends ValueObject<Recipe> {
 	}
 
 	public Amount getTotalNutrition(String type) throws UnitConversionException {
-		Amount total = Amount.NULL;
+		Amount total = Settings.getInstance().getNullMassAmount();
 		if (ingredients != null) {
 			for (Product product : ingredients.keySet()) {
 				total = total.add(product.getNutrition().get(type,

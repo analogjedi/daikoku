@@ -20,6 +20,8 @@ public class Data {
 		return instance;
 	}
 	
+	private Data() {}
+	
 	private Map<Long,ValueObject> getEntries(Class voClass) {
 		if (!registry.containsKey(voClass)) {
 			registry.put(voClass, new HashMap<Long,ValueObject>());

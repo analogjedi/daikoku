@@ -28,7 +28,7 @@ public class Day {
 	}
 
 	public Object getTotalNutrition(String type) throws UnitConversionException {
-		Amount total = Amount.NULL;
+		Amount total = Settings.getInstance().getNullMassAmount();
 		if (meals != null) {
 			for (Meal meal : meals) {
 				Amount mealNutrition = meal.getTotalNutrition(type);
