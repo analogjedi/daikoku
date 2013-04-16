@@ -1,5 +1,8 @@
 package com.primateer.daikoku.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Settings {
 
 	
@@ -15,11 +18,17 @@ public class Settings {
 
 	private Amount defaultReferenceAmount = new Amount("100g");
 	private String defaultMassUnit = "g";
-	private String defaultEnergyUint = "kcal";
+	private String defaultEnergyUnit = "kcal";
 	private Amount nullMassAmount;
+	private Map<String,String> defaultNutritionFields;
 	
 	private Settings() {
 		nullMassAmount = new Amount(0,getDefaultMassUnit());
+		defaultNutritionFields = new HashMap<String,String>();
+		defaultNutritionFields.put("E", defaultEnergyUnit);
+		defaultNutritionFields.put("P", defaultMassUnit);
+		defaultNutritionFields.put("C", defaultMassUnit);
+		defaultNutritionFields.put("F", defaultMassUnit);
 	}
 
 	
@@ -28,7 +37,7 @@ public class Settings {
 	}
 	
 	public String getDefaultEnergyUnit() {
-		return defaultEnergyUint;
+		return defaultEnergyUnit;
 	}
 	
 	public Amount getDefaultReferenceAmount() {
@@ -37,5 +46,9 @@ public class Settings {
 	
 	public Amount getNullMassAmount() {
 		return nullMassAmount;
+	}
+	
+	public Map<String,String> getDefaultNutritionFields() {
+		return defaultNutritionFields;
 	}
 }
