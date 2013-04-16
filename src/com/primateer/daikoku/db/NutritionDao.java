@@ -1,6 +1,7 @@
 package com.primateer.daikoku.db;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.content.ContentValues;
@@ -9,7 +10,7 @@ import android.database.Cursor;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.vos.Nutrition;
 
-public class NutritionDao extends Dao {
+public class NutritionDao extends Dao<Nutrition> {
 
 	public static final String NUTRITION_TABLE = "nutrition";
 	public static final String NUTRITION_COL_AMOUNT = "reference_amount";
@@ -75,5 +76,24 @@ public class NutritionDao extends Dao {
 
 		return id;
 	}
+
+	@Override
+	public List<Nutrition> loadAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int update(Nutrition vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(Nutrition vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

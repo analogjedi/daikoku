@@ -1,16 +1,18 @@
 package com.primateer.daikoku.db;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 
-public class RecipeDao extends Dao {
+public class RecipeDao extends Dao<Recipe> {
 
 	public static final String RECIPE_TABLE = "recipe";
 	public static final String INGREDIENT_TABLE = "recipe_ingredient";
@@ -38,11 +40,8 @@ public class RecipeDao extends Dao {
 			for (Product product : ingredients.keySet()) {
 				ContentValues iv = new ContentValues();
 				iv.put(INGREDIENT_COL_RECIPE, id);
-				long productId = product.getId();
-				if (productId < 0) {
-					productId = new ProductDao().insert(product);
-				}
-				iv.put(INGREDIENT_COL_PRODUCT, productId);
+				iv.put(INGREDIENT_COL_PRODUCT,
+						Data.getInstance().register(product));
 				iv.put(INGREDIENT_COL_AMOUNT, ingredients.get(product)
 						.toString());
 				getResolver().insert(getUri(INGREDIENT_TABLE), iv);
@@ -71,13 +70,31 @@ public class RecipeDao extends Dao {
 		Cursor q = getResolver().query(getUri(INGREDIENT_TABLE), null,
 				where(INGREDIENT_COL_RECIPE, id), null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
-			Product product = new ProductDao().load(q.getLong(q
-					.getColumnIndex(INGREDIENT_COL_PRODUCT)));
+			Product product = (Product) Data.getInstance().get(Product.class,
+					q.getLong(q.getColumnIndex(INGREDIENT_COL_PRODUCT)));
 			Amount amount = new Amount(q.getString(q
 					.getColumnIndex(INGREDIENT_COL_AMOUNT)));
 			ingredients.put(product, amount);
 		}
 		q.close();
 		return ingredients;
+	}
+
+	@Override
+	public List<Recipe> loadAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int update(Recipe vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(Recipe vo) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

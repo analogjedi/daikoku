@@ -4,10 +4,11 @@ import java.util.Date;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 
+import com.primateer.daikoku.db.DayDao;
 import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.Day;
-import com.primateer.daikoku.model.Model;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Day;
+import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
@@ -53,13 +54,13 @@ public class MealPlanTest extends DatabaseTestCase {
 		meal3.setDue(today);
 		meal3.setState(Meal.SCHEDULED);
 
-		Model model = Model.getInstance();
+		Data model = Data.getInstance();
 		model.register(meal1);
 		model.register(meal2);
 		model.register(meal2); //deliberate duplicate
 		model.register(meal3);
 
-		Day day = model.getDay(today);
+		Day day = new DayDao().load(today);
 		assertEquals(new Amount("86.25g"), day.getTotalNutrition("P"));
 	}
 }

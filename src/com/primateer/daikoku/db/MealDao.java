@@ -8,9 +8,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.vos.Meal;
+import com.primateer.daikoku.model.vos.Recipe;
 
-public class MealDao extends Dao {
+public class MealDao extends Dao<Meal> {
 
 	public static final String TABLE = "meal";
 	public static final String COL_RECIPE = "recipe";
@@ -31,11 +33,7 @@ public class MealDao extends Dao {
 			vals.put(COL_ID, oldId);
 		}
 		vals.put(COL_LABEL, vo.getLabel());
-		long recipeId = vo.getRecipe().getId();
-		if (recipeId < 0) {
-			recipeId = new RecipeDao().insert(vo.getRecipe());
-		}
-		vals.put(COL_RECIPE, recipeId);
+		vals.put(COL_RECIPE, Data.getInstance().register(vo.getRecipe()));
 		vals.put(COL_DUE, Helper.toString(vo.getDue()));
 		vals.put(COL_STATE, vo.getState());
 		long newId = getId(getResolver().insert(getUri(TABLE), vals));
@@ -60,10 +58,34 @@ public class MealDao extends Dao {
 		Meal vo = new Meal();
 		vo.setId(q.getLong(q.getColumnIndex(COL_ID)));
 		vo.setLabel(q.getString(q.getColumnIndex(COL_LABEL)));
-		vo.setRecipe(new RecipeDao().load(q.getLong(q
-				.getColumnIndex(COL_RECIPE))));
+		vo.setRecipe((Recipe) Data.getInstance().get(Recipe.class,
+				q.getLong(q.getColumnIndex(COL_RECIPE))));
 		vo.setDue(Helper.parseDate(q.getString(q.getColumnIndex(COL_DUE))));
 		vo.setState(q.getInt(q.getColumnIndex(COL_STATE)));
 		return vo;
+	}
+
+	@Override
+	public Meal load(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Meal> loadAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int update(Meal vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(Meal vo) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

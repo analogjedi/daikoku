@@ -48,6 +48,6 @@ public class Nutrition extends ValueObject<Nutrition> {
 
 	public Amount get(String type, Amount amount)
 			throws UnitConversionException {
-		return nutrients.get(type).scale(amount.divideBy(referenceAmount));
+		return nutrients.get(type).scale(amount.divideBy(getReferenceAmount()));
 	}
 }

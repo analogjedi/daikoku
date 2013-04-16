@@ -1,12 +1,16 @@
 package com.primateer.daikoku.db;
 
+import java.util.List;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Data;
+import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
 
-public class ProductDao extends Dao {
+public class ProductDao extends Dao<Product> {
 
 	public static final String TABLE = "product";
 	public static final String COL_NUTRITION = "nutrition";
@@ -21,8 +25,8 @@ public class ProductDao extends Dao {
 			vo = new Product();
 			vo.setId(id);
 			vo.setLabel(q.getString(q.getColumnIndex(COL_LABEL)));
-			vo.setNutrition(new NutritionDao().load(q.getLong(q
-					.getColumnIndex(COL_NUTRITION))));
+			vo.setNutrition((Nutrition) Data.getInstance().get(Nutrition.class,
+					q.getLong(q.getColumnIndex(COL_NUTRITION))));
 			vo.setAmount(new Amount(q.getString(q.getColumnIndex(COL_AMOUNT))));
 			vo.setUnits(q.getInt(q.getColumnIndex(COL_UNITS)));
 		}
@@ -38,11 +42,7 @@ public class ProductDao extends Dao {
 			vals.put(COL_ID, id);
 		}
 		vals.put(COL_LABEL, vo.getLabel());
-		long nutritionId = vo.getNutrition().getId();
-		if (nutritionId < 0) {
-			nutritionId = new NutritionDao().insert(vo.getNutrition());
-		}
-		vals.put(COL_NUTRITION, nutritionId);
+		vals.put(COL_NUTRITION, Data.getInstance().register(vo.getNutrition()));
 		vals.put(COL_AMOUNT, vo.getAmount().toString());
 		vals.put(COL_UNITS, vo.getUnits());
 		id = getId(getResolver().insert(getUri(TABLE), vals));
@@ -51,5 +51,23 @@ public class ProductDao extends Dao {
 		}
 
 		return id;
+	}
+
+	@Override
+	public List<Product> loadAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int update(Product vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(Product vo) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

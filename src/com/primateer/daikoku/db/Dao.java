@@ -8,7 +8,7 @@ import android.net.Uri;
 import com.primateer.daikoku.Application;
 
 // TODO a template (<Object>) may help
-public abstract class Dao {
+public abstract class Dao<T> {
 
 	public static final String COL_ID = "_id";
 	public static final String COL_LABEL = "label";
@@ -40,4 +40,10 @@ public abstract class Dao {
 		List<String> segments = uri.getPathSegments();
 		return Long.parseLong(segments.get(segments.size()-1));
 	}
+	
+	public abstract T load(long id);
+	public abstract List<T> loadAll();
+	public abstract long insert(T vo);
+	public abstract int update(T vo);
+	public abstract int delete(T vo);
 }
