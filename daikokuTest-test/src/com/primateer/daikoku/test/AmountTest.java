@@ -1,7 +1,7 @@
 package com.primateer.daikoku.test;
 
-import com.primateer.daikoku.pojos.Amount;
-import com.primateer.daikoku.pojos.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Amount.UnitConversionException;
 
 import junit.framework.TestCase;
 

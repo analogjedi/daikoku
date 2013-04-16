@@ -6,8 +6,8 @@ import java.util.Map;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.primateer.daikoku.model.Nutrition;
-import com.primateer.daikoku.pojos.Amount;
+import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.vos.Nutrition;
 
 public class NutritionDao extends Dao {
 

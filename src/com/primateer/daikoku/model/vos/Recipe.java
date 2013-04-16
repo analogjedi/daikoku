@@ -1,28 +1,20 @@
-package com.primateer.daikoku.model;
+package com.primateer.daikoku.model.vos;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.primateer.daikoku.pojos.Amount;
-import com.primateer.daikoku.pojos.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.ValueObject;
+import com.primateer.daikoku.model.Amount.UnitConversionException;
 
-public class Recipe {
+public class Recipe extends ValueObject<Recipe> {
 
-	private long id = -1;
 	private String label;
 	private Map<Product, Amount> ingredients;
 
 	public Recipe add(Product product, Amount amount) {
 		getIngredients().put(product, amount);
 		return this;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getLabel() {

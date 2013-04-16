@@ -2,8 +2,8 @@ package com.primateer.daikoku.db;
 
 import java.util.Date;
 
-import com.primateer.daikoku.model.Meal;
-import com.primateer.daikoku.pojos.Day;
+import com.primateer.daikoku.model.Day;
+import com.primateer.daikoku.model.vos.Meal;
 
 public class DayDao extends Dao {
 

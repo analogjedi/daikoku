@@ -4,14 +4,14 @@ import java.util.Date;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 
-import com.primateer.daikoku.model.Meal;
+import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.Model;
-import com.primateer.daikoku.model.Nutrition;
-import com.primateer.daikoku.model.Product;
-import com.primateer.daikoku.model.Recipe;
-import com.primateer.daikoku.pojos.Amount;
-import com.primateer.daikoku.pojos.Amount.UnitConversionException;
-import com.primateer.daikoku.pojos.Day;
+import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.vos.Meal;
+import com.primateer.daikoku.model.vos.Nutrition;
+import com.primateer.daikoku.model.vos.Product;
+import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.testutil.DatabaseTestCase;
 
 public class MealPlanTest extends DatabaseTestCase {

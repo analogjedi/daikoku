@@ -1,11 +1,11 @@
-package com.primateer.daikoku.pojos;
+package com.primateer.daikoku.model;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.primateer.daikoku.model.Meal;
-import com.primateer.daikoku.pojos.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.vos.Meal;
 
 public class Day {
 

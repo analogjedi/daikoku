@@ -1,4 +1,4 @@
-package com.primateer.daikoku.pojos;
+package com.primateer.daikoku.model;
 
 import java.util.HashMap;
 import java.util.Map;

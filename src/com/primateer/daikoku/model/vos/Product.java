@@ -1,10 +1,10 @@
-package com.primateer.daikoku.model;
+package com.primateer.daikoku.model.vos;
 
-import com.primateer.daikoku.pojos.Amount;
+import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.ValueObject;
 
-public class Product {
+public class Product extends ValueObject<Product> {
 
-	private long id = -1;
 	private String label;
 	private Nutrition nutrition;
 	private Amount amount;
@@ -40,14 +40,6 @@ public class Product {
 
 	public void setUnits(int units) {
 		this.units = units;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 }

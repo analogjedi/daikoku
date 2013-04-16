@@ -1,31 +1,23 @@
-package com.primateer.daikoku.model;
+package com.primateer.daikoku.model.vos;
 
 import java.util.Date;
 
-import com.primateer.daikoku.pojos.Amount;
-import com.primateer.daikoku.pojos.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.ValueObject;
+import com.primateer.daikoku.model.Amount.UnitConversionException;
 
-public class Meal {
+public class Meal extends ValueObject<Meal> {
 
 	public static final int SCHEDULED = 1;
 	public static final int RESERVED = 2;
 	public static final int PREPARED = 3;
 	public static final int CONSUMED = 4;
 
-	private long id = -1;
 	private String label;
 	private Recipe recipe;
 	private Date due;
 	private int state;
 	private Nutrition extraNutrition;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getLabel() {
 		return label;

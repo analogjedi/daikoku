@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.primateer.daikoku.db.DayDao;
 import com.primateer.daikoku.db.MealDao;
-import com.primateer.daikoku.pojos.Day;
+import com.primateer.daikoku.model.vos.Meal;
 
 public class Model {
 

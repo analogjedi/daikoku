@@ -3,8 +3,8 @@ package com.primateer.daikoku.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.primateer.daikoku.model.Product;
-import com.primateer.daikoku.pojos.Amount;
+import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.vos.Product;
 
 public class ProductDao extends Dao {
 

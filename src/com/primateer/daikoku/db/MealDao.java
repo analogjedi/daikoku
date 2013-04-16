@@ -8,7 +8,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.primateer.daikoku.Helper;
-import com.primateer.daikoku.model.Meal;
+import com.primateer.daikoku.model.vos.Meal;
 
 public class MealDao extends Dao {
 

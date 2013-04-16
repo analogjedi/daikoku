@@ -6,9 +6,9 @@ import java.util.Map;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.primateer.daikoku.model.Product;
-import com.primateer.daikoku.model.Recipe;
-import com.primateer.daikoku.pojos.Amount;
+import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.vos.Product;
+import com.primateer.daikoku.model.vos.Recipe;
 
 public class RecipeDao extends Dao {
 
