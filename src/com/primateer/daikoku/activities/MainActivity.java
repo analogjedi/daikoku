@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Settings;
+import com.primateer.daikoku.views.NutritionForm;
 import com.primateer.daikoku.widgets.NutrientRowWidget;
 
 public class MainActivity extends Activity {
@@ -20,20 +22,20 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
 		ViewGroup views = (ViewGroup) this
 				.findViewById(R.id.activity_main_layout);
 
 		NutrientRowWidget nut1 = new NutrientRowWidget(this);
 		nut1.setUnits(Settings.getInstance().getAllUnits(), Settings
 				.getInstance().getDefaultMassUnit());
-		nut1.setLabel("Energy:");
+		nut1.setNutrientType(Nutrient.Energy);
 		nut1.setAmount(new Amount("333.3kcal"));
 
 		NutrientRowWidget nut2 = new NutrientRowWidget(this);
 		nut2.setUnits(Settings.getInstance().getAllUnits(), Settings
 				.getInstance().getDefaultMassUnit());
-		nut2.setLabel("Protein:");
+		nut2.setNutrientType(Nutrient.Protein);
 		nut2.setAmount(new Amount("20.7g"));
 
 		final NutrientRowWidget nut3 = new NutrientRowWidget(this);
@@ -47,10 +49,13 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
+		
+		NutritionForm nutrition = new NutritionForm(this);
 
 		views.addView(nut1);
 		views.addView(nut2);
 		views.addView(nut3);
+		views.addView(nutrition);
 	}
 
 	@Override

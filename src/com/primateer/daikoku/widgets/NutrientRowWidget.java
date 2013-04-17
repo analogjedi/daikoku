@@ -1,15 +1,17 @@
 package com.primateer.daikoku.widgets;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.primateer.daikoku.model.Nutrient;
 
 public class NutrientRowWidget extends AmountWidget {
 
 	private TextView label;
 	private ImageButton delButton;
+	private Nutrient.Type type;
 	
 	public NutrientRowWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -28,11 +30,21 @@ public class NutrientRowWidget extends AmountWidget {
 		this(context,null);
 	}
 
-	public void setLabel(String label) {
-		this.label.setText(label);
+	public void setNutrientType(Nutrient.Type type) {
+		this.type = type;
+		this.label.setText(type.toString());
 	}
 	
 	public void setOnDeleteListener(OnClickListener listener) {
 		delButton.setOnClickListener(listener);
+	}
+	
+	public void setNutrient(Nutrient nutrient) {
+		setNutrientType(nutrient.type);
+		setAmount(nutrient.amount);
+	}
+	
+	public Nutrient getNutrient() {
+		return new Nutrient(type,getAmount());
 	}
 }
