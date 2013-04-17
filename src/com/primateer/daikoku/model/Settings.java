@@ -1,6 +1,8 @@
 package com.primateer.daikoku.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Settings {
@@ -21,6 +23,7 @@ public class Settings {
 	private String defaultEnergyUnit = "kcal";
 	private Amount nullMassAmount;
 	private Map<String,String> defaultNutritionFields;
+	private List<String> allUnits;
 	
 	private Settings() {
 		nullMassAmount = new Amount(0,getDefaultMassUnit());
@@ -29,6 +32,10 @@ public class Settings {
 		defaultNutritionFields.put("P", defaultMassUnit);
 		defaultNutritionFields.put("C", defaultMassUnit);
 		defaultNutritionFields.put("F", defaultMassUnit);
+		
+		allUnits = new ArrayList<String>();
+		allUnits.add(defaultMassUnit);
+		allUnits.add(defaultEnergyUnit);
 	}
 
 	
@@ -50,5 +57,10 @@ public class Settings {
 	
 	public Map<String,String> getDefaultNutritionFields() {
 		return defaultNutritionFields;
+	}
+
+
+	public List<String> getAllUnits() {
+		return allUnits;
 	}
 }

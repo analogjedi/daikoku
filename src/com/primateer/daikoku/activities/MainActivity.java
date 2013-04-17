@@ -5,8 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Settings;
+import com.primateer.daikoku.widgets.AmountWidget;
 
 public class MainActivity extends Activity {
 
@@ -14,6 +20,27 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		ViewGroup views = (ViewGroup) this
+				.findViewById(R.id.activity_main_layout);
+
+		AmountWidget amount1 = new AmountWidget(this);
+		amount1.setUnits(Settings.getInstance().getAllUnits(), Settings
+				.getInstance().getDefaultMassUnit());		
+		amount1.setAmount(new Amount("3184.39g"));
+
+		AmountWidget amount2 = new AmountWidget(this);
+		amount2.setUnits(Settings.getInstance().getAllUnits(), Settings
+				.getInstance().getDefaultMassUnit());		
+		amount2.setAmount(new Amount("800kcal"));
+
+		AmountWidget amount3 = new AmountWidget(this);
+		amount3.setUnits(Settings.getInstance().getAllUnits(), Settings
+			.getInstance().getDefaultMassUnit());	
+		
+		views.addView(amount1);
+		views.addView(amount2);
+		views.addView(amount3);
 	}
 
 	@Override
@@ -24,6 +51,6 @@ public class MainActivity extends Activity {
 	}
 
 	public void navMealPlan(View v) {
-		this.startActivity(new Intent(this,MealPlanActivity.class));
+		this.startActivity(new Intent(this, MealPlanActivity.class));
 	}
 }
