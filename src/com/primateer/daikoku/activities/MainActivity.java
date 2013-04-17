@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Settings;
-import com.primateer.daikoku.widgets.AmountWidget;
+import com.primateer.daikoku.widgets.NutrientRowWidget;
 
 public class MainActivity extends Activity {
 
@@ -24,23 +24,33 @@ public class MainActivity extends Activity {
 		ViewGroup views = (ViewGroup) this
 				.findViewById(R.id.activity_main_layout);
 
-		AmountWidget amount1 = new AmountWidget(this);
-		amount1.setUnits(Settings.getInstance().getAllUnits(), Settings
-				.getInstance().getDefaultMassUnit());		
-		amount1.setAmount(new Amount("3184.39g"));
+		NutrientRowWidget nut1 = new NutrientRowWidget(this);
+		nut1.setUnits(Settings.getInstance().getAllUnits(), Settings
+				.getInstance().getDefaultMassUnit());
+		nut1.setLabel("Energy:");
+		nut1.setAmount(new Amount("333.3kcal"));
 
-		AmountWidget amount2 = new AmountWidget(this);
-		amount2.setUnits(Settings.getInstance().getAllUnits(), Settings
-				.getInstance().getDefaultMassUnit());		
-		amount2.setAmount(new Amount("800kcal"));
+		NutrientRowWidget nut2 = new NutrientRowWidget(this);
+		nut2.setUnits(Settings.getInstance().getAllUnits(), Settings
+				.getInstance().getDefaultMassUnit());
+		nut2.setLabel("Protein:");
+		nut2.setAmount(new Amount("20.7g"));
 
-		AmountWidget amount3 = new AmountWidget(this);
-		amount3.setUnits(Settings.getInstance().getAllUnits(), Settings
-			.getInstance().getDefaultMassUnit());	
-		
-		views.addView(amount1);
-		views.addView(amount2);
-		views.addView(amount3);
+		final NutrientRowWidget nut3 = new NutrientRowWidget(this);
+		nut3.setUnits(Settings.getInstance().getAllUnits(), Settings
+				.getInstance().getDefaultMassUnit());
+		nut3.setOnDeleteListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(MainActivity.this,
+						(CharSequence) nut3.getAmount().toString(),
+						Toast.LENGTH_SHORT).show();
+			}
+		});
+
+		views.addView(nut1);
+		views.addView(nut2);
+		views.addView(nut3);
 	}
 
 	@Override

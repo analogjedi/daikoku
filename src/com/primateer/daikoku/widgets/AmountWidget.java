@@ -4,13 +4,12 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 
 public class AmountWidget extends LinearLayout {
@@ -24,14 +23,15 @@ public class AmountWidget extends LinearLayout {
 
 		this.setOrientation(LinearLayout.HORIZONTAL);
 
-		((LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
-				R.layout.widget_amount, this);
-
-		valueView = (EditText) this.findViewById(R.id.widget_amount_value);
-		unitView = (Spinner) this.findViewById(R.id.widget_amount_unit);
-		
+		valueView = new EditText(context);
+		valueView.setInputType(EditorInfo.TYPE_CLASS_NUMBER
+				| EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
 		valueView.setText("0");
+
+		unitView = new Spinner(context);
+
+		this.addView(valueView);
+		this.addView(unitView);
 	}
 
 	public AmountWidget(Context context) {
@@ -53,5 +53,10 @@ public class AmountWidget extends LinearLayout {
 	public void setAmount(Amount amount) {
 		valueView.setText(String.valueOf(amount.value));
 		unitView.setSelection(units.indexOf(amount.unit));
+	}
+
+	public Amount getAmount() {
+		return new Amount(Double.parseDouble(valueView.getText().toString()),
+				unitView.getSelectedItem().toString());
 	}
 }
