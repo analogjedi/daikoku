@@ -36,6 +36,9 @@ public class Amount {
 	}
 
 	public Amount(double value, Unit unit) {
+		if (unit == null) {
+			throw new IllegalArgumentException("unit may not be null");
+		}
 		this.value = value;
 		this.unit = unit;
 	}

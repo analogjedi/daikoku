@@ -1,8 +1,5 @@
 package com.primateer.daikoku.views;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
@@ -11,14 +8,12 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Settings;
+import com.primateer.daikoku.model.NutrientRegistry;
+import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.widgets.AmountWidget;
 
 public class NutritionForm extends LinearLayout {
-
-//	private Map<String, NutrientRowWidget> nutrients = new HashMap<String, NutrientRowWidget>();
-	private Set<String> availableTypes = new HashSet<String>();
 
 	private AmountWidget referenceAmount;
 	private Button addButton;
@@ -33,8 +28,9 @@ public class NutritionForm extends LinearLayout {
 		referenceLabel.setText(Application.getContext().getString(
 				R.string.reference_amount));
 		referenceAmount.addView(referenceLabel, 0);
-		referenceAmount.setUnits(UnitRegistry.getInstance().getAllUnits());
-		referenceAmount.setAmount(Settings.getInstance()
+		referenceAmount.setUnits(UnitRegistry.getInstance().getUnitsByType(
+				Unit.TYPE_MASS));
+		referenceAmount.setAmount(NutrientRegistry.getInstance()
 				.getDefaultReferenceAmount());
 
 		addButton = new Button(context);

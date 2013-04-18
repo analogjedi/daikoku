@@ -7,7 +7,7 @@ import java.util.Map;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Nutrient;
-import com.primateer.daikoku.model.Settings;
+import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.ValueObject;
 
 public class Nutrition extends ValueObject<Nutrition> {
@@ -17,7 +17,7 @@ public class Nutrition extends ValueObject<Nutrition> {
 
 	public Amount getReferenceAmount() {
 		if (referenceAmount == null) {
-			return Settings.getInstance().getDefaultReferenceAmount();
+			return NutrientRegistry.getInstance().getDefaultReferenceAmount();
 		}
 		return referenceAmount;
 	}
