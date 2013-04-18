@@ -3,6 +3,7 @@ package com.primateer.daikoku.widgets;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,9 +23,13 @@ public class NutrientRowWidget extends AmountWidget {
 
 		delButton = new ImageButton(context);
 		delButton.setImageResource(android.R.drawable.ic_delete);
-		// delButton.setBackgroundColor(Color.TRANSPARENT);
+		delButton.setLayoutParams(new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 0.35f));
+		delButton.setBackgroundColor(Color.TRANSPARENT);
 
 		label = new TextView(context);
+		label.setLayoutParams(new LayoutParams(0, LayoutParams.WRAP_CONTENT,
+				0.7f));
 
 		this.addView(delButton, 0);
 		this.addView(label, 1);

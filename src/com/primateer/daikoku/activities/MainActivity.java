@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.primateer.daikoku.R;
@@ -20,10 +20,13 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		ViewGroup views = (ViewGroup) this
-				.findViewById(R.id.activity_main_layout);
+//		setContentView(R.layout.activity_main);
+//		
+//		ViewGroup views = (ViewGroup) this
+//				.findViewById(R.id.activity_main_layout);
+		LinearLayout views = new LinearLayout(this);
+		views.setOrientation(LinearLayout.HORIZONTAL);
+		this.setContentView(views);
 
 		NutrientRowWidget nut1 = new NutrientRowWidget(this);
 		nut1.setNutrientType(Nutrient.TYPE_ENERGY);
@@ -46,9 +49,9 @@ public class MainActivity extends Activity {
 		
 		NutritionForm nutrition = new NutritionForm(this);
 
-		views.addView(nut1);
-		views.addView(nut2);
-		views.addView(nut3);
+//		views.addView(nut1);
+//		views.addView(nut2);
+//		views.addView(nut3);
 		views.addView(nutrition);
 	}
 

@@ -27,9 +27,13 @@ public class AmountWidget extends LinearLayout {
 		valueView = new EditText(context);
 		valueView.setInputType(EditorInfo.TYPE_CLASS_NUMBER
 				| EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
+		valueView.setLayoutParams(new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 0.9f));
 		valueView.setText("0");
 
 		unitView = new Spinner(context);
+		unitView.setLayoutParams(new LayoutParams(0, LayoutParams.WRAP_CONTENT,
+				0.9f));
 
 		this.addView(valueView);
 		this.addView(unitView);
@@ -45,8 +49,9 @@ public class AmountWidget extends LinearLayout {
 
 	public void setUnits(List<Unit> units, Unit unit) {
 		this.units = units;
+		// FIXME: different view for dropdown selection
 		ArrayAdapter<Unit> adapter = new ArrayAdapter<Unit>(this.getContext(),
-				android.R.layout.simple_list_item_1, units);
+				android.R.layout.simple_spinner_item, units);
 		unitView.setAdapter(adapter);
 		unitView.setSelection(units.indexOf(unit));
 	}
