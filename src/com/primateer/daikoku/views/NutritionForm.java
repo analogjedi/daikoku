@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Settings;
+import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.widgets.AmountWidget;
 
 public class NutritionForm extends LinearLayout {
@@ -32,7 +33,7 @@ public class NutritionForm extends LinearLayout {
 		referenceLabel.setText(Application.getContext().getString(
 				R.string.reference_amount));
 		referenceAmount.addView(referenceLabel, 0);
-		referenceAmount.setUnits(Settings.getInstance().getAllUnits());
+		referenceAmount.setUnits(UnitRegistry.getInstance().getAllUnits());
 		referenceAmount.setAmount(Settings.getInstance()
 				.getDefaultReferenceAmount());
 

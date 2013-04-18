@@ -59,7 +59,7 @@ public class Meal extends ValueObject<Meal> {
 	public Amount getTotalNutrition(String type) throws UnitConversionException {
 		Amount total = Settings.getInstance().getNullMassAmount();
 		if (extraNutrition != null) {
-			total = extraNutrition.getNutrients().get(type);
+			total = extraNutrition.getNutrients().get(type).amount;
 		}
 		if (recipe != null) {
 			total = total.add(recipe.getTotalNutrition(type));

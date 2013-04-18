@@ -1,20 +1,21 @@
 package com.primateer.daikoku.test;
 
+import junit.framework.TestCase;
+
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
-
-import junit.framework.TestCase;
+import com.primateer.daikoku.model.Unit;
 
 public class AmountTest extends TestCase {
 
 	public void testParse() {
 		Amount energy = new Amount("366.5kcal");
-		assertEquals("kcal", energy.unit);
+		assertEquals(Unit.UNIT_KILOCALORIE, energy.unit);
 		assertEquals(366.5, energy.value);
 
-		Amount kilometers = new Amount(" \n  40km ");
-		assertEquals("km", kilometers.unit);
-		assertEquals(40.0, kilometers.value);
+		Amount milliliter = new Amount(" \n  40ml ");
+		assertEquals(Unit.UNIT_MILLILITER, milliliter.unit);
+		assertEquals(40.0, milliliter.value);
 
 		String invalid[] = { "inv8l1d", "493", "m123", "10 m" };
 		for (int i = 0; i < invalid.length; i++)
@@ -28,17 +29,19 @@ public class AmountTest extends TestCase {
 	public void testConvert() throws UnitConversionException {
 		Amount onepound = new Amount("1lb");
 
-		assertEquals(1.0, onepound.convert("lb").value);
-		assertEquals("lb", onepound.convert("lb").unit);
+		assertEquals(1.0, onepound.convert(Unit.UNIT_POUND).value);
+		assertEquals(Unit.UNIT_POUND, onepound.convert(Unit.UNIT_POUND).unit);
 
 		try {
-			onepound.convert("km");
-			fail("Converting " + onepound + " to km should throw an Exception.");
+			onepound.convert(Unit.UNIT_KILOCALORIE);
+			fail("Converting " + onepound
+					+ " to kcal should throw an Exception.");
 		} catch (UnitConversionException e) {
 		}
 
-		assertEquals(0.45359237, onepound.convert("kg").value);
-		assertEquals("kg", onepound.convert("kg").unit);
+		assertEquals(0.45359237, onepound.convert(Unit.UNIT_KILOGRAM).value);
+		assertEquals(Unit.UNIT_KILOGRAM,
+				onepound.convert(Unit.UNIT_KILOGRAM).unit);
 	}
 
 	public void testAdd() throws UnitConversionException {

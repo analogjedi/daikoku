@@ -11,12 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Unit;
 
 public class AmountWidget extends LinearLayout {
 
 	private EditText valueView;
 	private Spinner unitView;
-	private List<String> units;
+	private List<Unit> units;
 
 	public AmountWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -38,14 +39,14 @@ public class AmountWidget extends LinearLayout {
 		this(context, null);
 	}
 
-	public void setUnits(List<String> units) {
+	public void setUnits(List<Unit> units) {
 		setUnits(units, units.get(0));
 	}
 
-	public void setUnits(List<String> units, String unit) {
+	public void setUnits(List<Unit> units, Unit unit) {
 		this.units = units;
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-				this.getContext(), android.R.layout.simple_list_item_1, units);
+		ArrayAdapter<Unit> adapter = new ArrayAdapter<Unit>(this.getContext(),
+				android.R.layout.simple_list_item_1, units);
 		unitView.setAdapter(adapter);
 		unitView.setSelection(units.indexOf(unit));
 	}
@@ -56,7 +57,7 @@ public class AmountWidget extends LinearLayout {
 	}
 
 	public Amount getAmount() {
-		return new Amount(Double.parseDouble(valueView.getText().toString()),
-				unitView.getSelectedItem().toString());
+		return new Amount(valueView.getText().toString()
+				+ unitView.getSelectedItem().toString());
 	}
 }

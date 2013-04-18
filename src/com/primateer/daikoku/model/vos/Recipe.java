@@ -41,7 +41,7 @@ public class Recipe extends ValueObject<Recipe> {
 		Amount total = Settings.getInstance().getNullMassAmount();
 		if (ingredients != null) {
 			for (Product product : ingredients.keySet()) {
-				total = total.add(product.getNutrition().get(type,
+				total = total.add(product.getNutrition().getAmount(type,
 						ingredients.get(product)));
 			}
 		}

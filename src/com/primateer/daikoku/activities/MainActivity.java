@@ -13,6 +13,7 @@ import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Settings;
+import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.views.NutritionForm;
 import com.primateer.daikoku.widgets.NutrientRowWidget;
 
@@ -27,19 +28,19 @@ public class MainActivity extends Activity {
 				.findViewById(R.id.activity_main_layout);
 
 		NutrientRowWidget nut1 = new NutrientRowWidget(this);
-		nut1.setUnits(Settings.getInstance().getAllUnits(), Settings
+		nut1.setUnits(UnitRegistry.getInstance().getAllUnits(), Settings
 				.getInstance().getDefaultMassUnit());
-		nut1.setNutrientType(Nutrient.Energy);
+		nut1.setNutrientType(Nutrient.TYPE_ENERGY);
 		nut1.setAmount(new Amount("333.3kcal"));
 
 		NutrientRowWidget nut2 = new NutrientRowWidget(this);
-		nut2.setUnits(Settings.getInstance().getAllUnits(), Settings
+		nut2.setUnits(UnitRegistry.getInstance().getAllUnits(), Settings
 				.getInstance().getDefaultMassUnit());
-		nut2.setNutrientType(Nutrient.Protein);
+		nut2.setNutrientType(Nutrient.TYPE_PROTEIN);
 		nut2.setAmount(new Amount("20.7g"));
 
 		final NutrientRowWidget nut3 = new NutrientRowWidget(this);
-		nut3.setUnits(Settings.getInstance().getAllUnits(), Settings
+		nut3.setUnits(UnitRegistry.getInstance().getAllUnits(), Settings
 				.getInstance().getDefaultMassUnit());
 		nut3.setOnDeleteListener(new OnClickListener() {
 			@Override

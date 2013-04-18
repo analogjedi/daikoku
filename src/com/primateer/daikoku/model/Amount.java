@@ -1,7 +1,5 @@
 package com.primateer.daikoku.model;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,25 +12,13 @@ public class Amount {
 	}
 
 	public final double value;
-	public final String unit;
+	public final Unit unit;
 
 
 	private static final String DOUBLE_REGEXP = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 	private static final Pattern AMOUNT_PATTERN = Pattern.compile("("
 			+ DOUBLE_REGEXP + ")([^\\d\\s].*)");
 
-	private static Map<String, Double> conversionRates;
-	static {
-		// TODO load from database
-		conversionRates = new HashMap<String, Double>();
-		addConversionRate("lb", "kg", 0.45359237);
-	}
-
-	private static void addConversionRate(String source, String target,
-			Double rate) {
-		conversionRates.put(source + ">" + target, rate);
-		conversionRates.put(target + ">" + source, 1 / rate);
-	}
 
 	/**
 	 * Parse Amount from compound String.
@@ -48,10 +34,10 @@ public class Amount {
 					+ "\" doesn't match Amount format.");
 		}
 		this.value = Double.parseDouble(m.group(1));
-		this.unit = m.group(3);
+		this.unit = UnitRegistry.getInstance().getUnit(m.group(3));
 	}
 
-	public Amount(double value, String unit) {
+	public Amount(double value, Unit unit) {
 		this.value = value;
 		this.unit = unit;
 	}
@@ -75,7 +61,7 @@ public class Amount {
 	 * @throws UnitConversionException
 	 *             if units are incompatible
 	 */
-	public Amount convert(String unit) throws UnitConversionException {
+	public Amount convert(Unit unit) throws UnitConversionException {
 		// no change
 		if (unit.equals(this.unit)) {
 			return this;
@@ -85,7 +71,7 @@ public class Amount {
 			return new Amount(0,unit);
 		}
 		// conversion via rate
-		Double rate = conversionRates.get(this.unit + ">" + unit);
+		Double rate = this.unit.getConversionRate(unit);
 		if (rate != null) {
 			return new Amount(this.value * rate, unit);
 		}
@@ -128,7 +114,7 @@ public class Amount {
 
 	@Override
 	public String toString() {
-		return this.value + this.unit;
+		return "" + this.value + this.unit;
 	}
 
 	@Override

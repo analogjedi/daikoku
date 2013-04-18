@@ -1,8 +1,6 @@
 package com.primateer.daikoku.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Settings {
@@ -19,31 +17,26 @@ public class Settings {
 
 
 	private Amount defaultReferenceAmount = new Amount("100g");
-	private String defaultMassUnit = "g";
-	private String defaultEnergyUnit = "kcal";
+	private Unit defaultMassUnit = Unit.UNIT_GRAM;
+	private Unit defaultEnergyUnit = Unit.UNIT_KILOCALORIE;
 	private Amount nullMassAmount;
-	private Map<String,String> defaultNutritionFields;
-	private List<String> allUnits;
+	private Map<Nutrient.Type,Unit> defaultNutritionFields;
 	
 	private Settings() {
 		nullMassAmount = new Amount(0,getDefaultMassUnit());
-		defaultNutritionFields = new HashMap<String,String>();
-		defaultNutritionFields.put("E", defaultEnergyUnit);
-		defaultNutritionFields.put("P", defaultMassUnit);
-		defaultNutritionFields.put("C", defaultMassUnit);
-		defaultNutritionFields.put("F", defaultMassUnit);
-		
-		allUnits = new ArrayList<String>();
-		allUnits.add(defaultMassUnit);
-		allUnits.add(defaultEnergyUnit);
+		defaultNutritionFields = new HashMap<Nutrient.Type,Unit>();
+		defaultNutritionFields.put(Nutrient.TYPE_ENERGY, defaultEnergyUnit);
+		defaultNutritionFields.put(Nutrient.TYPE_PROTEIN, defaultMassUnit);
+		defaultNutritionFields.put(Nutrient.TYPE_CARBS, defaultMassUnit);
+		defaultNutritionFields.put(Nutrient.TYPE_FAT, defaultMassUnit);
 	}
 
 	
-	public String getDefaultMassUnit() {
+	public Unit getDefaultMassUnit() {
 		return defaultMassUnit;
 	}
 	
-	public String getDefaultEnergyUnit() {
+	public Unit getDefaultEnergyUnit() {
 		return defaultEnergyUnit;
 	}
 	
@@ -55,12 +48,7 @@ public class Settings {
 		return nullMassAmount;
 	}
 	
-	public Map<String,String> getDefaultNutritionFields() {
+	public Map<Nutrient.Type,Unit> getDefaultNutritionFields() {
 		return defaultNutritionFields;
-	}
-
-
-	public List<String> getAllUnits() {
-		return allUnits;
 	}
 }

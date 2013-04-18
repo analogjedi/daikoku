@@ -33,13 +33,13 @@ public class Nutrient {
 		}
 	}
 
-	public static final Type Energy = new BuiltInType("E",
+	public static final Type TYPE_ENERGY = new BuiltInType("E",
 			R.string.nutrient_type_energy);
-	public static final Type Protein = new BuiltInType("P",
+	public static final Type TYPE_PROTEIN = new BuiltInType("P",
 			R.string.nutrient_type_protein);
-	public static final Type Carbs = new BuiltInType("C",
+	public static final Type TYPE_CARBS = new BuiltInType("C",
 			R.string.nutrient_type_carbs);
-	public static final Type Fat = new BuiltInType("F",
+	public static final Type TYPE_FAT = new BuiltInType("F",
 			R.string.nutrient_type_fat);
 
 	public final Nutrient.Type type;
