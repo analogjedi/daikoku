@@ -7,11 +7,13 @@ public class Nutrient {
 
 	public static abstract class Type {
 		public final String id;
+		public final int unitType;
 
-		protected Type(String id) {
+		protected Type(String id, int unitType) {
 			this.id = id;
+			this.unitType = unitType;
 		}
-		
+
 		@Override
 		public String toString() {
 			return getName();
@@ -23,8 +25,8 @@ public class Nutrient {
 	private static class BuiltInType extends Type {
 		private final int name;
 
-		protected BuiltInType(String id, int name) {
-			super(id);
+		protected BuiltInType(String id, int unitType, int name) {
+			super(id, unitType);
 			this.name = name;
 		}
 
@@ -34,12 +36,12 @@ public class Nutrient {
 	}
 
 	public static final Type TYPE_ENERGY = new BuiltInType("E",
-			R.string.nutrient_type_energy);
+			Unit.TYPE_ENERGY, R.string.nutrient_type_energy);
 	public static final Type TYPE_PROTEIN = new BuiltInType("P",
-			R.string.nutrient_type_protein);
-	public static final Type TYPE_CARBS = new BuiltInType("C",
+			Unit.TYPE_MASS, R.string.nutrient_type_protein);
+	public static final Type TYPE_CARBS = new BuiltInType("C", Unit.TYPE_MASS,
 			R.string.nutrient_type_carbs);
-	public static final Type TYPE_FAT = new BuiltInType("F",
+	public static final Type TYPE_FAT = new BuiltInType("F", Unit.TYPE_MASS,
 			R.string.nutrient_type_fat);
 
 	public final Nutrient.Type type;
@@ -49,7 +51,7 @@ public class Nutrient {
 		this.type = type;
 		this.amount = amount;
 	}
-	
+
 	@Override
 	public String toString() {
 		return type.toString();
