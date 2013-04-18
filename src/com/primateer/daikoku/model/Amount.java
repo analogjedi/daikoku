@@ -14,11 +14,9 @@ public class Amount {
 	public final double value;
 	public final Unit unit;
 
-
 	private static final String DOUBLE_REGEXP = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
 	private static final Pattern AMOUNT_PATTERN = Pattern.compile("("
 			+ DOUBLE_REGEXP + ")([^\\d\\s].*)");
-
 
 	/**
 	 * Parse Amount from compound String.
@@ -41,15 +39,16 @@ public class Amount {
 		this.value = value;
 		this.unit = unit;
 	}
-	
+
 	/**
 	 * Multiply this amount by a scalar factor
 	 * 
-	 * @param factor any double
+	 * @param factor
+	 *            any double
 	 * @return new {@code Amount}
 	 */
 	public Amount scale(double factor) {
-		return new Amount(this.value*factor, this.unit);
+		return new Amount(this.value * factor, this.unit);
 	}
 
 	/**
@@ -66,9 +65,13 @@ public class Amount {
 		if (unit.equals(this.unit)) {
 			return this;
 		}
-		// zero always converts
+		if (unit.type != this.unit.type) {
+			throw new UnitConversionException("Cannot convert from "
+					+ this.unit + " to " + unit + ": different types");
+		}
+		// otherwise, zero always converts
 		if (this.value == 0) {
-			return new Amount(0,unit);
+			return new Amount(0, unit);
 		}
 		// conversion via rate
 		Double rate = this.unit.getConversionRate(unit);

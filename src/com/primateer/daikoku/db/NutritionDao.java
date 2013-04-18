@@ -1,6 +1,6 @@
 package com.primateer.daikoku.db;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +8,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Nutrient;
+import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.vos.Nutrition;
 
 public class NutritionDao extends Dao<Nutrition> {
@@ -34,15 +36,16 @@ public class NutritionDao extends Dao<Nutrition> {
 		return vo;
 	}
 
-	private Map<String, Amount> loadNutrients(long id) {
-		Map<String, Amount> result = new HashMap<String, Amount>();
+	private List<Nutrient> loadNutrients(long id) {
+		List<Nutrient> result = new ArrayList<Nutrient>();
 		Cursor q = getResolver().query(getUri(NUTRIENT_TABLE), null,
 				where(NUTRIENT_COL_NUTRITION, id), null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
 			String type = q.getString(q.getColumnIndex(NUTRIENT_COL_TYPE));
 			Amount amount = new Amount(q.getString(q
 					.getColumnIndex(NUTRIENT_COL_AMOUNT)));
-			result.put(type, amount);
+			result.add(new Nutrient(NutrientRegistry.getInstance()
+					.getType(type), amount));
 		}
 		q.close();
 		return result;
@@ -63,12 +66,12 @@ public class NutritionDao extends Dao<Nutrition> {
 		}
 
 		// nutrient table
-		Map<String, Amount> nutrients = vo.getNutrients();
+		Map<Nutrient.Type, Nutrient> nutrients = vo.getNutrients();
 		if (nutrients != null) {
-			for (String type : nutrients.keySet()) {
+			for (Nutrient.Type type : nutrients.keySet()) {
 				ContentValues nv = new ContentValues();
 				nv.put(NUTRIENT_COL_NUTRITION, id);
-				nv.put(NUTRIENT_COL_TYPE, type);
+				nv.put(NUTRIENT_COL_TYPE, type.id);
 				nv.put(NUTRIENT_COL_AMOUNT, nutrients.get(type).toString());
 				getResolver().insert(getUri(NUTRIENT_TABLE), nv);
 			}
@@ -94,6 +97,5 @@ public class NutritionDao extends Dao<Nutrition> {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
 
 }

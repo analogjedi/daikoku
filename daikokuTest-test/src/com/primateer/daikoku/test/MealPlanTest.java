@@ -9,6 +9,7 @@ import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.Data;
+import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
@@ -21,10 +22,14 @@ public class MealPlanTest extends DatabaseTestCase {
 		Date today = new Date();
 
 		Nutrition lentilsNutrition = new Nutrition();
-		lentilsNutrition.setNutrient("E", new Amount("336kcal"));
-		lentilsNutrition.setNutrient("P", new Amount("23g"));
-		lentilsNutrition.setNutrient("C", new Amount("50g"));
-		lentilsNutrition.setNutrient("F", new Amount("1.6g"));
+		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_ENERGY,
+				new Amount("336kcal")));
+		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_PROTEIN,
+				new Amount("23g")));
+		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_CARBS,
+				new Amount("50g")));
+		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_FAT,
+				new Amount("1.6g")));
 
 		Product lentils = new Product();
 		lentils.setLabel("lentils");
@@ -57,10 +62,11 @@ public class MealPlanTest extends DatabaseTestCase {
 		Data model = Data.getInstance();
 		model.register(meal1);
 		model.register(meal2);
-		model.register(meal2); //deliberate duplicate
+		model.register(meal2); // deliberate duplicate
 		model.register(meal3);
 
 		Day day = new DayDao().load(today);
-		assertEquals(new Amount("86.25g"), day.getTotalNutrition("P"));
+		assertEquals(new Amount("86.25g"),
+				day.getTotalNutrition(Nutrient.TYPE_PROTEIN));
 	}
 }

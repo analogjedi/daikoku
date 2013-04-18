@@ -53,7 +53,7 @@ public class Nutrition extends ValueObject<Nutrition> {
 		return nutrients;
 	}
 
-	public Amount getAmount(String type, Amount multiplier)
+	public Amount getAmount(Nutrient.Type type, Amount multiplier)
 			throws UnitConversionException {
 		return nutrients.get(type).amount.scale(multiplier
 				.divideBy(getReferenceAmount()));

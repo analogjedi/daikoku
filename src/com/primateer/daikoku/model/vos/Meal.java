@@ -3,9 +3,10 @@ package com.primateer.daikoku.model.vos;
 import java.util.Date;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Settings;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.model.Amount.UnitConversionException;
 
 public class Meal extends ValueObject<Meal> {
 
@@ -56,7 +57,8 @@ public class Meal extends ValueObject<Meal> {
 		return extraNutrition;
 	}
 
-	public Amount getTotalNutrition(String type) throws UnitConversionException {
+	public Amount getTotalNutrition(Nutrient.Type type)
+			throws UnitConversionException {
 		Amount total = Settings.getInstance().getNullMassAmount();
 		if (extraNutrition != null) {
 			total = extraNutrition.getNutrients().get(type).amount;

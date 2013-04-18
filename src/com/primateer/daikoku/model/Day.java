@@ -19,7 +19,7 @@ public class Day {
 	public void addMeal(Meal meal) {
 		getMeals().add(meal);
 	}
-	
+
 	public List<Meal> getMeals() {
 		if (meals == null) {
 			meals = new ArrayList<Meal>();
@@ -27,7 +27,8 @@ public class Day {
 		return meals;
 	}
 
-	public Object getTotalNutrition(String type) throws UnitConversionException {
+	public Object getTotalNutrition(Nutrient.Type type)
+			throws UnitConversionException {
 		Amount total = Settings.getInstance().getNullMassAmount();
 		if (meals != null) {
 			for (Meal meal : meals) {
