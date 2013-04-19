@@ -43,6 +43,11 @@ public class Helper {
 	public static String toString(Date date) {
 		return DATE_FORMAT.format(date);
 	}
+	
+	public static void logError(Object source, String msg) {
+		String tag = source.getClass().getSimpleName();
+		Log.e(tag, msg);
+	}
 
 	public static void logErrorStackTrace(Object source, Exception e, String msg) {
 		String tag = source.getClass().getSimpleName();

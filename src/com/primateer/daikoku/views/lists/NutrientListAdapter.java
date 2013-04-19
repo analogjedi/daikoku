@@ -1,10 +1,13 @@
 package com.primateer.daikoku.views.lists;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.database.DataSetObserver;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
@@ -13,19 +16,38 @@ import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.widgets.NutrientRowWidget;
 
-public class NutrientListAdapter implements ListAdapter {
+public class NutrientListAdapter implements ListAdapter, OnClickListener {
 
 	private List<Nutrient> data = new ArrayList<Nutrient>();
 	private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
+	private Set<Nutrient.Type> occupiedTypes = new HashSet<Nutrient.Type>();
 
 	public void add(Nutrient.Type type) {
+		if (occupiedTypes.contains(type)) {
+			throw new IllegalArgumentException("Cannot add " + type
+					+ ": already occupied");
+		}
 		Nutrient nutrient = new Nutrient(type, new Amount(0, UnitRegistry
 				.getInstance().getDefaultUnitByType(type.unitType)));
 		data.add(nutrient);
+		occupiedTypes.add(type);
+		notifyObservers();
 	}
 
 	public void remove(Nutrient nutrient) {
 		data.remove(nutrient);
+		occupiedTypes.remove(nutrient.type);
+		notifyObservers();
+	}
+
+	public boolean isTypeOccupied(Nutrient.Type type) {
+		return occupiedTypes.contains(type);
+	}
+
+	private void notifyObservers() {
+		for (DataSetObserver observer : observers) {
+			observer.onChanged();
+		}
 	}
 
 	@Override
@@ -64,6 +86,8 @@ public class NutrientListAdapter implements ListAdapter {
 			NutrientRowWidget widget = new NutrientRowWidget(
 					parent.getContext());
 			widget.setNutrient(data.get(position));
+			widget.setOnDeleteListener(NutrientListAdapter.this);
+			widget.setTag(position);
 			return widget;
 		} else {
 			return convertView;
@@ -93,6 +117,15 @@ public class NutrientListAdapter implements ListAdapter {
 	@Override
 	public boolean isEnabled(int position) {
 		return true;
+	}
+
+	@Override
+	public void onClick(View v) {
+		int position = (Integer) ((View) v.getParent()).getTag();
+		// Toast.makeText(v.getContext(),
+		// (CharSequence) data.get(position).type.getName(),
+		// Toast.LENGTH_SHORT).show();
+		this.remove(data.get(position));
 	}
 
 }

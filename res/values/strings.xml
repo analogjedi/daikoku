@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_meal_plan">Schedule Meals</string>
     <string name="reference_amount">Reference Amount</string>
+    <string name="choose_nutrient_type">Choose Nutrient Type</string>
     
     <string name="nutrient_type_energy">Energy</string>
     <string name="nutrient_type_protein">Protein</string>

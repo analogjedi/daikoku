@@ -26,6 +26,7 @@ public class NutrientRowWidget extends AmountWidget {
 		delButton.setLayoutParams(new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.35f));
 		delButton.setBackgroundColor(Color.TRANSPARENT);
+//		delButton.setP
 
 		label = new TextView(context);
 		label.setLayoutParams(new LayoutParams(0, LayoutParams.WRAP_CONTENT,
