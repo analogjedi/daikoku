@@ -1,6 +1,6 @@
 package com.primateer.daikoku.model;
 
-public class ValueObject<T> extends Observable<T> {
+public class ValueObject<T> extends SimpleObservable<T> {
 	private long id = -1;
 
 	public long getId() {

@@ -19,10 +19,11 @@ import com.primateer.daikoku.widgets.NutrientRowWidget;
 public class NutrientListAdapter implements ListAdapter, OnClickListener {
 
 	private List<Nutrient> data = new ArrayList<Nutrient>();
+	private List<NutrientRowWidget> widgets = new ArrayList<NutrientRowWidget>();
 	private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
-	private Set<Nutrient.Type> occupiedTypes = new HashSet<Nutrient.Type>();
+	private Set<Nutrient.Type> occupiedTypes = new HashSet<Nutrient.Type>();	
 
-	public void add(Nutrient.Type type) {
+	public Nutrient add(Nutrient.Type type) {
 		if (occupiedTypes.contains(type)) {
 			throw new IllegalArgumentException("Cannot add " + type
 					+ ": already occupied");
@@ -32,10 +33,13 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 		data.add(nutrient);
 		occupiedTypes.add(type);
 		notifyObservers();
+		return nutrient;
 	}
 
 	public void remove(Nutrient nutrient) {
-		data.remove(nutrient);
+		int pos = data.indexOf(nutrient);
+		data.remove(pos);
+		widgets.remove(pos);
 		occupiedTypes.remove(nutrient.type);
 		notifyObservers();
 	}
@@ -88,6 +92,8 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 			widget.setNutrient(data.get(position));
 			widget.setOnDeleteListener(NutrientListAdapter.this);
 			widget.setTag(position);
+//			widget.add
+			widgets.add(position, widget);
 			return widget;
 		} else {
 			return convertView;

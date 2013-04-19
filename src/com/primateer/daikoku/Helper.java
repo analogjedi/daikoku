@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.util.Log;
+import android.widget.Toast;
 
 public class Helper {
 
@@ -43,7 +44,7 @@ public class Helper {
 	public static String toString(Date date) {
 		return DATE_FORMAT.format(date);
 	}
-	
+
 	public static void logError(Object source, String msg) {
 		String tag = source.getClass().getSimpleName();
 		Log.e(tag, msg);
@@ -53,5 +54,10 @@ public class Helper {
 		String tag = source.getClass().getSimpleName();
 		Log.e(tag, msg + ": " + e.getClass().getSimpleName() + ":");
 		Log.e(tag, Log.getStackTraceString(e));
+	}
+
+	public static void toast(String msg) {
+		Toast.makeText(Application.getContext(), (CharSequence) msg,
+				Toast.LENGTH_SHORT).show();
 	}
 }

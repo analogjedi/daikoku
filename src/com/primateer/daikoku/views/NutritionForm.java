@@ -18,9 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
+import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.views.lists.NutrientListAdapter;
 import com.primateer.daikoku.widgets.AmountWidget;
@@ -51,6 +54,7 @@ public class NutritionForm extends LinearLayout {
 
 		this.setOrientation(LinearLayout.VERTICAL);
 
+		// add button
 		addButton = new Button(context);
 		addButton.setText("+");
 		addButton.setOnClickListener(new OnClickListener() {
@@ -60,6 +64,7 @@ public class NutritionForm extends LinearLayout {
 			}
 		});
 
+		// reference amount
 		referenceAmount = new AmountWidget(context);
 		TextView referenceLabel = new TextView(context);
 		referenceLabel.setText(Application.getContext().getString(
@@ -73,7 +78,14 @@ public class NutritionForm extends LinearLayout {
 		referenceAmount.setUnits(UnitRegistry.getInstance().getAllUnits());
 		referenceAmount.setAmount(NutrientRegistry.getInstance()
 				.getDefaultReferenceAmount());
+		referenceAmount.addObserver(new Observer<Amount>() {
+			@Override
+			public void update(Amount amount) {
+				Helper.toast(amount.toString());
+			}
+		});
 
+		// nutrient list
 		nutrientList = new ListView(context);
 		listAdapter = new NutrientListAdapter();
 		listAdapter.registerDataSetObserver(new ButtonManager());
@@ -84,6 +96,7 @@ public class NutritionForm extends LinearLayout {
 			listAdapter.add(type);
 		}
 
+		// composition
 		this.addView(referenceAmount);
 		this.addView(new Separator(context));
 		this.addView(nutrientList);
@@ -107,13 +120,13 @@ public class NutritionForm extends LinearLayout {
 			// this should be unreachable
 			return;
 		}
-		
+
 		// don't bother the user if there is only one choice
 		if (availableTypes.size() == 1) {
 			listAdapter.add(availableTypes.get(0));
 			return;
 		}
-		
+
 		// show selection dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		builder.setTitle(getResources()
