@@ -1,4 +1,4 @@
-package com.primateer.daikoku.widgets;
+package com.primateer.daikoku.views.widgets;
 
 import java.util.List;
 

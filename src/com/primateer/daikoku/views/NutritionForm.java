@@ -27,8 +27,8 @@ import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.views.lists.NutrientListAdapter;
-import com.primateer.daikoku.widgets.AmountWidget;
-import com.primateer.daikoku.widgets.Separator;
+import com.primateer.daikoku.views.widgets.AmountWidget;
+import com.primateer.daikoku.views.widgets.Separator;
 
 public class NutritionForm extends LinearLayout {
 
