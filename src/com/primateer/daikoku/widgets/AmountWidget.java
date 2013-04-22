@@ -3,20 +3,19 @@ package com.primateer.daikoku.widgets;
 import java.util.List;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
+import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Unit;
 
 public class AmountWidget extends LinearLayout implements Observable<Amount> {
@@ -37,12 +36,24 @@ public class AmountWidget extends LinearLayout implements Observable<Amount> {
 		valueView.setLayoutParams(new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.9f));
 		valueView.setText("0");
-		valueView.setOnEditorActionListener(new OnEditorActionListener() {
+		valueView.addTextChangedListener(new TextWatcher() {
 			@Override
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event) {
-				observable.notifyObservers(getAmount());
-				return false;
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				try {
+					observable.notifyObservers(getAmount());
+				} catch (IllegalArgumentException e) {
+					// do not update with incorrect input
+				}
 			}
 		});
 

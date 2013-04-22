@@ -58,4 +58,15 @@ public class Nutrition extends ValueObject<Nutrition> {
 		return nutrients.get(type).amount.scale(multiplier
 				.divideBy(getReferenceAmount()));
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append(referenceAmount.toString()).append("\n");
+		for (Nutrient.Type type : nutrients.keySet()) {
+			str.append("  ").append(nutrients.get(type).toString())
+					.append("\n");
+		}
+		return str.toString();
+	}
 }

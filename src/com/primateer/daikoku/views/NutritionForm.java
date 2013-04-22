@@ -25,6 +25,7 @@ import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.UnitRegistry;
+import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.views.lists.NutrientListAdapter;
 import com.primateer.daikoku.widgets.AmountWidget;
 import com.primateer.daikoku.widgets.Separator;
@@ -140,6 +141,13 @@ public class NutritionForm extends LinearLayout {
 			}
 		});
 		builder.create().show();
+	}
+
+	public Nutrition getNutrition() {
+		Nutrition nutrition = new Nutrition();
+		nutrition.setReferenceAmount(referenceAmount.getAmount());
+		nutrition.setNutrients(listAdapter.getNutrients());
+		return nutrition;
 	}
 
 }

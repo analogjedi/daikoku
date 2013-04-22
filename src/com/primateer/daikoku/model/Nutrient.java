@@ -79,7 +79,7 @@ public class Nutrient {
 
 	@Override
 	public String toString() {
-		return type.toString();
+		return type.toString() + ": " + amount.toString();
 	}
 
 	@Override

@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
+import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.views.NutritionForm;
 import com.primateer.daikoku.widgets.NutrientRowWidget;
 
@@ -25,7 +27,7 @@ public class MainActivity extends Activity {
 //		ViewGroup views = (ViewGroup) this
 //				.findViewById(R.id.activity_main_layout);
 		LinearLayout views = new LinearLayout(this);
-		views.setOrientation(LinearLayout.HORIZONTAL);
+		views.setOrientation(LinearLayout.VERTICAL);
 		this.setContentView(views);
 
 		NutrientRowWidget nut1 = new NutrientRowWidget(this);
@@ -47,11 +49,22 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		NutritionForm nutrition = new NutritionForm(this);
+		final NutritionForm nutrition = new NutritionForm(this);
+		
+		Button getStatsButton = new Button(this);
+		getStatsButton.setText("get Nutrients");
+		getStatsButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Nutrition n = nutrition.getNutrition();
+				System.out.println(n);
+			}
+		});
 
 //		views.addView(nut1);
 //		views.addView(nut2);
 //		views.addView(nut3);
+		views.addView(getStatsButton);
 		views.addView(nutrition);
 	}
 

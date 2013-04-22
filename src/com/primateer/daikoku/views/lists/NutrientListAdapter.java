@@ -13,13 +13,13 @@ import android.widget.ListAdapter;
 
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
+import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.widgets.NutrientRowWidget;
 
 public class NutrientListAdapter implements ListAdapter, OnClickListener {
 
 	private List<Nutrient> data = new ArrayList<Nutrient>();
-	private List<NutrientRowWidget> widgets = new ArrayList<NutrientRowWidget>();
 	private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
 	private Set<Nutrient.Type> occupiedTypes = new HashSet<Nutrient.Type>();	
 
@@ -39,9 +39,13 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 	public void remove(Nutrient nutrient) {
 		int pos = data.indexOf(nutrient);
 		data.remove(pos);
-		widgets.remove(pos);
 		occupiedTypes.remove(nutrient.type);
 		notifyObservers();
+	}
+	
+
+	public List<Nutrient> getNutrients() {
+		return data;
 	}
 
 	public boolean isTypeOccupied(Nutrient.Type type) {
@@ -92,8 +96,13 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 			widget.setNutrient(data.get(position));
 			widget.setOnDeleteListener(NutrientListAdapter.this);
 			widget.setTag(position);
-//			widget.add
-			widgets.add(position, widget);
+			widget.addWidgetObserver(new Observer<NutrientRowWidget>() {
+				@Override
+				public void update(NutrientRowWidget observable) {
+					int index = (Integer) observable.getTag();
+					data.set(index, observable.getNutrient());
+				}
+			});
 			return widget;
 		} else {
 			return convertView;
@@ -124,14 +133,10 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 	public boolean isEnabled(int position) {
 		return true;
 	}
-
+	
 	@Override
 	public void onClick(View v) {
-		int position = (Integer) ((View) v.getParent()).getTag();
-		// Toast.makeText(v.getContext(),
-		// (CharSequence) data.get(position).type.getName(),
-		// Toast.LENGTH_SHORT).show();
-		this.remove(data.get(position));
+		int index = (Integer) ((View) v.getParent()).getTag();
+		this.remove(data.get(index));
 	}
-
 }
