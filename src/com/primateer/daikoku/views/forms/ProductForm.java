@@ -6,7 +6,6 @@ import android.widget.EditText;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
-import com.primateer.daikoku.views.widgets.FormDialogButton;
 import com.primateer.daikoku.views.widgets.LabelWidget;
 import com.primateer.daikoku.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.views.widgets.UnitsAmountWidget;
@@ -47,7 +46,7 @@ public class ProductForm extends VoForm<Product> {
 		}
 		amount.validate();
 		units.validate();
-		nutrition.getForm().validate();
+		nutrition.validate();
 	}
 
 	@Override
@@ -57,17 +56,12 @@ public class ProductForm extends VoForm<Product> {
 		data.setLabel(label.getText().toString());
 		data.setAmount(amount.getData());
 		data.setUnits(units.getData());
-		data.setNutrition(nutrition.getForm().getData());
+		data.setNutrition(nutrition.getData());
 		return data;
 	}
 
 	@Override
-	public void setData(Product data) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void wipe() {
+	public void clear() {
 		// TODO Auto-generated method stub
 
 	}
@@ -75,6 +69,12 @@ public class ProductForm extends VoForm<Product> {
 	@Override
 	public String getTitle() {
 		return getResources().getString(R.string.product);
+	}
+
+	@Override
+	protected void fillFields(Product data) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

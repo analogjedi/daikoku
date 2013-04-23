@@ -32,7 +32,7 @@ public interface Form<T> {
 	 * 
 	 * @param data
 	 *            new form contents. {@code null} is allowed and synonymous to
-	 *            {@code wipe()}.
+	 *            {@code clear()}.
 	 * @throws IllegalArgumentException
 	 *             on invalid argument
 	 */
@@ -41,7 +41,7 @@ public interface Form<T> {
 	/**
 	 * Reset the form to an empty state.
 	 */
-	void wipe();
+	void clear();
 
 	/**
 	 * @return Title of the form, may or may not be shown.

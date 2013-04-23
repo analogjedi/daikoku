@@ -1,4 +1,4 @@
-package com.primateer.daikoku.views.widgets;
+package com.primateer.daikoku.views.forms;
 
 import java.lang.reflect.Constructor;
 
@@ -9,11 +9,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.primateer.daikoku.dialogs.FormFragment;
-import com.primateer.daikoku.views.forms.Form;
+import com.primateer.daikoku.model.Observer;
 
-public class FormDialogButton<T> extends Button {
+public class FormDialogButton<T> extends Button implements Form<T>, Observer<T> {
 
 	private Form<T> form;
+	private FormFragment<T> fragment;
 	private boolean formUsed = false;
 	private T data;
 
@@ -33,21 +34,23 @@ public class FormDialogButton<T> extends Button {
 				Form<T> form = getForm(type);
 				form.setData(data);
 				formUsed = true;
-				FormFragment<T> frag = new FormFragment<T>();
-				frag.setForm(form);
-				frag.show(((FragmentActivity) getContext())
+				fragment = new FormFragment<T>();
+				fragment.setForm(form);
+				fragment.addObserver(FormDialogButton.this);
+				fragment.show(((FragmentActivity) getContext())
 						.getSupportFragmentManager(), null);
 			}
 		});
 	}
-	
-	public Form<T> getForm() {
-		return form;
-	}
 
 	@SuppressWarnings("unchecked")
 	private Form<T> getForm(Class<T> type) {
-		if (formUsed || form == null) {
+		if (formUsed) {
+			fragment.removeObserver(this);
+			form = null;
+			formUsed = false;
+		}
+		if (form == null) {
 			try {
 				Class<Form<T>> formClass = (Class<Form<T>>) Class
 						.forName("com.primateer.daikoku.views.forms."
@@ -62,5 +65,51 @@ public class FormDialogButton<T> extends Button {
 		}
 		return form;
 	}
-	
+
+	@Override
+	public View getView() {
+		if (form != null) {
+			return form.getView();
+		}
+		return null;
+	}
+
+	@Override
+	public void validate() throws InvalidDataException {
+		if (form != null) {
+			form.validate();
+		}
+	}
+
+	@Override
+	public T getData() throws InvalidDataException {
+		return data;
+	}
+
+	@Override
+	public void setData(T data) throws IllegalArgumentException {
+		this.data = data;
+		if (form != null) {
+			form.setData(data);
+		}
+	}
+
+	@Override
+	public void clear() {
+		if (form != null) {
+			form.clear();
+		}
+		data = null;
+	}
+
+	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(T data) {
+		this.data = data;
+	}
 }

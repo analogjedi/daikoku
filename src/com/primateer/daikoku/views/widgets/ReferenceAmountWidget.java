@@ -24,11 +24,16 @@ public class ReferenceAmountWidget extends AmountWidget {
 		label.setPadding(5, 0, 0, 0);
 		this.addView(label, 0);
 		this.setUnits(UnitRegistry.getInstance().getAllUnits());
-		this.setData(NutrientRegistry.getInstance()
-				.getDefaultReferenceAmount());
+		clear();
 	}
 	
 	public void setLabelText(int stringId) {
 		label.setText(Application.getContext().getString(stringId));		
+	}
+	
+	@Override
+	public void clear() {
+		this.setData(NutrientRegistry.getInstance()
+				.getDefaultReferenceAmount());		
 	}
 }

@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Unit;
+import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.views.forms.Form;
 import com.primateer.daikoku.views.forms.InvalidDataException;
 
@@ -56,10 +58,6 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 			public void afterTextChanged(Editable s) {
 				try {
 					observable.notifyObservers(getData());
-				} catch (IllegalArgumentException e) {
-					// do not update with incorrect input
-				} catch (NullPointerException e) {
-					// do not update when empty
 				} catch (InvalidDataException e) {
 					// do not update with incorrect input
 				}
@@ -69,6 +67,21 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 		unitView = new Spinner(context);
 		unitView.setLayoutParams(new LayoutParams(0, LayoutParams.WRAP_CONTENT,
 				0.9f));
+		unitView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				try {
+					observable.notifyObservers(getData());
+				} catch (InvalidDataException e) {
+					// do not update with incorrect input
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
 
 		this.addView(valueView);
 		this.addView(unitView);
@@ -132,9 +145,9 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 	}
 
 	@Override
-	public void wipe() {
-		// TODO Auto-generated method stub
-		
+	public void clear() {
+		this.setData(new Amount(0, UnitRegistry.getInstance()
+				.getDefaultUnitByType(units.get(0).type)));
 	}
 
 	@Override

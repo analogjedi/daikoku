@@ -64,7 +64,7 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				FormFragment frag = new FormFragment();
-				frag.setForm(form);
+				frag.setForm(new ProductForm(MainActivity.this));
 				frag.show(MainActivity.this.getSupportFragmentManager(),
 						"form_dialog");
 			}

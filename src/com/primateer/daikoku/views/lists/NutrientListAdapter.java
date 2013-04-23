@@ -25,19 +25,29 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 	private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
 	private Set<Nutrient.Type> occupiedTypes = new HashSet<Nutrient.Type>();
 
-	public Nutrient add(Nutrient.Type type) {
-		if (occupiedTypes.contains(type)) {
-			throw new IllegalArgumentException("Cannot add " + type
+	public void add(Nutrient nutrient) {
+		if (occupiedTypes.contains(nutrient.type)) {
+			throw new IllegalArgumentException("Cannot add " + nutrient.type
 					+ ": already occupied");
 		}
+		data.add(nutrient);
+		occupiedTypes.add(nutrient.type);
+		notifyObservers();				
+	}
+	
+	public Nutrient add(Nutrient.Type type) {
 		Nutrient nutrient = new Nutrient(type, new Amount(0, UnitRegistry
 				.getInstance().getDefaultUnitByType(type.unitType)));
-		data.add(nutrient);
-		occupiedTypes.add(type);
-		notifyObservers();
+		add(nutrient);
 		return nutrient;
 	}
 
+	public void clear() {
+		data.clear();
+		occupiedTypes.clear();
+		notifyObservers();
+	}
+	
 	public void remove(Nutrient nutrient) {
 		int pos = data.indexOf(nutrient);
 		data.remove(pos);
@@ -145,4 +155,5 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 		int index = (Integer) ((View) v.getParent()).getTag();
 		this.remove(data.get(index));
 	}
+
 }
