@@ -6,19 +6,21 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Unit;
-import com.primateer.daikoku.views.Form;
-import com.primateer.daikoku.views.InvalidDataException;
+import com.primateer.daikoku.views.forms.Form;
+import com.primateer.daikoku.views.forms.InvalidDataException;
 
 public class AmountWidget extends LinearLayout implements Observable<Amount>,
 		Form<Amount> {
@@ -122,6 +124,22 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 		}
 		valueView.setText(String.valueOf(data.value));
 		unitView.setSelection(units.indexOf(data.unit));
+	}
+
+	@Override
+	public View getView() {
+		return this;
+	}
+
+	@Override
+	public void wipe() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getTitle() {
+		return getResources().getString(R.string.amount);
 	}
 
 }

@@ -14,7 +14,7 @@ import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
-import com.primateer.daikoku.views.InvalidDataException;
+import com.primateer.daikoku.views.forms.InvalidDataException;
 
 public class NutrientRowWidget extends AmountWidget {
 

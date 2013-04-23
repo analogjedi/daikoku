@@ -1,4 +1,5 @@
-package com.primateer.daikoku.views;
+package com.primateer.daikoku.views.forms;
+
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -17,6 +18,11 @@ public abstract class VoForm<T> extends LinearLayout implements Form<T> {
 
 	public VoForm(Context context) {
 		this(context, null);
+	}
+	
+	@Override
+	public final View getView() {
+		return this;
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package com.primateer.daikoku.views;
+package com.primateer.daikoku.views.forms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +68,14 @@ public class NutritionForm extends VoForm<Nutrition> {
 		for (Nutrient.Type type : nutrientTypes) {
 			listAdapter.add(type);
 		}
+		nutrientList.addFooterView(addButton);
 
 		// composition
 		this.addView(referenceAmount);
 		this.addView(new Separator(context));
 		this.addView(nutrientList);
-		this.addView(new Separator(context));
-		this.addView(addButton);
+//		this.addView(new Separator(context));
+//		this.addView(addButton);
 	}
 
 	private List<Nutrient.Type> getAvailableTypes() {
@@ -131,5 +132,16 @@ public class NutritionForm extends VoForm<Nutrition> {
 	@Override
 	public void setData(Nutrition data) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void wipe() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getTitle() {
+		return getResources().getString(R.string.nutrition);
 	}
 }

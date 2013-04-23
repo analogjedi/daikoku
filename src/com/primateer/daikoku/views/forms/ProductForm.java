@@ -1,58 +1,53 @@
-package com.primateer.daikoku.views;
+package com.primateer.daikoku.views.forms;
 
 import android.content.Context;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
+import com.primateer.daikoku.views.widgets.FormDialogButton;
+import com.primateer.daikoku.views.widgets.LabelWidget;
 import com.primateer.daikoku.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.views.widgets.UnitsAmountWidget;
 
 public class ProductForm extends VoForm<Product> {
 
-	private TextView heading;
 	private EditText label;
 	private ReferenceAmountWidget amount;
+	FormDialogButton<Nutrition> nutrition;
 	private UnitsAmountWidget units;
-	private NutritionForm nutrition;
 
-	public ProductForm(Context context) {
+	public ProductForm(final Context context) {
 		super(context);
 
-		heading = new TextView(context);
-		heading.setText(context.getString(R.string.product));
-
-		label = new EditText(context);
-		label.setHint(context.getString(R.string.label));
+		label = new LabelWidget(context);
 
 		amount = new ReferenceAmountWidget(context);
 		amount.setLabelText(R.string.amount);
 
 		units = new UnitsAmountWidget(context);
 
-		TextView nutritionHeading = new TextView(context);
-		nutritionHeading.setText(R.string.nutrition);
-		nutrition = new NutritionForm(context);
-		nutrition.addView(nutritionHeading, 0);
+		nutrition = new FormDialogButton<Nutrition>(context);
+		nutrition.register(Nutrition.class);
 
-		this.addView(heading);
 		this.addView(label);
 		this.addView(amount);
 		this.addView(units);
 		this.addView(nutrition);
+
 	}
 
 	@Override
 	public void validate()
-			throws com.primateer.daikoku.views.InvalidDataException {
+			throws com.primateer.daikoku.views.forms.InvalidDataException {
 		if (label.getText().length() < 1) {
 			throw new InvalidDataException(getResources().getString(
 					R.string.form_error_product_label_empty));
 		}
 		amount.validate();
 		units.validate();
-		nutrition.validate();
+		nutrition.getForm().validate();
 	}
 
 	@Override
@@ -62,13 +57,24 @@ public class ProductForm extends VoForm<Product> {
 		data.setLabel(label.getText().toString());
 		data.setAmount(amount.getData());
 		data.setUnits(units.getData());
-		data.setNutrition(nutrition.getData());
+		data.setNutrition(nutrition.getForm().getData());
 		return data;
 	}
 
 	@Override
 	public void setData(Product data) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void wipe() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String getTitle() {
+		return getResources().getString(R.string.product);
 	}
 
 }

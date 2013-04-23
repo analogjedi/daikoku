@@ -16,7 +16,7 @@ import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.UnitRegistry;
-import com.primateer.daikoku.views.InvalidDataException;
+import com.primateer.daikoku.views.forms.InvalidDataException;
 import com.primateer.daikoku.views.widgets.NutrientRowWidget;
 
 public class NutrientListAdapter implements ListAdapter, OnClickListener {

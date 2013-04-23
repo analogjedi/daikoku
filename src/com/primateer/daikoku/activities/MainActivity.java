@@ -3,6 +3,8 @@ package com.primateer.daikoku.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,14 +12,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.primateer.daikoku.Application;
 import com.primateer.daikoku.PrettyPrinter;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.dialogs.FormFragment;
 import com.primateer.daikoku.model.vos.Product;
-import com.primateer.daikoku.views.InvalidDataException;
-import com.primateer.daikoku.views.ProductForm;
-import com.primateer.daikoku.views.VoForm;
+import com.primateer.daikoku.views.forms.InvalidDataException;
+import com.primateer.daikoku.views.forms.ProductForm;
+import com.primateer.daikoku.views.forms.VoForm;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +33,9 @@ public class MainActivity extends Activity {
 		LinearLayout views = new LinearLayout(this);
 		views.setOrientation(LinearLayout.VERTICAL);
 		ScrollView scroll = new ScrollView(this);
-//		scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-//				LayoutParams.MATCH_PARENT));
-//		scroll.addView(views);
+		// scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+		// LayoutParams.MATCH_PARENT));
+		// scroll.addView(views);
 		this.setContentView(views);
 
 		final VoForm form = new ProductForm(this);
@@ -45,7 +49,7 @@ public class MainActivity extends Activity {
 				try {
 					vo = form.getData();
 					if (vo != null) {
-						System.out.println(PrettyPrinter.toString((Product)vo));
+						System.out.println(PrettyPrinter.toString((Product) vo));
 					}
 				} catch (InvalidDataException e) {
 					// TODO Auto-generated catch block
@@ -54,11 +58,21 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		// views.addView(nut1);
-		// views.addView(nut2);
-		// views.addView(nut3);
+		Button openDialogButton = new Button(this);
+		openDialogButton.setText("open dialog");
+		openDialogButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FormFragment frag = new FormFragment();
+				frag.setForm(form);
+				frag.show(MainActivity.this.getSupportFragmentManager(),
+						"form_dialog");
+			}
+		});
+
 		views.addView(getStatsButton);
-		views.addView(form);
+		views.addView(openDialogButton);
+		// views.addView(form);
 	}
 
 	@Override
