@@ -14,6 +14,7 @@ import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
+import com.primateer.daikoku.views.InvalidDataException;
 
 public class NutrientRowWidget extends AmountWidget {
 
@@ -38,7 +39,7 @@ public class NutrientRowWidget extends AmountWidget {
 
 		this.addView(delButton, 0);
 		this.addView(label, 1);
-		
+
 		this.addObserver(new Observer<Amount>() {
 			@Override
 			public void update(Amount observable) {
@@ -58,7 +59,8 @@ public class NutrientRowWidget extends AmountWidget {
 				type.unitType);
 		Unit defaultUnit = UnitRegistry.getInstance().getDefaultUnitByType(
 				type.unitType);
-		this.setUnits(units, defaultUnit);
+		this.setUnits(units);
+		this.selectUnit(defaultUnit);
 		widgetObservable.notifyObservers(this);
 	}
 
@@ -68,11 +70,11 @@ public class NutrientRowWidget extends AmountWidget {
 
 	public void setNutrient(Nutrient nutrient) {
 		setNutrientType(nutrient.type);
-		setAmount(nutrient.amount);
+		setData(nutrient.amount);
 	}
 
-	public Nutrient getNutrient() {
-		return new Nutrient(type, getAmount());
+	public Nutrient getNutrient() throws InvalidDataException {
+		return new Nutrient(type, getData());
 	}
 
 	public void addWidgetObserver(Observer<NutrientRowWidget> observer) {

@@ -6,11 +6,13 @@ import java.util.Map;
 public class Unit {
 
 	public static final int TYPE_UNSPECIFIED = 0;
-	public static final int TYPE_CURRENCY = 1;
-	public static final int TYPE_ENERGY = 2;
-	public static final int TYPE_MASS = 3;
-	public static final int TYPE_VOLUME = 4;
+	public static final int TYPE_COUNT = 1;
+	public static final int TYPE_CURRENCY = 2;
+	public static final int TYPE_ENERGY = 3;
+	public static final int TYPE_MASS = 4;
+	public static final int TYPE_VOLUME = 5;
 
+	public static final Unit UNIT_UNITS = new Unit("units",TYPE_COUNT);
 	public static final Unit UNIT_EURO = new Unit("€",TYPE_CURRENCY);
 	public static final Unit UNIT_DOLLAR = new Unit("$",TYPE_CURRENCY);
 	public static final Unit UNIT_GRAM = new Unit("g", TYPE_MASS);

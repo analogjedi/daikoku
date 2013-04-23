@@ -12,4 +12,12 @@
     <string name="nutrient_type_protein">Protein</string>
     <string name="nutrient_type_carbs">Carbs</string>
     <string name="nutrient_type_fat">Fat</string>
+    
+    <string name="amount">Amount</string>
+    <string name="product">Product</string>
+    <string name="units">Units</string>
+    <string name="label">Label</string>
+    <string name="nutrition">Nutrition</string>
+    
+    <string name="form_error_product_label_empty">Product label is empty</string>
 </resources>

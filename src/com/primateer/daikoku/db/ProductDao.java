@@ -28,7 +28,7 @@ public class ProductDao extends Dao<Product> {
 			vo.setNutrition((Nutrition) Data.getInstance().get(Nutrition.class,
 					q.getLong(q.getColumnIndex(COL_NUTRITION))));
 			vo.setAmount(new Amount(q.getString(q.getColumnIndex(COL_AMOUNT))));
-			vo.setUnits(q.getInt(q.getColumnIndex(COL_UNITS)));
+			vo.setUnits(q.getDouble(q.getColumnIndex(COL_UNITS)));
 		}
 		q.close();
 		return vo;

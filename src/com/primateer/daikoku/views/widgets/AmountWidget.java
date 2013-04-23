@@ -17,8 +17,11 @@ import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Unit;
+import com.primateer.daikoku.views.Form;
+import com.primateer.daikoku.views.InvalidDataException;
 
-public class AmountWidget extends LinearLayout implements Observable<Amount> {
+public class AmountWidget extends LinearLayout implements Observable<Amount>,
+		Form<Amount> {
 
 	private EditText valueView;
 	private Spinner unitView;
@@ -50,8 +53,12 @@ public class AmountWidget extends LinearLayout implements Observable<Amount> {
 			@Override
 			public void afterTextChanged(Editable s) {
 				try {
-					observable.notifyObservers(getAmount());
+					observable.notifyObservers(getData());
 				} catch (IllegalArgumentException e) {
+					// do not update with incorrect input
+				} catch (NullPointerException e) {
+					// do not update when empty
+				} catch (InvalidDataException e) {
 					// do not update with incorrect input
 				}
 			}
@@ -69,27 +76,17 @@ public class AmountWidget extends LinearLayout implements Observable<Amount> {
 		this(context, null);
 	}
 
-	public void setUnits(List<Unit> units) {
-		setUnits(units, units.get(0));
+	public void selectUnit(Unit unit) {
+		unitView.setSelection(units.indexOf(unit));
 	}
 
-	public void setUnits(List<Unit> units, Unit unit) {
+	public void setUnits(List<Unit> units) {
 		this.units = units;
 		// FIXME: different view for dropdown selection
 		ArrayAdapter<Unit> adapter = new ArrayAdapter<Unit>(this.getContext(),
 				android.R.layout.simple_spinner_item, units);
 		unitView.setAdapter(adapter);
-		unitView.setSelection(units.indexOf(unit));
-	}
-
-	public void setAmount(Amount amount) {
-		valueView.setText(String.valueOf(amount.value));
-		unitView.setSelection(units.indexOf(amount.unit));
-	}
-
-	public Amount getAmount() {
-		return new Amount(valueView.getText().toString()
-				+ unitView.getSelectedItem().toString());
+		selectUnit(units.get(0));
 	}
 
 	@Override
@@ -101,4 +98,30 @@ public class AmountWidget extends LinearLayout implements Observable<Amount> {
 	public void removeObserver(Observer<Amount> observer) {
 		observable.removeObserver(observer);
 	}
+
+	@Override
+	public void validate() throws InvalidDataException {
+		getData();
+	}
+
+	@Override
+	public Amount getData() throws InvalidDataException {
+		try {
+			return new Amount(valueView.getText().toString()
+					+ unitView.getSelectedItem().toString());
+		} catch (Exception e) {
+			throw new InvalidDataException(e.getMessage());
+		}
+	}
+
+	@Override
+	public void setData(Amount data) throws IllegalArgumentException {
+		if (this.units == null) {
+			throw new IllegalArgumentException(
+					"Call setUnits() before setAmount()");
+		}
+		valueView.setText(String.valueOf(data.value));
+		unitView.setSelection(units.indexOf(data.unit));
+	}
+
 }

@@ -11,17 +11,19 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
+import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.UnitRegistry;
+import com.primateer.daikoku.views.InvalidDataException;
 import com.primateer.daikoku.views.widgets.NutrientRowWidget;
 
 public class NutrientListAdapter implements ListAdapter, OnClickListener {
 
 	private List<Nutrient> data = new ArrayList<Nutrient>();
 	private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
-	private Set<Nutrient.Type> occupiedTypes = new HashSet<Nutrient.Type>();	
+	private Set<Nutrient.Type> occupiedTypes = new HashSet<Nutrient.Type>();
 
 	public Nutrient add(Nutrient.Type type) {
 		if (occupiedTypes.contains(type)) {
@@ -42,7 +44,6 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 		occupiedTypes.remove(nutrient.type);
 		notifyObservers();
 	}
-	
 
 	public List<Nutrient> getNutrients() {
 		return data;
@@ -100,7 +101,12 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 				@Override
 				public void update(NutrientRowWidget observable) {
 					int index = (Integer) observable.getTag();
-					data.set(index, observable.getNutrient());
+					try {
+						data.set(index, observable.getNutrient());
+					} catch (InvalidDataException e) {
+						Helper.logErrorStackTrace(this, e,
+								"Unable to bind widget to list adapter");
+					}
 				}
 			});
 			return widget;
@@ -133,7 +139,7 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 	public boolean isEnabled(int position) {
 		return true;
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 		int index = (Integer) ((View) v.getParent()).getTag();

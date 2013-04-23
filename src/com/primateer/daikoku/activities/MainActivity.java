@@ -8,64 +8,57 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.ScrollView;
 
+import com.primateer.daikoku.PrettyPrinter;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.Nutrient;
-import com.primateer.daikoku.model.vos.Nutrition;
-import com.primateer.daikoku.views.NutritionForm;
-import com.primateer.daikoku.views.widgets.NutrientRowWidget;
+import com.primateer.daikoku.model.vos.Product;
+import com.primateer.daikoku.views.InvalidDataException;
+import com.primateer.daikoku.views.ProductForm;
+import com.primateer.daikoku.views.VoForm;
 
 public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_main);
-//		
-//		ViewGroup views = (ViewGroup) this
-//				.findViewById(R.id.activity_main_layout);
+		// setContentView(R.layout.activity_main);
+		//
+		// ViewGroup views = (ViewGroup) this
+		// .findViewById(R.id.activity_main_layout);
 		LinearLayout views = new LinearLayout(this);
 		views.setOrientation(LinearLayout.VERTICAL);
+		ScrollView scroll = new ScrollView(this);
+//		scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+//				LayoutParams.MATCH_PARENT));
+//		scroll.addView(views);
 		this.setContentView(views);
 
-		NutrientRowWidget nut1 = new NutrientRowWidget(this);
-		nut1.setNutrientType(Nutrient.TYPE_ENERGY);
-		nut1.setAmount(new Amount("333.3kcal"));
+		final VoForm form = new ProductForm(this);
 
-		NutrientRowWidget nut2 = new NutrientRowWidget(this);
-		nut2.setNutrientType(Nutrient.TYPE_PROTEIN);
-		nut2.setAmount(new Amount("20.7g"));
-
-		final NutrientRowWidget nut3 = new NutrientRowWidget(this);
-		nut3.setNutrientType(Nutrient.TYPE_CARBS);
-		nut3.setOnDeleteListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(MainActivity.this,
-						(CharSequence) nut3.getAmount().toString(),
-						Toast.LENGTH_SHORT).show();
-			}
-		});
-		
-		final NutritionForm nutrition = new NutritionForm(this);
-		
 		Button getStatsButton = new Button(this);
-		getStatsButton.setText("get Nutrients");
+		getStatsButton.setText("print form contents");
 		getStatsButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Nutrition n = nutrition.getNutrition();
-				System.out.println(n);
+				Object vo;
+				try {
+					vo = form.getData();
+					if (vo != null) {
+						System.out.println(PrettyPrinter.toString((Product)vo));
+					}
+				} catch (InvalidDataException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 
-//		views.addView(nut1);
-//		views.addView(nut2);
-//		views.addView(nut3);
+		// views.addView(nut1);
+		// views.addView(nut2);
+		// views.addView(nut3);
 		views.addView(getStatsButton);
-		views.addView(nutrition);
+		views.addView(form);
 	}
 
 	@Override

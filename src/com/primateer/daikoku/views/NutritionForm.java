@@ -7,30 +7,22 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.DataSetObserver;
-import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.primateer.daikoku.Application;
-import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.views.lists.NutrientListAdapter;
 import com.primateer.daikoku.views.widgets.AmountWidget;
+import com.primateer.daikoku.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.views.widgets.Separator;
 
-public class NutritionForm extends LinearLayout {
+public class NutritionForm extends VoForm<Nutrition> {
 
 	private class ButtonManager extends DataSetObserver {
 		@Override
@@ -46,14 +38,9 @@ public class NutritionForm extends LinearLayout {
 	private Button addButton;
 	private List<Nutrient.Type> nutrientTypes;
 
+	
 	public NutritionForm(Context context) {
-		this(context, null);
-	}
-
-	public NutritionForm(Context context, AttributeSet attrs) {
-		super(context, attrs);
-
-		this.setOrientation(LinearLayout.VERTICAL);
+		super(context);
 
 		// add button
 		addButton = new Button(context);
@@ -66,28 +53,13 @@ public class NutritionForm extends LinearLayout {
 		});
 
 		// reference amount
-		referenceAmount = new AmountWidget(context);
-		TextView referenceLabel = new TextView(context);
-		referenceLabel.setText(Application.getContext().getString(
-				R.string.reference_amount));
-		LayoutParams labelLayout = new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 1.05f);
-		labelLayout.gravity = Gravity.CENTER;
-		referenceLabel.setLayoutParams(labelLayout);
-		referenceLabel.setPadding(5, 0, 0, 0);
-		referenceAmount.addView(referenceLabel, 0);
-		referenceAmount.setUnits(UnitRegistry.getInstance().getAllUnits());
-		referenceAmount.setAmount(NutrientRegistry.getInstance()
-				.getDefaultReferenceAmount());
-		referenceAmount.addObserver(new Observer<Amount>() {
-			@Override
-			public void update(Amount amount) {
-				Helper.toast(amount.toString());
-			}
-		});
+		referenceAmount = new ReferenceAmountWidget(context);
 
 		// nutrient list
 		nutrientList = new ListView(context);
+//		nutrientList.setLayoutParams(new LayoutParams(
+//				LayoutParams.MATCH_PARENT, 0));
+		nutrientList.setScrollContainer(false);
 		listAdapter = new NutrientListAdapter();
 		listAdapter.registerDataSetObserver(new ButtonManager());
 		nutrientList.setAdapter(listAdapter);
@@ -143,11 +115,21 @@ public class NutritionForm extends LinearLayout {
 		builder.create().show();
 	}
 
-	public Nutrition getNutrition() {
+	@Override
+	public void validate() throws InvalidDataException {
+		gatherData();
+	}
+
+	@Override
+	protected Nutrition gatherData() throws InvalidDataException {
 		Nutrition nutrition = new Nutrition();
-		nutrition.setReferenceAmount(referenceAmount.getAmount());
+		nutrition.setReferenceAmount(referenceAmount.getData());
 		nutrition.setNutrients(listAdapter.getNutrients());
 		return nutrition;
 	}
 
+	@Override
+	public void setData(Nutrition data) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+	}
 }

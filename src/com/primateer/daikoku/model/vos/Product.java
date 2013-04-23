@@ -1,6 +1,7 @@
 package com.primateer.daikoku.model.vos;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.ValueObject;
 
 public class Product extends ValueObject<Product> {
@@ -8,7 +9,7 @@ public class Product extends ValueObject<Product> {
 	private String label;
 	private Nutrition nutrition;
 	private Amount amount;
-	private int units;
+	private double units;
 
 	public String getLabel() {
 		return label;
@@ -34,12 +35,19 @@ public class Product extends ValueObject<Product> {
 		this.amount = amount;
 	}
 
-	public int getUnits() {
+	public double getUnits() {
 		return units;
 	}
 
-	public void setUnits(int units) {
+	public void setUnits(double units) {
 		this.units = units;
 	}
 
+	public void setUnits(Amount units) {
+		if (units.unit.type != Unit.TYPE_COUNT) {
+			throw new IllegalArgumentException(
+					"Units must be of type TYPE_COUNT");
+		}
+		setUnits(units.value);
+	}
 }

@@ -24,6 +24,9 @@ public class UnitRegistry {
 	private List<Unit> all;
 
 	private UnitRegistry() {
+		this.register(Unit.UNIT_UNITS);
+		this.setDefaultUnit(Unit.UNIT_UNITS);
+		
 		this.register(Unit.UNIT_EURO);
 		this.register(Unit.UNIT_DOLLAR);
 		this.setDefaultUnit(Unit.UNIT_EURO);
