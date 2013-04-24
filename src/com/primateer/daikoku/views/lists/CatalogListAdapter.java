@@ -10,58 +10,38 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
 import com.primateer.daikoku.Helper;
-import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.Nutrient;
-import com.primateer.daikoku.model.NutrientSet;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.views.forms.InvalidDataException;
+import com.primateer.daikoku.views.widgets.CatalogRowWidget;
 import com.primateer.daikoku.views.widgets.DataRowWidget;
-import com.primateer.daikoku.views.widgets.NutrientRowWidget;
 
-public class NutrientListAdapter implements ListAdapter, OnClickListener {
+public class CatalogListAdapter<T> implements ListAdapter, OnClickListener {
 
-	private NutrientSet nutrients = new NutrientSet();
-	private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
-
-	public void setNutrients(NutrientSet nutrients) {
-		this.nutrients = nutrients;
+	List<T> data = new ArrayList<T>();
+	List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
+	
+	
+	public void add(T item) {
+		data.add(item);
 		notifyObservers();
 	}
 	
-	public void add(Nutrient nutrient) {
-		nutrients.add(nutrient);
-		notifyObservers();				
-	}
-	
-	public Nutrient add(Nutrient.Type type) {
-		Nutrient nutrient = new Nutrient(type, new Amount(0, type.defaultUnit));
-		add(nutrient);
-		return nutrient;
-	}
-
 	public void clear() {
-		nutrients.clear();
+		data.clear();
 		notifyObservers();
 	}
 	
-	public void remove(Nutrient nutrient) {
-		nutrients.remove(nutrient);
+	public void remove(T item) {
+		data.remove(item);
 		notifyObservers();
 	}
-
-	public NutrientSet getNutrients() {
-		return nutrients;
-	}
-
-	public boolean isTypeOccupied(Nutrient.Type type) {
-		return nutrients.isTypeOccupied(type);
-	}
-
+	
 	private void notifyObservers() {
 		for (DataSetObserver observer : observers) {
 			observer.onChanged();
 		}
 	}
+	
 
 	@Override
 	public void registerDataSetObserver(DataSetObserver observer) {
@@ -75,17 +55,17 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 
 	@Override
 	public int getCount() {
-		return nutrients.size();
+		return data.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return nutrients.get(position);
+		return data.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return nutrients.get(position).hashCode();
+		return data.get(position).hashCode();
 	}
 
 	@Override
@@ -96,17 +76,17 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			NutrientRowWidget widget = new NutrientRowWidget(
+			CatalogRowWidget<T> widget = new CatalogRowWidget<T>(
 					parent.getContext());
-			widget.setRowData(nutrients.get(position));
-			widget.setOnDeleteRowListener(NutrientListAdapter.this);
+			widget.setRowData(data.get(position));
+			widget.setOnDeleteRowListener(CatalogListAdapter.this);
 			widget.storeRowPosition(position);
-			widget.addRowObserver(new Observer<DataRowWidget<Nutrient>>() {
+			widget.addRowObserver(new Observer<DataRowWidget<T>>() {
 				@Override
-				public void update(DataRowWidget<Nutrient> observable) {
+				public void update(DataRowWidget<T> observable) {
 					int index = observable.restoreRowPosition();
 					try {
-						nutrients.set(index, observable.getRowData());
+						data.set(index, observable.getRowData());
 					} catch (InvalidDataException e) {
 						Helper.logErrorStackTrace(this, e,
 								"Unable to bind widget to list adapter");
@@ -131,7 +111,7 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 
 	@Override
 	public boolean isEmpty() {
-		return getCount() == 0;
+		return data.isEmpty();
 	}
 
 	@Override
@@ -144,10 +124,11 @@ public class NutrientListAdapter implements ListAdapter, OnClickListener {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onClick(View v) {
-		int index = ((NutrientRowWidget)v.getParent()).restoreRowPosition();
-		this.remove(nutrients.get(index));
+		int index = ((CatalogRowWidget<T>)v.getParent()).restoreRowPosition();
+		this.remove(data.get(index));
 	}
 
 }

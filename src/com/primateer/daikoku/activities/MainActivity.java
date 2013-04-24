@@ -1,9 +1,7 @@
 package com.primateer.daikoku.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
@@ -12,14 +10,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.primateer.daikoku.Application;
-import com.primateer.daikoku.PrettyPrinter;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.dialogs.FormFragment;
 import com.primateer.daikoku.model.vos.Product;
-import com.primateer.daikoku.views.forms.InvalidDataException;
+import com.primateer.daikoku.views.ListCatalog;
 import com.primateer.daikoku.views.forms.ProductForm;
-import com.primateer.daikoku.views.forms.VoForm;
 
 public class MainActivity extends FragmentActivity {
 
@@ -38,28 +33,19 @@ public class MainActivity extends FragmentActivity {
 		// scroll.addView(views);
 		this.setContentView(views);
 
-		final VoForm form = new ProductForm(this);
-
 		Button getStatsButton = new Button(this);
-		getStatsButton.setText("print form contents");
+		getStatsButton.setText("open product catalog");
 		getStatsButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Object vo;
-				try {
-					vo = form.getData();
-					if (vo != null) {
-						System.out.println(PrettyPrinter.toString((Product) vo));
-					}
-				} catch (InvalidDataException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				ListCatalog<Product> catalog = new ListCatalog<Product>(MainActivity.this);
+				MainActivity.this.setContentView(catalog);
+//				MainActivity.this.setContentView(new Button(MainActivity.this));
 			}
 		});
 
 		Button openDialogButton = new Button(this);
-		openDialogButton.setText("open dialog");
+		openDialogButton.setText("open product form");
 		openDialogButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

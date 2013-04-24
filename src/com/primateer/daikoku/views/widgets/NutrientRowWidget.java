@@ -17,9 +17,10 @@ import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.views.forms.InvalidDataException;
 
-public class NutrientRowWidget extends AmountWidget {
+public class NutrientRowWidget extends AmountWidget implements
+		DataRowWidget<Nutrient> {
 
-	private SimpleObservable<NutrientRowWidget> widgetObservable = new SimpleObservable<NutrientRowWidget>();
+	private SimpleObservable<DataRowWidget<Nutrient>> widgetObservable = new SimpleObservable<DataRowWidget<Nutrient>>();
 	private TextView label;
 	private ImageButton delButton;
 	private Nutrient.Type type;
@@ -53,7 +54,7 @@ public class NutrientRowWidget extends AmountWidget {
 		this(context, null);
 	}
 
-	public void setNutrientType(Nutrient.Type type) {
+	private void setNutrientType(Nutrient.Type type) {
 		this.label.setText(type.toString());
 		this.type = type;
 		List<Unit> units = UnitRegistry.getInstance().getUnitsByType(
@@ -63,24 +64,41 @@ public class NutrientRowWidget extends AmountWidget {
 		widgetObservable.notifyObservers(this);
 	}
 
-	public void setOnDeleteListener(OnClickListener listener) {
+
+	@Override
+	public void storeRowPosition(int pos) {
+		this.setTag(pos);
+	}
+
+	@Override
+	public int restoreRowPosition() {
+		return (Integer)this.getTag();
+	}
+
+	@Override
+	public void setRowData(Nutrient nutrient) {
+		this.setNutrientType(nutrient.type);
+		super.setData(nutrient.amount);
+	}
+
+	@Override
+	public Nutrient getRowData() throws InvalidDataException {
+		return new Nutrient(type, getData());
+
+	}
+
+	@Override
+	public void setOnDeleteRowListener(OnClickListener listener) {
 		delButton.setOnClickListener(listener);
 	}
 
-	public void setNutrient(Nutrient nutrient) {
-		setNutrientType(nutrient.type);
-		setData(nutrient.amount);
-	}
-
-	public Nutrient getNutrient() throws InvalidDataException {
-		return new Nutrient(type, getData());
-	}
-
-	public void addWidgetObserver(Observer<NutrientRowWidget> observer) {
+	@Override
+	public void addRowObserver(Observer<DataRowWidget<Nutrient>> observer) {
 		widgetObservable.addObserver(observer);
 	}
 
-	public void removeWidgetObserver(Observer<NutrientRowWidget> observer) {
+	@Override
+	public void removeRowObserver(Observer<DataRowWidget<Nutrient>> observer) {
 		widgetObservable.removeObserver(observer);
 	}
 }
