@@ -25,12 +25,12 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 
 	public ListCatalog(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.setOrientation(LinearLayout.VERTICAL);
+		this.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 		// add button
 		addButton = new ImageButton(context);
 		addButton.setImageResource(Application.ICON_ADD);
-		addButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -49,9 +49,13 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 		itemList.setAdapter(listAdapter);
 
 		// composition
-		this.addView(addButton);
 		this.addView(itemList);
 		this.addView(new Separator(context));
+		this.addView(addButton);
 	}
 
+	@Override
+	public void add(T item) {
+		listAdapter.add(item);
+	}
 }

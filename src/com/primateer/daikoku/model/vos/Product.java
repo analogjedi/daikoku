@@ -1,5 +1,8 @@
 package com.primateer.daikoku.model.vos;
 
+import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.ValueObject;
@@ -49,5 +52,14 @@ public class Product extends ValueObject<Product> {
 					"Units must be of type TYPE_COUNT");
 		}
 		setUnits(units.value);
+	}
+
+	@Override
+	public String toString() {
+		if (Helper.isEmpty(label)) {
+			return Application.getContext().getResources()
+					.getString(R.string.placeholder_empty);
+		}
+		return label;
 	}
 }

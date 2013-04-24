@@ -13,4 +13,5 @@ public class CatalogListAdapter<T extends ValueObject<T>> extends
 	protected DataRowWidget<T> newWidget(Context context) {
 		return new CatalogRowWidget<T>(context);
 	}
+
 }

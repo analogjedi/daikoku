@@ -72,4 +72,8 @@ public class Helper {
 		builder.setNeutralButton(R.string.ok, null);
 		builder.create().show();
 	}
+
+	public static boolean isEmpty(String string) {
+		return string == null || string.length() < 1;
+	}
 }
