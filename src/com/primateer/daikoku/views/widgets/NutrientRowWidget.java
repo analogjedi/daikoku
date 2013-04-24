@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Observer;
@@ -27,7 +28,7 @@ public class NutrientRowWidget extends AmountWidget {
 		super(context, attrs);
 
 		delButton = new ImageButton(context);
-		delButton.setImageResource(android.R.drawable.ic_delete);
+		delButton.setImageResource(Application.ICON_REMOVE);
 		delButton.setLayoutParams(new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.35f));
 		delButton.setBackgroundColor(Color.TRANSPARENT);

@@ -9,10 +9,11 @@ import android.content.DialogInterface;
 import android.database.DataSetObserver;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
@@ -35,15 +36,15 @@ public class NutritionForm extends VoForm<Nutrition> {
 	private AmountWidget referenceAmount;
 	private ListView nutrientList;
 	private NutrientListAdapter listAdapter;
-	private Button addButton;
+	private ImageButton addButton;
 	private List<Nutrient.Type> permissibleTypes;
 
 	public NutritionForm(Context context) {
 		super(context);
 
 		// add button
-		addButton = new Button(context);
-		addButton.setText("+");
+		addButton = new ImageButton(context);
+		addButton.setImageResource(Application.ICON_ADD);
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

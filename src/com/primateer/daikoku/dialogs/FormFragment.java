@@ -6,10 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
+import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Observable;
@@ -35,8 +36,8 @@ public class FormFragment<T> extends DialogFragment implements Observable<T> {
 		ViewGroup content = (ViewGroup) form.getView();
 		content.setBackgroundColor(Color.WHITE); // FIXME
 
-		Button cancelButton = new Button(getActivity());
-		cancelButton.setText(R.string.cancel);
+		ImageButton cancelButton = new ImageButton(getActivity());
+		cancelButton.setImageResource(Application.ICON_DENY);
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -44,8 +45,8 @@ public class FormFragment<T> extends DialogFragment implements Observable<T> {
 			}
 		});
 
-		Button okButton = new Button(getActivity());
-		okButton.setText(R.string.ok);
+		ImageButton okButton = new ImageButton(getActivity());
+		okButton.setImageResource(Application.ICON_ACCEPT);
 		okButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
