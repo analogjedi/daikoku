@@ -2,6 +2,7 @@ package com.primateer.daikoku.views.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.primateer.daikoku.model.Observer;
@@ -55,5 +56,10 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 	@Override
 	public int restoreRowPosition() {
 		return (Integer)this.getTag();
+	}
+
+	@Override
+	public View getView() {
+		return this;
 	}
 }
