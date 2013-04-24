@@ -2,7 +2,6 @@ package com.primateer.daikoku.views.forms;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -37,7 +36,7 @@ public class NutritionForm extends VoForm<Nutrition> {
 	private ListView nutrientList;
 	private NutrientListAdapter listAdapter;
 	private Button addButton;
-	private List<Nutrient.Type> nutrientTypes;
+	private List<Nutrient.Type> permissibleTypes;
 
 	public NutritionForm(Context context) {
 		super(context);
@@ -57,29 +56,28 @@ public class NutritionForm extends VoForm<Nutrition> {
 
 		// nutrient list
 		nutrientList = new ListView(context);
-		// nutrientList.setLayoutParams(new LayoutParams(
-		// LayoutParams.MATCH_PARENT, 0));
+		nutrientList.setLayoutParams(new LayoutParams(
+				LayoutParams.MATCH_PARENT, 0, 1.0f));
 		nutrientList.setScrollContainer(false);
+		nutrientList.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		listAdapter = new NutrientListAdapter();
 		listAdapter.registerDataSetObserver(new ButtonManager());
-		nutrientList.setAdapter(listAdapter);		
-//		nutrientList.addFooterView(addButton);
+		nutrientList.setAdapter(listAdapter);
 
-		nutrientTypes = NutrientRegistry.getInstance()
-				.getDefaultNutritionFields();
+		permissibleTypes = NutrientRegistry.getInstance().getAllNutrientTypes();
 		this.clear();
-		
+
 		// composition
 		this.addView(referenceAmount);
 		this.addView(new Separator(context));
 		this.addView(nutrientList);
-		// this.addView(new Separator(context));
-		 this.addView(addButton);
+		this.addView(new Separator(context));
+		this.addView(addButton);
 	}
 
 	private List<Nutrient.Type> getAvailableTypes() {
 		List<Nutrient.Type> availableTypes = new ArrayList<Nutrient.Type>();
-		for (Nutrient.Type type : nutrientTypes) {
+		for (Nutrient.Type type : permissibleTypes) {
 			if (!listAdapter.isTypeOccupied(type)) {
 				availableTypes.add(type);
 			}
@@ -131,18 +129,15 @@ public class NutritionForm extends VoForm<Nutrition> {
 	@Override
 	protected void fillFields(Nutrition data) throws IllegalArgumentException {
 		referenceAmount.setData(data.getReferenceAmount());
-		Map<Nutrient.Type, Nutrient> nutrientList = data.getNutrients();
-		listAdapter.clear();
-		for (Nutrient.Type type : nutrientList.keySet()) {
-			listAdapter.add(nutrientList.get(type));
-		}
+		listAdapter.setNutrients(data.getNutrients());
 	}
 
 	@Override
 	public void clear() {
 		referenceAmount.clear();
 		listAdapter.clear();
-		for (Nutrient.Type type : nutrientTypes) {
+		for (Nutrient.Type type : NutrientRegistry.getInstance()
+				.getDefaultNutrientTypes()) {
 			listAdapter.add(type);
 		}
 	}

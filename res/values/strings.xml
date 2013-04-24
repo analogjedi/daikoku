@@ -12,6 +12,11 @@
     <string name="nutrient_type_protein">Protein</string>
     <string name="nutrient_type_carbs">Carbs</string>
     <string name="nutrient_type_fat">Fat</string>
+    <string name="nutrient_type_saturated_fat">Saturated Fat</string>
+    <string name="nutrient_type_cholesterol">Cholesterol</string>
+    <string name="nutrient_type_sodium">Sodium</string>
+    <string name="nutrient_type_fiber">Dietary Fiber</string>
+    <string name="nutrient_type_sugar">Sugars</string>
     
     <string name="amount">Amount</string>
     <string name="product">Product</string>

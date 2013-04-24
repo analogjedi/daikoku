@@ -1,7 +1,5 @@
 package com.primateer.daikoku;
 
-import java.util.Map;
-
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
@@ -16,9 +14,8 @@ public class PrettyPrinter {
 		StringBuilder str = new StringBuilder();
 		str.append("NUTRITION: ");
 		str.append("Ref.: ").append(o.getReferenceAmount().toString());
-		Map<Nutrient.Type, Nutrient> nuts = o.getNutrients();
-		for (Nutrient.Type type : nuts.keySet()) {
-			str.append("; ").append(toString(nuts.get(type)));
+		for (Nutrient nut : o.getNutrients()) {
+			str.append("; ").append(toString(nut));
 		}
 		return str.toString();
 	}

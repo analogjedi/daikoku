@@ -10,6 +10,7 @@ import android.database.Cursor;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
+import com.primateer.daikoku.model.NutrientSet;
 import com.primateer.daikoku.model.vos.Nutrition;
 
 public class NutritionDao extends Dao<Nutrition> {
@@ -36,8 +37,8 @@ public class NutritionDao extends Dao<Nutrition> {
 		return vo;
 	}
 
-	private List<Nutrient> loadNutrients(long id) {
-		List<Nutrient> result = new ArrayList<Nutrient>();
+	private NutrientSet loadNutrients(long id) {
+		NutrientSet result = new NutrientSet();
 		Cursor q = getResolver().query(getUri(NUTRIENT_TABLE), null,
 				where(NUTRIENT_COL_NUTRITION, id), null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
@@ -66,13 +67,13 @@ public class NutritionDao extends Dao<Nutrition> {
 		}
 
 		// nutrient table
-		Map<Nutrient.Type, Nutrient> nutrients = vo.getNutrients();
+		NutrientSet nutrients = vo.getNutrients();
 		if (nutrients != null) {
-			for (Nutrient.Type type : nutrients.keySet()) {
+			for (Nutrient nutrient : nutrients) {
 				ContentValues nv = new ContentValues();
 				nv.put(NUTRIENT_COL_NUTRITION, id);
-				nv.put(NUTRIENT_COL_TYPE, type.id);
-				nv.put(NUTRIENT_COL_AMOUNT, nutrients.get(type).toString());
+				nv.put(NUTRIENT_COL_TYPE, nutrient.type.id);
+				nv.put(NUTRIENT_COL_AMOUNT, nutrient.amount.toString());
 				getResolver().insert(getUri(NUTRIENT_TABLE), nv);
 			}
 		}

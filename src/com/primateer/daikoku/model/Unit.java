@@ -16,13 +16,16 @@ public class Unit {
 	public static final Unit UNIT_EURO = new Unit("€",TYPE_CURRENCY);
 	public static final Unit UNIT_DOLLAR = new Unit("$",TYPE_CURRENCY);
 	public static final Unit UNIT_GRAM = new Unit("g", TYPE_MASS);
+	public static final Unit UNIT_MILLIGRAM = new Unit("mg", TYPE_MASS);
 	public static final Unit UNIT_KILOGRAM = new Unit("kg", TYPE_MASS);
 	public static final Unit UNIT_POUND = new Unit("lb", TYPE_MASS);
 	public static final Unit UNIT_KILOCALORIE = new Unit("kcal", TYPE_ENERGY);
 	public static final Unit UNIT_MILLILITER = new Unit("ml", TYPE_VOLUME);
 
 	static {
+		UNIT_MILLIGRAM.setConversionRate(UNIT_GRAM, 0.001);
 		UNIT_KILOGRAM.setConversionRate(UNIT_GRAM, 1000.0);
+		UNIT_POUND.setConversionRate(UNIT_MILLIGRAM, 453592.37);
 		UNIT_POUND.setConversionRate(UNIT_GRAM, 453.59237);
 		UNIT_POUND.setConversionRate(UNIT_KILOGRAM, 0.45359237);
 	}

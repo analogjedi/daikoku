@@ -18,6 +18,7 @@ public class NutrientRegistry {
 
 	private Map<String, Nutrient.Type> typeById = new HashMap<String, Nutrient.Type>();
 	private List<Nutrient.Type> defaultNutrientTypes;
+	private List<Nutrient.Type> allNutrientTypes;
 	private Amount defaultReferenceAmount;
 
 	private NutrientRegistry() {
@@ -26,6 +27,14 @@ public class NutrientRegistry {
 		defaultNutrientTypes.add(Nutrient.TYPE_PROTEIN);
 		defaultNutrientTypes.add(Nutrient.TYPE_CARBS);
 		defaultNutrientTypes.add(Nutrient.TYPE_FAT);
+		
+		allNutrientTypes = new ArrayList<Nutrient.Type>();
+		allNutrientTypes.addAll(defaultNutrientTypes);
+		allNutrientTypes.add(Nutrient.TYPE_CHOLESTEROL);
+		allNutrientTypes.add(Nutrient.TYPE_SODIUM);
+		allNutrientTypes.add(Nutrient.TYPE_SATURATED_FAT);
+		allNutrientTypes.add(Nutrient.TYPE_FIBER);
+		allNutrientTypes.add(Nutrient.TYPE_SUGAR);
 		
 		defaultReferenceAmount = new Amount(100,Unit.UNIT_GRAM); // TODO
 	}
@@ -41,8 +50,12 @@ public class NutrientRegistry {
 	public Nutrient.Type getType(String symbol) {
 		return typeById.get(symbol);
 	}
+	
+	public List<Nutrient.Type> getAllNutrientTypes() {
+		return allNutrientTypes;
+	}
 
-	public List<Nutrient.Type> getDefaultNutritionFields() {
+	public List<Nutrient.Type> getDefaultNutrientTypes() {
 		return defaultNutrientTypes;
 	}
 	

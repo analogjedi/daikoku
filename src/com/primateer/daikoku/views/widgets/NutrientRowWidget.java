@@ -56,11 +56,9 @@ public class NutrientRowWidget extends AmountWidget {
 		this.label.setText(type.toString());
 		this.type = type;
 		List<Unit> units = UnitRegistry.getInstance().getUnitsByType(
-				type.unitType);
-		Unit defaultUnit = UnitRegistry.getInstance().getDefaultUnitByType(
-				type.unitType);
+				type.defaultUnit.type);
 		this.setUnits(units);
-		this.selectUnit(defaultUnit);
+		this.selectUnit(type.defaultUnit);
 		widgetObservable.notifyObservers(this);
 	}
 

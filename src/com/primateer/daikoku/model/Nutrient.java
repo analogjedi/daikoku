@@ -7,11 +7,15 @@ public class Nutrient {
 
 	public static abstract class Type {
 		public final String id;
-		public final int unitType;
+		public final Unit defaultUnit;
 
 		protected Type(String id, int unitType) {
+			this(id,UnitRegistry.getInstance().getDefaultUnitByType(unitType));
+		}
+		
+		protected Type(String id, Unit defaultUnit) {
 			this.id = id;
-			this.unitType = unitType;
+			this.defaultUnit = defaultUnit;
 		}
 
 		@Override
@@ -50,8 +54,8 @@ public class Nutrient {
 	private static class BuiltInType extends Type {
 		private final int name;
 
-		protected BuiltInType(String id, int unitType, int name) {
-			super(id, unitType);
+		protected BuiltInType(String id, int name, Unit defaultUnit) {
+			super(id, defaultUnit);
 			this.name = name;
 		}
 
@@ -61,13 +65,23 @@ public class Nutrient {
 	}
 
 	public static final Type TYPE_ENERGY = new BuiltInType("E",
-			Unit.TYPE_ENERGY, R.string.nutrient_type_energy);
+			R.string.nutrient_type_energy, Unit.UNIT_KILOCALORIE);
 	public static final Type TYPE_PROTEIN = new BuiltInType("P",
-			Unit.TYPE_MASS, R.string.nutrient_type_protein);
-	public static final Type TYPE_CARBS = new BuiltInType("C", Unit.TYPE_MASS,
-			R.string.nutrient_type_carbs);
-	public static final Type TYPE_FAT = new BuiltInType("F", Unit.TYPE_MASS,
-			R.string.nutrient_type_fat);
+			R.string.nutrient_type_protein, Unit.UNIT_GRAM);
+	public static final Type TYPE_CARBS = new BuiltInType("C",
+			R.string.nutrient_type_carbs, Unit.UNIT_GRAM);
+	public static final Type TYPE_FAT = new BuiltInType("F", 
+			R.string.nutrient_type_fat, Unit.UNIT_GRAM);
+	public static final Type TYPE_SATURATED_FAT = new BuiltInType("Fs",
+			R.string.nutrient_type_saturated_fat, Unit.UNIT_GRAM);
+	public static final Type TYPE_CHOLESTEROL = new BuiltInType("CH",
+			R.string.nutrient_type_cholesterol, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_SODIUM = new BuiltInType("S",
+			R.string.nutrient_type_sodium, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_FIBER = new BuiltInType("Cf",
+			R.string.nutrient_type_fiber, Unit.UNIT_GRAM);
+	public static final Type TYPE_SUGAR = new BuiltInType("Cs",
+			R.string.nutrient_type_sugar, Unit.UNIT_GRAM);
 
 	public final Nutrient.Type type;
 	public final Amount amount;
