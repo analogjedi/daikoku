@@ -24,6 +24,7 @@
     <string name="label">Label</string>
     <string name="nutrition">Nutrition</string>
     
+    <string name="form_error_title">Invalid Input</string>
     <string name="form_error_product_label_empty">Product label is empty</string>
     
     <string name="ok">OK</string>

@@ -10,6 +10,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -59,5 +61,15 @@ public class Helper {
 	public static void toast(String msg) {
 		Toast.makeText(Application.getContext(), (CharSequence) msg,
 				Toast.LENGTH_SHORT).show();
+	}
+
+	public static void displayErrorMessage(Context context, String title,
+			String msg) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle(title);
+		builder.setMessage(msg);
+//		builder.setCancelable(false);
+		builder.setNeutralButton(R.string.ok, null);
+		builder.create().show();
 	}
 }
