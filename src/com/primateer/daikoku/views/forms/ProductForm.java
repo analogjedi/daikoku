@@ -44,6 +44,10 @@ public class ProductForm extends VoForm<Product> {
 			throw new InvalidDataException(getResources().getString(
 					R.string.form_error_product_label_empty));
 		}
+		if (nutrition.getData() == null) {
+			throw new InvalidDataException(getResources().getString(
+					R.string.form_error_product_nutrition_is_null));
+		}
 		amount.validate();
 		units.validate();
 		nutrition.validate();

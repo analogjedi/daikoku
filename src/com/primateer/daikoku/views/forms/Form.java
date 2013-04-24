@@ -18,10 +18,11 @@ public interface Form<T> {
 	void validate() throws InvalidDataException;
 
 	/**
-	 * Returns the data from the form in an object. The returned data must be
-	 * valid.
+	 * Returns the data from the form in an object.
+	 * If data is returned, it must be valid.
+	 * {@code null} may be returned to indicate an empty form.
 	 * 
-	 * @return object constructed from form input
+	 * @return object constructed from form input, or {@code null}
 	 * @throws InvalidDataException
 	 *             on invalid input
 	 */

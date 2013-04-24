@@ -26,6 +26,7 @@
     
     <string name="form_error_title">Invalid Input</string>
     <string name="form_error_product_label_empty">Product label is empty</string>
+    <string name="form_error_product_nutrition_is_null">Nutrition info is missing</string>
     
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
