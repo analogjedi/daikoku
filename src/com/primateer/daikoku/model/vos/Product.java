@@ -41,6 +41,10 @@ public class Product extends ValueObject<Product> {
 	public double getUnits() {
 		return units;
 	}
+	
+	public Amount getUnitsAmount() {
+		return new Amount(units,Unit.UNIT_UNITS);
+	}
 
 	public void setUnits(double units) {
 		this.units = units;

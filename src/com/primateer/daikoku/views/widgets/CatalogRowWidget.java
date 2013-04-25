@@ -5,21 +5,24 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.views.forms.DialogFormConnector;
 
 public class CatalogRowWidget<T> extends LinearLayout implements
 		DataRowWidget<T> {
 
-	protected T data;
+	private T bufferedData;
 	private ImageButton deleteButton;
 	private ImageButton editButton;
-	private Button selectButton;
+	private TextView selectView;
+	private DialogFormConnector<T> formConnector;
 
 	private SimpleObservable<DataRowWidget<T>> observable = new SimpleObservable<DataRowWidget<T>>();
 
@@ -44,32 +47,46 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 				LayoutParams.WRAP_CONTENT, 0.25f);
 		editLayout.gravity = Gravity.CENTER;
 
-		selectButton = new Button(context);
-		selectButton.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-		selectButton.setLayoutParams(new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 1.5f));
-		selectButton.setOnClickListener(new OnClickListener() {
+		selectView = new TextView(context);
+		selectView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+		LinearLayout.LayoutParams selectLayout = new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 1.5f);
+		selectLayout.gravity = Gravity.CENTER_VERTICAL;
+		selectView.setPadding(5, 0, 0, 0);
+		selectView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				observable.notifyObservers(CatalogRowWidget.this);
+				Helper.toast(getRowData().toString());
 			}
 		});
-		
+
 		this.setOrientation(LinearLayout.HORIZONTAL);
-		this.addView(deleteButton,deleteLayout);
-		this.addView(editButton,editLayout);
-		this.addView(selectButton);
+		this.addView(deleteButton, deleteLayout);
+		this.addView(editButton, editLayout);
+		this.addView(selectView, selectLayout);
+	}
+
+	public void setDataClass(Class<T> dataClass) {
+			formConnector = new DialogFormConnector<T>();
+			formConnector.addObserver(new Observer<T>() {
+				@Override
+				public void update(T data) {
+					bufferedData = data;
+					selectView.setText(data.toString());
+				}
+			});
+			formConnector.register(dataClass, editButton);
 	}
 
 	@Override
 	public void setRowData(T data) {
-		this.data = data;
-		selectButton.setText(data.toString());
+		formConnector.setData(data);
 	}
 
 	@Override
 	public T getRowData() {
-		return data;
+		return bufferedData;
 	}
 
 	@Override

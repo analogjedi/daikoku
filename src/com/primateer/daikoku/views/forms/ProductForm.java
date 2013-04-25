@@ -79,8 +79,10 @@ public class ProductForm extends VoForm<Product> {
 
 	@Override
 	protected void fillFields(Product data) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
+		label.setText(data.getLabel());
+		amount.setData(data.getAmount());
+		units.setData(data.getUnitsAmount());
+		nutritionConnector.setData(data.getNutrition());
 	}
 
 }

@@ -9,10 +9,14 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.primateer.daikoku.dialogs.FormFragment;
+import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
+import com.primateer.daikoku.model.SimpleObservable;
 
-public class DialogFormConnector<T> implements FormConnector<T>, Observer<T> {
+public class DialogFormConnector<T> implements FormConnector<T>, Observer<T>,
+	Observable<T> {
 
+	private SimpleObservable<T> observable = new SimpleObservable<T>();
 	private Form<T> form;
 	private FormFragment<T> fragment;
 	private boolean formUsed = false;
@@ -29,12 +33,12 @@ public class DialogFormConnector<T> implements FormConnector<T>, Observer<T> {
 			public void onClick(View v) {
 				Form<T> form = getForm(type, launcher.getContext());
 				form.setData(data);
-				formUsed = true;
 				fragment = new FormFragment<T>();
 				fragment.setForm(form);
 				fragment.addObserver(DialogFormConnector.this);
 				fragment.show(((FragmentActivity) launcher.getContext())
 						.getSupportFragmentManager(), null);
+				formUsed = true;
 			}
 		});
 	}
@@ -84,7 +88,7 @@ public class DialogFormConnector<T> implements FormConnector<T>, Observer<T> {
 
 	@Override
 	public void setData(T data) throws IllegalArgumentException {
-		this.data = data;
+		update(data);
 		if (form != null) {
 			form.setData(data);
 		}
@@ -112,5 +116,16 @@ public class DialogFormConnector<T> implements FormConnector<T>, Observer<T> {
 	@Override
 	public void update(T data) {
 		this.data = data;
+		observable.notifyObservers(data);
+	}
+
+	@Override
+	public void addObserver(Observer<T> observer) {
+		observable.addObserver(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer<T> observer) {
+		observable.removeObserver(observer);
 	}
 }

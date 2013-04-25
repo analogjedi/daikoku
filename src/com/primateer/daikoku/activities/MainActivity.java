@@ -67,6 +67,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				final Catalog<Product> catalog = new ListCatalog<Product>(
 						MainActivity.this);
+				catalog.setClass(Product.class);
 				catalog.add(lentils);
 				catalog.add(packagedLentils);
 				catalog.add(lentils);

@@ -32,7 +32,7 @@ public abstract class VoForm<T> extends LinearLayout implements Form<T> {
 	
 	@Override
 	public final void setData(T data) throws IllegalArgumentException {
-		clear();
+//		clear();
 		if (data == null) {
 			return;
 		}

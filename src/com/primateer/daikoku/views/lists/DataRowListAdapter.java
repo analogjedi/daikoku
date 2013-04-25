@@ -124,6 +124,8 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onClick(View v) {
+		// TODO confirmation dialog
+		// TODO delete from database
 		int index = ((DataRowWidget<T>) v.getParent()).restoreRowPosition();
 		this.remove(data.get(index));
 	}

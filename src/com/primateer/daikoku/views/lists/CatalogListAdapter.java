@@ -8,10 +8,17 @@ import com.primateer.daikoku.views.widgets.DataRowWidget;
 
 public class CatalogListAdapter<T extends ValueObject<T>> extends
 		DataRowListAdapter<T> {
+	
+	private Class<T> dataClass;
 
 	@Override
 	protected DataRowWidget<T> newWidget(Context context) {
-		return new CatalogRowWidget<T>(context);
+		CatalogRowWidget<T> widget = new CatalogRowWidget<T>(context);
+		widget.setDataClass(dataClass);
+		return widget;
 	}
 
+	public void setClass(Class<T> dataClass) {
+		this.dataClass = dataClass;
+	}
 }

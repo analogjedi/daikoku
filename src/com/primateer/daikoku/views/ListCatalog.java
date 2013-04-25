@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.ValueObject;
+import com.primateer.daikoku.views.forms.DialogFormConnector;
 import com.primateer.daikoku.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.views.widgets.Separator;
 
@@ -54,6 +55,10 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 		this.addView(addButton);
 	}
 
+	@Override
+	public void setClass(Class<T> dataClass) {
+		listAdapter.setClass(dataClass);
+	}
 	@Override
 	public void add(T item) {
 		listAdapter.add(item);
