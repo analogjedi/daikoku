@@ -4,47 +4,43 @@ import java.lang.reflect.Constructor;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.primateer.daikoku.dialogs.FormFragment;
 import com.primateer.daikoku.model.Observer;
 
-public class FormDialogButton<T> extends Button implements Form<T>, Observer<T> {
+public class DialogFormConnector<T> implements FormConnector<T>, Observer<T> {
 
 	private Form<T> form;
 	private FormFragment<T> fragment;
 	private boolean formUsed = false;
 	private T data;
 
-	public FormDialogButton(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
-
-	public FormDialogButton(Context context) {
-		this(context, null);
-	}
-
-	public void register(final Class<T> type) {
-		this.setText(getForm(type).getTitle());
-		this.setOnClickListener(new OnClickListener() {
+	@Override
+	public void register(final Class<T> type, final View launcher) {
+		if (launcher instanceof TextView) {
+			((TextView) launcher).setText(getForm(type, launcher.getContext())
+					.getTitle());
+		}
+		launcher.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Form<T> form = getForm(type);
+				Form<T> form = getForm(type, launcher.getContext());
 				form.setData(data);
 				formUsed = true;
 				fragment = new FormFragment<T>();
 				fragment.setForm(form);
-				fragment.addObserver(FormDialogButton.this);
-				fragment.show(((FragmentActivity) getContext())
+				fragment.addObserver(DialogFormConnector.this);
+				fragment.show(((FragmentActivity) launcher.getContext())
 						.getSupportFragmentManager(), null);
 			}
 		});
 	}
 
 	@SuppressWarnings("unchecked")
-	private Form<T> getForm(Class<T> type) {
+	private Form<T> getForm(Class<T> type, Context context) {
 		if (formUsed) {
 			fragment.removeObserver(this);
 			form = null;
@@ -57,7 +53,7 @@ public class FormDialogButton<T> extends Button implements Form<T>, Observer<T> 
 								+ type.getSimpleName() + "Form");
 				Constructor<Form<T>> constructor = formClass
 						.getConstructor(Context.class);
-				form = (Form<T>) constructor.newInstance(getContext());
+				form = (Form<T>) constructor.newInstance(context);
 				formUsed = false;
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -104,7 +100,12 @@ public class FormDialogButton<T> extends Button implements Form<T>, Observer<T> 
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
+		if (form != null) {
+			return form.getTitle();
+		}
+		if (data != null) {
+			return data.toString();
+		}
 		return null;
 	}
 
