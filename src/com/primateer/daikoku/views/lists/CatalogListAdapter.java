@@ -18,7 +18,7 @@ public class CatalogListAdapter<T extends ValueObject<T>> extends
 		return widget;
 	}
 
-	public void setClass(Class<T> dataClass) {
+	public void setDataClass(Class<T> dataClass) {
 		this.dataClass = dataClass;
 	}
 }

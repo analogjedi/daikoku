@@ -21,27 +21,42 @@ public class DialogFormConnector<T> implements FormConnector<T>, Observer<T>,
 	private FormFragment<T> fragment;
 	private boolean formUsed = false;
 	private T data;
-
+	private Class<T> dataClass;
+	private Context context;
+	
 	@Override
-	public void register(final Class<T> type, final View launcher) {
+	public void showDialog() {
+		Form<T> form = getForm(dataClass, this.context);
+		form.setData(data);
+		fragment = new FormFragment<T>();
+		fragment.setForm(form);
+		fragment.addObserver(DialogFormConnector.this);
+		fragment.show(((FragmentActivity) this.context)
+				.getSupportFragmentManager(), null);
+		formUsed = true;
+	}
+	
+	@Override
+	public void register(Class<T> dataClass, View launcher) {
+		register(dataClass,launcher.getContext());
 		if (launcher instanceof TextView) {
-			((TextView) launcher).setText(getForm(type, launcher.getContext())
+			((TextView) launcher).setText(getForm(dataClass, launcher.getContext())
 					.getTitle());
 		}
 		launcher.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Form<T> form = getForm(type, launcher.getContext());
-				form.setData(data);
-				fragment = new FormFragment<T>();
-				fragment.setForm(form);
-				fragment.addObserver(DialogFormConnector.this);
-				fragment.show(((FragmentActivity) launcher.getContext())
-						.getSupportFragmentManager(), null);
-				formUsed = true;
+				DialogFormConnector.this.showDialog();
 			}
 		});
 	}
+	
+	@Override
+	public void register(Class<T> dataClass, Context context) {
+		this.dataClass = dataClass;
+		this.context = context;
+	}
+
 
 	@SuppressWarnings("unchecked")
 	private Form<T> getForm(Class<T> type, Context context) {

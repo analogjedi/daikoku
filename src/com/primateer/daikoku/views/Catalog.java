@@ -4,5 +4,5 @@ package com.primateer.daikoku.views;
 public interface Catalog<T> {
 
 	void add(T item);
-	void setClass(Class<T> dataClass);
+	void setDataClass(Class<T> dataClass);
 }

@@ -38,6 +38,16 @@ public class MainActivity extends FragmentActivity {
 		views.setOrientation(LinearLayout.VERTICAL);
 		this.setContentView(views);
 
+		Nutrition appleNutrition = new Nutrition();
+		appleNutrition.setNutrient(new Nutrient(Nutrient.TYPE_ENERGY,
+				new Amount("55kcal")));
+
+		final Product apple = new Product();
+		apple.setLabel("Apple");
+		apple.setNutrition(appleNutrition);
+		apple.setAmount(new Amount("120g"));
+		apple.setUnits(1);
+
 		Nutrition lentilsNutrition = new Nutrition();
 		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_ENERGY,
 				new Amount("336kcal")));
@@ -67,7 +77,8 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				final Catalog<Product> catalog = new ListCatalog<Product>(
 						MainActivity.this);
-				catalog.setClass(Product.class);
+				catalog.setDataClass(Product.class);
+				catalog.add(apple);
 				catalog.add(lentils);
 				catalog.add(packagedLentils);
 				catalog.add(lentils);

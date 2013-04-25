@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.forms.DialogFormConnector;
 import com.primateer.daikoku.views.lists.CatalogListAdapter;
@@ -19,6 +20,7 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 	private ImageButton addButton;
 	private ListView itemList;
 	private CatalogListAdapter<T> listAdapter;
+	private Class<T> dataClass;
 
 	public ListCatalog(Context context) {
 		this(context, null);
@@ -27,18 +29,12 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 	public ListCatalog(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.setOrientation(LinearLayout.VERTICAL);
-		this.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		this.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT));
 
 		// add button
 		addButton = new ImageButton(context);
 		addButton.setImageResource(Application.ICON_ADD);
-		addButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO
-				// NutritionForm.this.showAddRowDialog();
-			}
-		});
 
 		// item list
 		itemList = new ListView(context);
@@ -56,9 +52,27 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 	}
 
 	@Override
-	public void setClass(Class<T> dataClass) {
-		listAdapter.setClass(dataClass);
+	public void setDataClass(Class<T> dataClass) {
+		this.dataClass = dataClass;
+		listAdapter.setDataClass(dataClass);
+		addButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogFormConnector<T> connector = new DialogFormConnector<T>();
+				// connector.register(ListCatalog.this.dataClass, addButton);
+				connector.register(ListCatalog.this.dataClass,
+						ListCatalog.this.getContext());
+				connector.addObserver(new Observer<T>() {
+					@Override
+					public void update(T item) {
+						add(item);
+					}
+				});
+				connector.showDialog();
+			}
+		});
 	}
+
 	@Override
 	public void add(T item) {
 		listAdapter.add(item);

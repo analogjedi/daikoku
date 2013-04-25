@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Amount;

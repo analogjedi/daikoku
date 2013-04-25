@@ -50,7 +50,7 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 		selectView = new TextView(context);
 		selectView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
 		LinearLayout.LayoutParams selectLayout = new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 1.5f);
+				LayoutParams.MATCH_PARENT, 1.5f);
 		selectLayout.gravity = Gravity.CENTER_VERTICAL;
 		selectView.setPadding(5, 0, 0, 0);
 		selectView.setOnClickListener(new OnClickListener() {
