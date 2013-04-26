@@ -41,7 +41,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 		valueView.setInputType(EditorInfo.TYPE_CLASS_NUMBER
 				| EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
 		valueView.setLayoutParams(new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 0.9f));
+				LayoutParams.WRAP_CONTENT, 0.8f));
 		valueView.setText("0");
 		valueView.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -66,7 +66,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 
 		unitView = new Spinner(context);
 		unitView.setLayoutParams(new LayoutParams(0, LayoutParams.WRAP_CONTENT,
-				0.9f));
+				1.0f));
 		unitView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -133,7 +133,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 	public void setData(Amount data) throws IllegalArgumentException {
 		if (this.units == null) {
 			throw new IllegalArgumentException(
-					"Call setUnits() before setAmount()");
+					"AmountWidget: Call setUnits() before setData()");
 		}
 		valueView.setText(String.valueOf(data.value));
 		unitView.setSelection(units.indexOf(data.unit));

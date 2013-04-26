@@ -7,6 +7,7 @@ import android.widget.EditText;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
+import com.primateer.daikoku.views.connector.FormDialogConnector;
 import com.primateer.daikoku.views.widgets.LabelWidget;
 import com.primateer.daikoku.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.views.widgets.UnitsAmountWidget;
@@ -15,7 +16,7 @@ public class ProductForm extends VoForm<Product> {
 
 	private EditText label;
 	private ReferenceAmountWidget amount;
-	FormConnector<Nutrition> nutritionConnector;
+	FormDialogConnector<Nutrition> nutritionConnector;
 	private UnitsAmountWidget units;
 
 	public ProductForm(final Context context) {
@@ -29,7 +30,7 @@ public class ProductForm extends VoForm<Product> {
 		units = new UnitsAmountWidget(context);
 
 		Button nutritionButton = new Button(context);
-		nutritionConnector = new DialogFormConnector<Nutrition>();
+		nutritionConnector = new FormDialogConnector<Nutrition>();
 		nutritionConnector.register(Nutrition.class, nutritionButton);
 
 		this.addView(label);

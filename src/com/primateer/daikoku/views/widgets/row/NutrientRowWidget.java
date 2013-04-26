@@ -1,4 +1,4 @@
-package com.primateer.daikoku.views.widgets;
+package com.primateer.daikoku.views.widgets.row;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.views.forms.InvalidDataException;
+import com.primateer.daikoku.views.widgets.AmountWidget;
 
 public class NutrientRowWidget extends AmountWidget implements
 		DataRowWidget<Nutrient> {

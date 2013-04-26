@@ -6,24 +6,28 @@ import android.view.View;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Data;
+import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.views.widgets.CatalogRowWidget;
-import com.primateer.daikoku.views.widgets.DataRowWidget;
+import com.primateer.daikoku.views.widgets.row.CatalogRowWidget;
+import com.primateer.daikoku.views.widgets.row.DataRowWidget;
 
 public class CatalogListAdapter<T extends ValueObject<T>> extends
 		DataRowListAdapter<T> {
 
 	private Class<T> dataClass;
+	private Observer<T> selectionObserver;
 
 	@Override
 	protected DataRowWidget<T> newWidget(Context context) {
 		CatalogRowWidget<T> widget = new CatalogRowWidget<T>(context);
 		widget.setDataClass(dataClass);
+		widget.setSelectionObserver(selectionObserver);
 		return widget;
 	}
 
-	public void setDataClass(Class<T> dataClass) {
+	public void register(Class<T> dataClass, Observer<T> observer) {
 		this.dataClass = dataClass;
+		this.selectionObserver = observer;
 	}
 
 	@Override

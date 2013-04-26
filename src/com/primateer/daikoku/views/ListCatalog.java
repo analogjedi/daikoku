@@ -11,13 +11,14 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.views.forms.DialogFormConnector;
+import com.primateer.daikoku.views.connector.FormDialogConnector;
 import com.primateer.daikoku.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.views.widgets.Separator;
 
 public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 		implements Catalog<T> {
 
+	private Observer<T> selectionObserver;
 	private ImageButton addButton;
 	private ListView itemList;
 	private CatalogListAdapter<T> listAdapter;
@@ -56,11 +57,18 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 	@Override
 	public void setDataClass(Class<T> dataClass) {
 		this.dataClass = dataClass;
-		listAdapter.setDataClass(dataClass);
+		listAdapter.register(dataClass, new Observer<T>() {
+			@Override
+			public void update(T item) {
+				if (selectionObserver != null) {
+					selectionObserver.update(item);
+				}
+			}
+		});
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFormConnector<T> connector = new DialogFormConnector<T>();
+				FormDialogConnector<T> connector = new FormDialogConnector<T>();
 				connector.register(ListCatalog.this.dataClass,
 						ListCatalog.this.getContext());
 				connector.addObserver(new Observer<T>() {
@@ -82,5 +90,15 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 	@Override
 	public void add(T item) {
 		listAdapter.add(item);
+	}
+
+	@Override
+	public View getView() {
+		return this;
+	}
+	
+	@Override
+	public void setSelectionObserver(Observer<T> observer) {
+		this.selectionObserver = observer;
 	}
 }

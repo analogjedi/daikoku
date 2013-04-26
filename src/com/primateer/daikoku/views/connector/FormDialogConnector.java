@@ -1,4 +1,4 @@
-package com.primateer.daikoku.views.forms;
+package com.primateer.daikoku.views.connector;
 
 import java.lang.reflect.Constructor;
 
@@ -12,14 +12,16 @@ import com.primateer.daikoku.dialogs.FormFragment;
 import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.views.forms.Form;
+import com.primateer.daikoku.views.forms.InvalidDataException;
 
-public class DialogFormConnector<T> implements FormConnector<T>, Observer<T>,
+public class FormDialogConnector<T> implements Form<T>, Connector<T>, Observer<T>,
 	Observable<T> {
 
 	private SimpleObservable<T> observable = new SimpleObservable<T>();
 	private Form<T> form;
 	private FormFragment<T> fragment;
-	private boolean formUsed = false;
+	private boolean viewUsed = false;
 	private T data;
 	private Class<T> dataClass;
 	private Context context;
@@ -30,10 +32,10 @@ public class DialogFormConnector<T> implements FormConnector<T>, Observer<T>,
 		form.setData(data);
 		fragment = new FormFragment<T>();
 		fragment.setForm(form);
-		fragment.addObserver(DialogFormConnector.this);
+		fragment.addObserver(FormDialogConnector.this);
 		fragment.show(((FragmentActivity) this.context)
 				.getSupportFragmentManager(), null);
-		formUsed = true;
+		viewUsed = true;
 	}
 	
 	@Override
@@ -46,7 +48,7 @@ public class DialogFormConnector<T> implements FormConnector<T>, Observer<T>,
 		launcher.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFormConnector.this.showDialog();
+				FormDialogConnector.this.showDialog();
 			}
 		});
 	}
@@ -60,10 +62,10 @@ public class DialogFormConnector<T> implements FormConnector<T>, Observer<T>,
 
 	@SuppressWarnings("unchecked")
 	private Form<T> getForm(Class<T> type, Context context) {
-		if (formUsed) {
+		if (viewUsed) {
 			fragment.removeObserver(this);
 			form = null;
-			formUsed = false;
+			viewUsed = false;
 		}
 		if (form == null) {
 			try {
@@ -73,7 +75,7 @@ public class DialogFormConnector<T> implements FormConnector<T>, Observer<T>,
 				Constructor<Form<T>> constructor = formClass
 						.getConstructor(Context.class);
 				form = (Form<T>) constructor.newInstance(context);
-				formUsed = false;
+				viewUsed = false;
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

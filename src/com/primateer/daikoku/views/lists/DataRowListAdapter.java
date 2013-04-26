@@ -12,7 +12,7 @@ import android.widget.ListAdapter;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.views.forms.InvalidDataException;
-import com.primateer.daikoku.views.widgets.DataRowWidget;
+import com.primateer.daikoku.views.widgets.row.DataRowWidget;
 
 public abstract class DataRowListAdapter<T> implements ListAdapter,
 		View.OnClickListener {

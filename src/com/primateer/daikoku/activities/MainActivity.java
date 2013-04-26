@@ -18,6 +18,7 @@ import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.views.Catalog;
 import com.primateer.daikoku.views.ListCatalog;
 import com.primateer.daikoku.views.forms.ProductForm;
+import com.primateer.daikoku.views.forms.RecipeForm;
 
 public class MainActivity extends FragmentActivity {
 
@@ -54,12 +55,25 @@ public class MainActivity extends FragmentActivity {
 				FormFragment frag = new FormFragment();
 				frag.setForm(new ProductForm(MainActivity.this));
 				frag.show(MainActivity.this.getSupportFragmentManager(),
-						"form_dialog");
+						"product");
+			}
+		});
+		
+		Button openRecipeButton = new Button(this);
+		openRecipeButton.setText("open recipe form");
+		openRecipeButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FormFragment frag = new FormFragment();
+				frag.setForm(new RecipeForm(MainActivity.this));
+				frag.show(MainActivity.this.getSupportFragmentManager(),
+						"recipe");				
 			}
 		});
 
 		views.addView(getStatsButton);
 		views.addView(openDialogButton);
+		views.addView(openRecipeButton);
 	}
 
 	@Override

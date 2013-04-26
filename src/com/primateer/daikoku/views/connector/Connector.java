@@ -1,9 +1,9 @@
-package com.primateer.daikoku.views.forms;
+package com.primateer.daikoku.views.connector;
 
 import android.content.Context;
 import android.view.View;
 
-public interface FormConnector<T> extends Form<T> {
+public interface Connector<T> {
 
 	void showDialog();
 	void register(Class<T> dataClass, View launcher);

@@ -5,8 +5,8 @@ import android.content.Context;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientSet;
-import com.primateer.daikoku.views.widgets.DataRowWidget;
-import com.primateer.daikoku.views.widgets.NutrientRowWidget;
+import com.primateer.daikoku.views.widgets.row.DataRowWidget;
+import com.primateer.daikoku.views.widgets.row.NutrientRowWidget;
 
 public class NutrientListAdapter extends DataRowListAdapter<Nutrient> {
 

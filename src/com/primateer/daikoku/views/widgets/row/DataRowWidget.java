@@ -1,4 +1,4 @@
-package com.primateer.daikoku.views.widgets;
+package com.primateer.daikoku.views.widgets.row;
 
 import android.view.View;
 import android.view.View.OnClickListener;

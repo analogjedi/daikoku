@@ -5,12 +5,13 @@ import java.util.Map;
 
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Ingredient;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.ValueObject;
 
-public class Recipe extends ValueObject<Recipe> {
+public class Recipe extends ValueObject<Recipe> implements Ingredient {
 
 	private String label;
 	private Map<Product, Amount> ingredients;
@@ -50,5 +51,16 @@ public class Recipe extends ValueObject<Recipe> {
 			}
 		}
 		return total;
+	}
+
+	@Override
+	public double getUnits() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Amount getDefaultAmount() {
+		return new Amount(1,Unit.UNIT_UNITS);
 	}
 }

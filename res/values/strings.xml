@@ -20,6 +20,8 @@
     
     <string name="amount">Amount</string>
     <string name="product">Product</string>
+    <string name="recipe">Recipe</string>
+    <string name="meal">Meal</string>
     <string name="units">Units</string>
     <string name="label">Label</string>
     <string name="nutrition">Nutrition</string>
@@ -27,6 +29,7 @@
     <string name="form_error_title">Invalid Input</string>
     <string name="form_error_product_label_empty">Product label is empty</string>
     <string name="form_error_product_nutrition_is_null">Nutrition info is missing</string>
+    <string name="form_error_recipe_label_empty">Recipe label is empty</string>
     
     <string name="dialog_confirm_delete_title">Confirm Delete</string>
     <string name="dialog_confirm_delete_msg">Do you really want to delete:</string>

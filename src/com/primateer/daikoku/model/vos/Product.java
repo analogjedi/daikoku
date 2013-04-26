@@ -4,10 +4,11 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Ingredient;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.ValueObject;
 
-public class Product extends ValueObject<Product> {
+public class Product extends ValueObject<Product> implements Ingredient {
 
 	private String label;
 	private Nutrition nutrition;
@@ -38,6 +39,7 @@ public class Product extends ValueObject<Product> {
 		this.amount = amount;
 	}
 
+	@Override
 	public double getUnits() {
 		return units;
 	}
@@ -65,5 +67,13 @@ public class Product extends ValueObject<Product> {
 					.getString(R.string.placeholder_empty);
 		}
 		return label;
+	}
+
+	@Override
+	public Amount getDefaultAmount() {
+		if (units > 0) {
+			return new Amount(1,Unit.UNIT_UNITS);
+		}
+		return amount;
 	}
 }

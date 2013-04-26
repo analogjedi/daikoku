@@ -1,4 +1,4 @@
-package com.primateer.daikoku.views.widgets;
+package com.primateer.daikoku.views.widgets.row;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,10 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
-import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
-import com.primateer.daikoku.views.forms.DialogFormConnector;
+import com.primateer.daikoku.views.connector.FormDialogConnector;
 
 public class CatalogRowWidget<T> extends LinearLayout implements
 		DataRowWidget<T> {
@@ -22,7 +21,7 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 	private ImageButton deleteButton;
 	private ImageButton editButton;
 	private TextView selectView;
-	private DialogFormConnector<T> formConnector;
+	private FormDialogConnector<T> formConnector;
 
 	private SimpleObservable<DataRowWidget<T>> observable = new SimpleObservable<DataRowWidget<T>>();
 
@@ -53,13 +52,6 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 				LayoutParams.MATCH_PARENT, 1.5f);
 		selectLayout.gravity = Gravity.CENTER_VERTICAL;
 		selectView.setPadding(5, 0, 0, 0);
-		selectView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				observable.notifyObservers(CatalogRowWidget.this);
-				Helper.toast(getRowData().toString());
-			}
-		});
 
 		this.setOrientation(LinearLayout.HORIZONTAL);
 		this.addView(deleteButton, deleteLayout);
@@ -68,15 +60,15 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 	}
 
 	public void setDataClass(Class<T> dataClass) {
-			formConnector = new DialogFormConnector<T>();
-			formConnector.addObserver(new Observer<T>() {
-				@Override
-				public void update(T data) {
-					bufferedData = data;
-					selectView.setText(data.toString());
-				}
-			});
-			formConnector.register(dataClass, editButton);
+		formConnector = new FormDialogConnector<T>();
+		formConnector.addObserver(new Observer<T>() {
+			@Override
+			public void update(T data) {
+				bufferedData = data;
+				selectView.setText(data.toString());
+			}
+		});
+		formConnector.register(dataClass, editButton);
 	}
 
 	@Override
@@ -117,5 +109,14 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 	@Override
 	public View getView() {
 		return this;
+	}
+
+	public void setSelectionObserver(final Observer<T> selectionObserver) {
+		selectView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				selectionObserver.update(bufferedData);
+			}
+		});
 	}
 }
