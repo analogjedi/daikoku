@@ -67,6 +67,7 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 					@Override
 					public void update(T item) {
 						add(item);
+						Data.getInstance().register(item);
 					}
 				});
 				connector.showDialog();

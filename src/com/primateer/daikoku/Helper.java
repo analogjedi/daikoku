@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -68,12 +69,29 @@ public class Helper {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(title);
 		builder.setMessage(msg);
-//		builder.setCancelable(false);
+		// builder.setCancelable(false);
 		builder.setNeutralButton(R.string.ok, null);
 		builder.create().show();
 	}
 
 	public static boolean isEmpty(String string) {
 		return string == null || string.length() < 1;
+	}
+
+	public static void executeUponConfirmation(Context context, String title,
+			String msg, final Runnable action) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle(title);
+		builder.setMessage(msg);
+		// builder.setCancelable(false);
+		builder.setNegativeButton(R.string.cancel, null);
+		builder.setPositiveButton(R.string.ok,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						action.run();
+					}
+				});
+		builder.create().show();
 	}
 }

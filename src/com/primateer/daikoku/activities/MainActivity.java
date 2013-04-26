@@ -14,11 +14,6 @@ import android.widget.LinearLayout;
 
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.dialogs.FormFragment;
-import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.Data;
-import com.primateer.daikoku.model.Nutrient;
-import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.views.Catalog;
 import com.primateer.daikoku.views.ListCatalog;
@@ -33,38 +28,6 @@ public class MainActivity extends FragmentActivity {
 		LinearLayout views = new LinearLayout(this);
 		views.setOrientation(LinearLayout.VERTICAL);
 		this.setContentView(views);
-
-		Nutrition appleNutrition = new Nutrition();
-		appleNutrition.setNutrient(new Nutrient(Nutrient.TYPE_ENERGY,
-				new Amount("55kcal")));
-
-		final Product apple = new Product();
-		apple.setLabel("Apple");
-		apple.setNutrition(appleNutrition);
-		apple.setAmount(new Amount("120g"));
-		apple.setUnits(1);
-
-		Nutrition lentilsNutrition = new Nutrition();
-		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_ENERGY,
-				new Amount("336kcal")));
-		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_PROTEIN,
-				new Amount("23g")));
-		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_CARBS,
-				new Amount("50g")));
-		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_FAT,
-				new Amount("1.6g")));
-
-		final Product lentils = new Product();
-		lentils.setLabel("lentils");
-		lentils.setNutrition(lentilsNutrition);
-		lentils.setAmount(new Amount("500g"));
-		lentils.setUnits(0);
-
-		final Product packagedLentils = new Product();
-		packagedLentils.setLabel("packaged lentils");
-		packagedLentils.setNutrition(lentilsNutrition);
-		packagedLentils.setAmount(new Amount("1kg"));
-		packagedLentils.setUnits(4);
 
 		Button getStatsButton = new Button(this);
 		getStatsButton.setText("open product catalog");

@@ -120,15 +120,17 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 	public boolean isEnabled(int position) {
 		return true;
 	}
-
+	
 	@SuppressWarnings("unchecked")
+	protected T getItemFromView(View v) {
+		return data.get(((DataRowWidget<T>) v.getParent()).restoreRowPosition());
+	}
+
 	@Override
 	public void onClick(View v) {
-		// TODO confirmation dialog
-		// TODO delete from database
-		int index = ((DataRowWidget<T>) v.getParent()).restoreRowPosition();
-		this.remove(data.get(index));
+		this.remove(getItemFromView(v));
 	}
+
 
 	/**
 	 * Instantiate a new instance of the corresponding data row.
