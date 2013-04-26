@@ -1,12 +1,11 @@
 package com.primateer.daikoku.db;
 
 import java.util.Date;
-import java.util.List;
 
 import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.vos.Meal;
 
-public class DayDao extends Dao<Day> {
+public class DayDao {
 
 	public Day load(Date date) {
 		Day vo = new Day(date);
@@ -15,35 +14,4 @@ public class DayDao extends Dao<Day> {
 		}
 		return vo;
 	}
-
-	@Override
-	public Day load(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Day> loadAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public long insert(Day vo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int update(Day vo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int delete(Day vo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

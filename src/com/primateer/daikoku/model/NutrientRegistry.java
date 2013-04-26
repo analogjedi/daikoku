@@ -17,26 +17,26 @@ public class NutrientRegistry {
 	}
 
 	private Map<String, Nutrient.Type> typeById = new HashMap<String, Nutrient.Type>();
-	private List<Nutrient.Type> defaultNutrientTypes;
-	private List<Nutrient.Type> allNutrientTypes;
+	private List<Nutrient.Type> defaultNutrientTypes = new ArrayList<Nutrient.Type>();
+	private List<Nutrient.Type> allNutrientTypes = new ArrayList<Nutrient.Type>();
 	private Amount defaultReferenceAmount;
 
 	private NutrientRegistry() {
-		defaultNutrientTypes = new ArrayList<Nutrient.Type>();
 		defaultNutrientTypes.add(Nutrient.TYPE_ENERGY);
 		defaultNutrientTypes.add(Nutrient.TYPE_PROTEIN);
 		defaultNutrientTypes.add(Nutrient.TYPE_CARBS);
 		defaultNutrientTypes.add(Nutrient.TYPE_FAT);
-		
-		allNutrientTypes = new ArrayList<Nutrient.Type>();
-		allNutrientTypes.addAll(defaultNutrientTypes);
-		allNutrientTypes.add(Nutrient.TYPE_CHOLESTEROL);
-		allNutrientTypes.add(Nutrient.TYPE_SODIUM);
-		allNutrientTypes.add(Nutrient.TYPE_SATURATED_FAT);
-		allNutrientTypes.add(Nutrient.TYPE_FIBER);
-		allNutrientTypes.add(Nutrient.TYPE_SUGAR);
-		
-		defaultReferenceAmount = new Amount(100,Unit.UNIT_GRAM); // TODO
+
+		for (Nutrient.Type type : defaultNutrientTypes) {
+			register(type);
+		}
+		register(Nutrient.TYPE_CHOLESTEROL);
+		register(Nutrient.TYPE_SODIUM);
+		register(Nutrient.TYPE_SATURATED_FAT);
+		register(Nutrient.TYPE_FIBER);
+		register(Nutrient.TYPE_SUGAR);
+
+		defaultReferenceAmount = new Amount(100, Unit.UNIT_GRAM); // TODO
 	}
 
 	/**
@@ -44,13 +44,14 @@ public class NutrientRegistry {
 	 * @return previously registered unit or {@code null}
 	 */
 	public Nutrient.Type register(Nutrient.Type type) {
+		allNutrientTypes.add(type);
 		return typeById.put(type.id, type);
 	}
 
 	public Nutrient.Type getType(String symbol) {
 		return typeById.get(symbol);
 	}
-	
+
 	public List<Nutrient.Type> getAllNutrientTypes() {
 		return allNutrientTypes;
 	}
@@ -58,7 +59,7 @@ public class NutrientRegistry {
 	public List<Nutrient.Type> getDefaultNutrientTypes() {
 		return defaultNutrientTypes;
 	}
-	
+
 	public Amount getDefaultReferenceAmount() {
 		return defaultReferenceAmount;
 	}

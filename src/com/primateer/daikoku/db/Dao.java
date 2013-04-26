@@ -6,9 +6,9 @@ import android.content.ContentResolver;
 import android.net.Uri;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.model.ValueObject;
 
-// TODO a template (<Object>) may help
-public abstract class Dao<T> {
+public abstract class Dao<T extends ValueObject<T>> {
 
 	public static final String COL_ID = "_id";
 	public static final String COL_LABEL = "label";

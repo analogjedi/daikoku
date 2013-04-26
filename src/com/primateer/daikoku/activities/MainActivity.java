@@ -7,26 +7,22 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 
-import com.primateer.daikoku.Application;
-import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.dialogs.FormFragment;
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Nutrient;
+import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.views.Catalog;
 import com.primateer.daikoku.views.ListCatalog;
-import com.primateer.daikoku.views.forms.InvalidDataException;
 import com.primateer.daikoku.views.forms.ProductForm;
-import com.primateer.daikoku.views.widgets.Separator;
 
 public class MainActivity extends FragmentActivity {
 
@@ -78,18 +74,6 @@ public class MainActivity extends FragmentActivity {
 				final Catalog<Product> catalog = new ListCatalog<Product>(
 						MainActivity.this);
 				catalog.setDataClass(Product.class);
-				catalog.add(apple);
-				catalog.add(lentils);
-				catalog.add(packagedLentils);
-				catalog.add(lentils);
-				catalog.add(packagedLentils);
-				catalog.add(lentils);
-				catalog.add(packagedLentils);
-				catalog.add(lentils);
-				catalog.add(packagedLentils);
-				catalog.add(lentils);
-				catalog.add(packagedLentils);
-
 				Dialog dialog = new Dialog(MainActivity.this);
 				dialog.setTitle("PRODUCT CATALOG");
 				ViewGroup content = (ViewGroup) catalog;

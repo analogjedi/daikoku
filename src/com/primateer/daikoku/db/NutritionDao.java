@@ -1,8 +1,6 @@
 package com.primateer.daikoku.db;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import android.content.ContentValues;
 import android.database.Cursor;

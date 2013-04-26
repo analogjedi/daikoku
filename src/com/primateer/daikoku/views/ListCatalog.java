@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.forms.DialogFormConnector;
@@ -51,6 +52,7 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 		this.addView(addButton);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setDataClass(Class<T> dataClass) {
 		this.dataClass = dataClass;
@@ -59,7 +61,6 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 			@Override
 			public void onClick(View v) {
 				DialogFormConnector<T> connector = new DialogFormConnector<T>();
-				// connector.register(ListCatalog.this.dataClass, addButton);
 				connector.register(ListCatalog.this.dataClass,
 						ListCatalog.this.getContext());
 				connector.addObserver(new Observer<T>() {
@@ -71,6 +72,10 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 				connector.showDialog();
 			}
 		});
+		// load items from database
+		for (ValueObject<T> vo : Data.getInstance().getAll(dataClass)) {
+			this.add((T)vo);
+		}
 	}
 
 	@Override

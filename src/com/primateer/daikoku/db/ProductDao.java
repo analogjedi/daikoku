@@ -1,5 +1,6 @@
 package com.primateer.daikoku.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -22,13 +23,7 @@ public class ProductDao extends Dao<Product> {
 		Cursor q = getResolver().query(getUri(TABLE), null, whereId(id), null,
 				null);
 		if (q.moveToFirst()) {
-			vo = new Product();
-			vo.setId(id);
-			vo.setLabel(q.getString(q.getColumnIndex(COL_LABEL)));
-			vo.setNutrition((Nutrition) Data.getInstance().get(Nutrition.class,
-					q.getLong(q.getColumnIndex(COL_NUTRITION))));
-			vo.setAmount(new Amount(q.getString(q.getColumnIndex(COL_AMOUNT))));
-			vo.setUnits(q.getDouble(q.getColumnIndex(COL_UNITS)));
+			vo = buildProduct(q);
 		}
 		q.close();
 		return vo;
@@ -55,8 +50,25 @@ public class ProductDao extends Dao<Product> {
 
 	@Override
 	public List<Product> loadAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Product> results = new ArrayList<Product>();
+		Cursor q = getResolver().query(getUri(TABLE), null,
+				null, null, null);
+		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
+			results.add(buildProduct(q));
+		}
+		q.close();
+		return results;
+	}
+
+	private Product buildProduct(Cursor q) {
+		Product vo = new Product();
+		vo.setId(q.getLong(q.getColumnIndex(COL_ID)));
+		vo.setLabel(q.getString(q.getColumnIndex(COL_LABEL)));
+		vo.setNutrition((Nutrition) Data.getInstance().get(Nutrition.class,
+				q.getLong(q.getColumnIndex(COL_NUTRITION))));
+		vo.setAmount(new Amount(q.getString(q.getColumnIndex(COL_AMOUNT))));
+		vo.setUnits(q.getDouble(q.getColumnIndex(COL_UNITS)));
+		return vo;
 	}
 
 	@Override

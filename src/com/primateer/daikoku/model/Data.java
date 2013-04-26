@@ -1,6 +1,7 @@
 package com.primateer.daikoku.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.primateer.daikoku.db.Dao;
@@ -47,7 +48,7 @@ public class Data {
 	}
 	
 	public ValueObject get(Class voClass, long id) {
-		Map<Long, ValueObject> entries = registry.get(voClass);
+		Map<Long, ValueObject> entries = getEntries(voClass);
 		ValueObject vo = entries.get(id);
 		
 		if (vo == null) {
@@ -55,6 +56,11 @@ public class Data {
 			register(vo);
 		}
 		return vo;
+	}
+	
+	public List<ValueObject> getAll(Class voClass) {
+		// TODO handle preloaded vos
+		return getDao(voClass).loadAll();
 	}
 	
 	public long register(ValueObject vo) {
