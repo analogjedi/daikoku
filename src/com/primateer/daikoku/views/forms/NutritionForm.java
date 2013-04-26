@@ -116,6 +116,10 @@ public class NutritionForm extends VoForm<Nutrition> {
 
 	@Override
 	public void validate() throws InvalidDataException {
+		if (listAdapter.isEmpty()) {
+			throw new InvalidDataException(getResources().getString(
+					R.string.form_error_nutrition_list_empty));
+		}
 		gatherData();
 	}
 

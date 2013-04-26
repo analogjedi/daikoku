@@ -21,12 +21,12 @@ public class RecipeForm extends VoForm<Recipe> {
 	private ListView componentList;
 	private ComponentListAdapter listAdapter;
 	private ImageButton addButton;
-	
+
 	public RecipeForm(Context context) {
 		super(context);
-		
+
 		label = new LabelWidget(context);
-		
+
 		componentList = new ListView(context);
 		componentList.setLayoutParams(new LayoutParams(
 				LayoutParams.MATCH_PARENT, 0, 1.0f));
@@ -34,7 +34,7 @@ public class RecipeForm extends VoForm<Recipe> {
 		componentList.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		listAdapter = new ComponentListAdapter();
 		componentList.setAdapter(listAdapter);
-		
+
 		addButton = new ImageButton(context);
 		addButton.setImageResource(Application.ICON_ADD);
 		addButton.setOnClickListener(new OnClickListener() {
@@ -51,27 +51,28 @@ public class RecipeForm extends VoForm<Recipe> {
 				connector.showDialog();
 			}
 		});
-		
+
 		this.addView(label);
 		this.addView(componentList);
 		this.addView(addButton);
 	}
 
-	
-	
 	@Override
 	public void validate() throws InvalidDataException {
 		if (label.getText().length() < 1) {
 			throw new InvalidDataException(getResources().getString(
 					R.string.form_error_recipe_label_empty));
 		}
-		// TODO
+		if (listAdapter.isEmpty()) {
+			throw new InvalidDataException(getResources().getString(
+					R.string.form_error_recipe_list_empty));
+		}
 	}
 
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -88,8 +89,7 @@ public class RecipeForm extends VoForm<Recipe> {
 	@Override
 	protected void fillFields(Recipe data) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 }

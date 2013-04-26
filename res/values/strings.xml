@@ -27,9 +27,11 @@
     <string name="nutrition">Nutrition</string>
     
     <string name="form_error_title">Invalid Input</string>
+    <string name="form_error_nutrition_list_empty">Nutrient list is empty</string>
     <string name="form_error_product_label_empty">Product label is empty</string>
     <string name="form_error_product_nutrition_is_null">Nutrition info is missing</string>
     <string name="form_error_recipe_label_empty">Recipe label is empty</string>
+    <string name="form_error_recipe_list_empty">Ingredient list is empty</string>
     
     <string name="dialog_confirm_delete_title">Confirm Delete</string>
     <string name="dialog_confirm_delete_msg">Do you really want to delete:</string>
