@@ -4,23 +4,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Unit {
+	
+	public enum Type {
+		UNSPECIFIED, COUNT, CURRENCY, ENERGY, MASS, VOLUME;
+	}
 
-	public static final int TYPE_UNSPECIFIED = 0;
-	public static final int TYPE_COUNT = 1;
-	public static final int TYPE_CURRENCY = 2;
-	public static final int TYPE_ENERGY = 3;
-	public static final int TYPE_MASS = 4;
-	public static final int TYPE_VOLUME = 5;
-
-	public static final Unit UNIT_UNITS = new Unit("units",TYPE_COUNT);
-	public static final Unit UNIT_EURO = new Unit("€",TYPE_CURRENCY);
-	public static final Unit UNIT_DOLLAR = new Unit("$",TYPE_CURRENCY);
-	public static final Unit UNIT_GRAM = new Unit("g", TYPE_MASS);
-	public static final Unit UNIT_MILLIGRAM = new Unit("mg", TYPE_MASS);
-	public static final Unit UNIT_KILOGRAM = new Unit("kg", TYPE_MASS);
-	public static final Unit UNIT_POUND = new Unit("lb", TYPE_MASS);
-	public static final Unit UNIT_KILOCALORIE = new Unit("kcal", TYPE_ENERGY);
-	public static final Unit UNIT_MILLILITER = new Unit("ml", TYPE_VOLUME);
+	public static final Unit UNIT_UNITS = new Unit("units",Type.COUNT);
+	public static final Unit UNIT_EURO = new Unit("€",Type.CURRENCY);
+	public static final Unit UNIT_DOLLAR = new Unit("$",Type.CURRENCY);
+	public static final Unit UNIT_GRAM = new Unit("g", Type.MASS);
+	public static final Unit UNIT_MILLIGRAM = new Unit("mg", Type.MASS);
+	public static final Unit UNIT_KILOGRAM = new Unit("kg", Type.MASS);
+	public static final Unit UNIT_POUND = new Unit("lb", Type.MASS);
+	public static final Unit UNIT_KILOCALORIE = new Unit("kcal", Type.ENERGY);
+	public static final Unit UNIT_MILLILITER = new Unit("ml", Type.VOLUME);
 
 	static {
 		UNIT_MILLIGRAM.setConversionRate(UNIT_GRAM, 0.001);
@@ -31,11 +28,11 @@ public class Unit {
 	}
 
 	public final String symbol;
-	public final int type;
+	public final Type type;
 
 	private Map<Unit, Double> conversionRates = new HashMap<Unit, Double>();
 
-	private Unit(String symbol, int type) {
+	private Unit(String symbol, Type type) {
 		this.symbol = symbol;
 		this.type = type;
 	}
@@ -68,7 +65,7 @@ public class Unit {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((symbol == null) ? 0 : symbol.hashCode());
-		result = prime * result + type;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 

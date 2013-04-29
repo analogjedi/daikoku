@@ -8,7 +8,6 @@ import java.util.Set;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,7 +61,7 @@ public class MealForm extends VoForm<Meal> {
 		public void clear() {
 			picker.setText(getResources().getString(R.string.placeholder_empty));
 			amount.setUnits(UnitRegistry.getInstance().getUnitsByType(
-					Unit.TYPE_COUNT));
+					Unit.Type.COUNT));
 			amount.setData(new Amount(0, Unit.UNIT_UNITS));
 		}
 

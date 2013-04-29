@@ -9,7 +9,7 @@ public class Nutrient {
 		public final String id;
 		public final Unit defaultUnit;
 
-		protected Type(String id, int unitType) {
+		protected Type(String id, Unit.Type unitType) {
 			this(id,UnitRegistry.getInstance().getDefaultUnitByType(unitType));
 		}
 		

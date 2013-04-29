@@ -80,7 +80,7 @@ public class Meal extends ValueObject<Meal> implements NutritionHolder {
 	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
 		Amount total = new Amount(0, UnitRegistry.getInstance()
-				.getDefaultUnitByType(Unit.TYPE_MASS));
+				.getDefaultUnitByType(Unit.Type.MASS));
 		if (extraNutrition != null) {
 			total = extraNutrition.getNutrients().get(type).amount;
 		}

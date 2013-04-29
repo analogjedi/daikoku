@@ -50,7 +50,7 @@ public class UnitRegistry {
 	 */
 	public Unit register(Unit unit) {
 		all = null;
-		byType.put(unit.type, null);
+		byType.put(unit.type.ordinal(), null);
 		return bySymbol.put(unit.symbol, unit);
 	}
 
@@ -68,8 +68,8 @@ public class UnitRegistry {
 		return all;
 	}
 
-	public List<Unit> getUnitsByType(int unitType) {
-		List<Unit> units = byType.get(unitType);
+	public List<Unit> getUnitsByType(Unit.Type unitType) {
+		List<Unit> units = byType.get(unitType.ordinal());
 		if (units == null) {
 			units = new ArrayList<Unit>();
 			for (String symbol : bySymbol.keySet()) {
@@ -78,16 +78,16 @@ public class UnitRegistry {
 					units.add(unit);
 				}
 			}
-			byType.put(unitType, units);
+			byType.put(unitType.ordinal(), units);
 		}
 		return units;
 	}
 
-	public Unit getDefaultUnitByType(int unitType) {
-		return defaultByType.get(unitType);
+	public Unit getDefaultUnitByType(Unit.Type unitType) {
+		return defaultByType.get(unitType.ordinal());
 	}
 
 	public void setDefaultUnit(Unit unit) {
-		defaultByType.put(unit.type, unit);
+		defaultByType.put(unit.type.ordinal(), unit);
 	}
 }

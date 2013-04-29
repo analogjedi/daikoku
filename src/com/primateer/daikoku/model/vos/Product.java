@@ -63,7 +63,7 @@ public class Product extends ValueObject<Product> implements Ingredient {
 	}
 
 	public void setUnits(Amount units) {
-		if (units.unit.type != Unit.TYPE_COUNT) {
+		if (units.unit.type != Unit.Type.COUNT) {
 			throw new IllegalArgumentException(
 					"Units must be of type TYPE_COUNT");
 		}

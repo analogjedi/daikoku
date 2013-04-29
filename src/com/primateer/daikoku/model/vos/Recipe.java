@@ -47,11 +47,11 @@ public class Recipe extends ValueObject<Recipe> implements Ingredient {
 	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
 		Amount total = new Amount(0, UnitRegistry.getInstance()
-				.getDefaultUnitByType(Unit.TYPE_MASS));
+				.getDefaultUnitByType(Unit.Type.MASS));
 		if (ingredients != null) {
 			for (Ingredient ingredient : ingredients.keySet()) {
 				Amount ia = ingredients.get(ingredient);
-				if (ia.unit.type == Unit.TYPE_COUNT) {
+				if (ia.unit.type == Unit.Type.COUNT) {
 					ia = ingredient.getAmountPerUnit().scale(ia.value);
 				}
 				total = total.add(ingredient.getNutrition(type).scale(
