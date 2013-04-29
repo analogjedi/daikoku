@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity {
 						"product");
 			}
 		});
-		
+
 		Button openRecipeButton = new Button(this);
 		openRecipeButton.setText("open recipe form");
 		openRecipeButton.setOnClickListener(new OnClickListener() {
@@ -67,13 +67,24 @@ public class MainActivity extends FragmentActivity {
 				FormFragment frag = new FormFragment();
 				frag.setForm(new RecipeForm(MainActivity.this));
 				frag.show(MainActivity.this.getSupportFragmentManager(),
-						"recipe");				
+						"recipe");
+			}
+		});
+
+		Button mealPlanButton = new Button(this);
+		mealPlanButton.setText("start meal plan activity");
+		mealPlanButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainActivity.this,
+						MealPlanActivity.class));
 			}
 		});
 
 		views.addView(getStatsButton);
 		views.addView(openDialogButton);
 		views.addView(openRecipeButton);
+		views.addView(mealPlanButton);
 	}
 
 	@Override

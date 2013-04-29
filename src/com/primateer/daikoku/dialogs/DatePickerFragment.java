@@ -11,9 +11,16 @@ import android.support.v4.app.DialogFragment;
 public class DatePickerFragment extends DialogFragment {
 
 	private Date date = new Date();
+	private DatePickerDialog.OnDateSetListener callback;
 
 	public DatePickerFragment setDate(Date date) {
 		this.date = date;
+		return this;
+	}
+
+	public DatePickerFragment setCallback(
+			DatePickerDialog.OnDateSetListener listener) {
+		this.callback = listener;
 		return this;
 	}
 
@@ -24,8 +31,6 @@ public class DatePickerFragment extends DialogFragment {
 		int year = c.get(Calendar.YEAR);
 		int month = c.get(Calendar.MONTH);
 		int day = c.get(Calendar.DAY_OF_MONTH);
-		return new DatePickerDialog(getActivity(),
-				(DatePickerDialog.OnDateSetListener) getActivity(), year,
-				month, day);
+		return new DatePickerDialog(getActivity(), callback, year, month, day);
 	}
 }

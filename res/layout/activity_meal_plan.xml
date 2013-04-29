@@ -9,33 +9,14 @@
     tools:context=".MealPlanActivity" >
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" >
 
-        <Button
-            android:id="@+id/btn_date_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="&lt;"
-            android:onClick="decrDate" />
-
-        <Button
-            android:id="@+id/lbl_date"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:gravity="center"
-            android:textSize="20sp"
-            android:onClick="pickDate" />
-
-        <Button
-            android:id="@+id/btn_date_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=">"
-            android:onClick="incrDate" />
+        <com.primateer.daikoku.views.widgets.DateWidget
+            android:id="@+id/mealplan_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </RelativeLayout>
