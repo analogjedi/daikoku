@@ -30,8 +30,7 @@ public class Day implements NutritionHolder {
 	@Override
 	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
-		Amount total = new Amount(0, UnitRegistry.getInstance()
-				.getDefaultUnitByType(Unit.Type.MASS));
+		Amount total = new Amount(0, type.defaultUnit);
 		if (meals != null) {
 			for (Meal meal : meals) {
 				Amount mealNutrition = meal.getNutrition(type);

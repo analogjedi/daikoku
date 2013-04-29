@@ -8,8 +8,6 @@ import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutritionHolder;
-import com.primateer.daikoku.model.Unit;
-import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.ValueObject;
 
 public class Meal extends ValueObject<Meal> implements NutritionHolder {
@@ -79,8 +77,7 @@ public class Meal extends ValueObject<Meal> implements NutritionHolder {
 	@Override
 	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
-		Amount total = new Amount(0, UnitRegistry.getInstance()
-				.getDefaultUnitByType(Unit.Type.MASS));
+		Amount total = new Amount(0, type.defaultUnit);
 		if (extraNutrition != null) {
 			total = extraNutrition.getNutrients().get(type).amount;
 		}

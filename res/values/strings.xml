@@ -8,7 +8,7 @@
     <string name="reference_amount">Reference Amount</string>
     <string name="choose_nutrient_type">Choose Nutrient Type</string>
     
-    <string name="error">-=ERROR=-</string>
+    <string name="error">(ERROR)</string>
     
     <string name="nutrient_type_energy">Energy</string>
     <string name="nutrient_type_protein">Protein</string>

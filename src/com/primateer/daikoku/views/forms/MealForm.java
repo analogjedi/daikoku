@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
@@ -27,10 +28,11 @@ import com.primateer.daikoku.views.connector.CatalogDialogConnector;
 import com.primateer.daikoku.views.widgets.AmountWidget;
 import com.primateer.daikoku.views.widgets.DateWidget;
 import com.primateer.daikoku.views.widgets.LabelWidget;
+import com.primateer.daikoku.views.widgets.NutritionWatchWidget;
 
 public class MealForm extends VoForm<Meal> {
 
-	private static class RecipeRow extends LinearLayout {
+	private class RecipeRow extends LinearLayout {
 
 		private Recipe bufferedData;
 		private TextView picker;
@@ -83,6 +85,8 @@ public class MealForm extends VoForm<Meal> {
 				permissibleUnits.add(Unit.UNIT_UNITS);
 				amount.setUnits(new ArrayList<Unit>(permissibleUnits));
 				amount.setData(recipe.getDefaultAmount());
+				
+				watchWidget.update(recipe);
 			}
 		}
 	}
@@ -164,6 +168,7 @@ public class MealForm extends VoForm<Meal> {
 	private DateWidget dateWidget;
 	private RecipeRow recipeWidget;
 	private MealCycleStateWidget stateWidget;
+	private NutritionWatchWidget watchWidget;
 
 	public MealForm(Context context) {
 		super(context);
@@ -177,6 +182,8 @@ public class MealForm extends VoForm<Meal> {
 		LayoutParams stateLayout = new LayoutParams(0,
 				LayoutParams.MATCH_PARENT, 0.35f);
 		stateLayout.gravity = Gravity.CENTER_VERTICAL;
+		watchWidget = new NutritionWatchWidget(context);
+		watchWidget.setWatchList(NutrientRegistry.getInstance().getWatchList());
 
 		LinearLayout dateLine = new LinearLayout(context);
 		dateLine.addView(stateWidget, stateLayout);
@@ -185,6 +192,7 @@ public class MealForm extends VoForm<Meal> {
 		this.addView(labelWidget);
 		this.addView(dateLine);
 		this.addView(recipeWidget);
+		this.addView(watchWidget);
 
 		recipeWidget.setData(null);
 	}

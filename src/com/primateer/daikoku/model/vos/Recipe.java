@@ -11,7 +11,6 @@ import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Ingredient;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Unit;
-import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.ValueObject;
 
 public class Recipe extends ValueObject<Recipe> implements Ingredient {
@@ -46,8 +45,7 @@ public class Recipe extends ValueObject<Recipe> implements Ingredient {
 	@Override
 	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
-		Amount total = new Amount(0, UnitRegistry.getInstance()
-				.getDefaultUnitByType(Unit.Type.MASS));
+		Amount total = new Amount(0, type.defaultUnit);
 		if (ingredients != null) {
 			for (Ingredient ingredient : ingredients.keySet()) {
 				Amount ia = ingredients.get(ingredient);
