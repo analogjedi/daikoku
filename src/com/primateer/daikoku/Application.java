@@ -1,6 +1,7 @@
 package com.primateer.daikoku;
 
 import android.content.Context;
+import android.graphics.Color;
 
 public class Application extends android.app.Application {
 
@@ -16,6 +17,12 @@ public class Application extends android.app.Application {
 	public static final int ICON_STATE_RESERVED = R.drawable.onebit_2_02;
 	public static final int ICON_STATE_PREPARED = R.drawable.onebit_2_03;
 	public static final int ICON_STATE_CONSUMED = R.drawable.onebit_2_04;
+	
+	public static final int TEXTCOLOR_ERROR = Color.RED;
+	public static final int TEXTCOLOR_GREY = 0xff404040;
+	public static final int TEXTCOLOR_GREEN = 0xff008000;
+	public static final int TEXTCOLOR_BLUE = 0xff000080;
+	public static final int TEXTCOLOR_RED = 0xff800000;
 	
 	private static Application instance;
 	private static Context alternateContext;

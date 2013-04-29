@@ -3,7 +3,7 @@ package com.primateer.daikoku.model;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Amount {
+public class Amount implements Comparable<Amount> {
 
 	public class UnitConversionException extends Exception {
 		public UnitConversionException(String msg) {
@@ -153,5 +153,18 @@ public class Amount {
 				.doubleToLongBits(other.value))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Amount another) {
+		try {
+			Amount other = another.convert(this.unit);
+			if (other.equals(this)) {
+				return 0;
+			}
+			return (other.value > this.value) ? -1 : 1;
+		} catch (UnitConversionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

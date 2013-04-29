@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Goal;
+import com.primateer.daikoku.model.GoalRegistry;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.Unit;
@@ -183,6 +185,7 @@ public class MealForm extends VoForm<Meal> {
 				LayoutParams.MATCH_PARENT, 0.35f);
 		stateLayout.gravity = Gravity.CENTER_VERTICAL;
 		watchWidget = new NutritionWatchWidget(context);
+		watchWidget.setGoals(GoalRegistry.getInstance().getGoals(Goal.Scope.PER_MEAL));
 		watchWidget.setWatchList(NutrientRegistry.getInstance().getWatchList());
 
 		LinearLayout dateLine = new LinearLayout(context);

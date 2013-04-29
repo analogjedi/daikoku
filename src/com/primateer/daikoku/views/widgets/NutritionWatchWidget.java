@@ -10,9 +10,12 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Goal;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutritionHolder;
 
@@ -21,6 +24,7 @@ public class NutritionWatchWidget extends LinearLayout {
 
 	List<Nutrient.Type> watchList;
 	Map<Nutrient.Type, TextView> displays = new HashMap<Nutrient.Type, TextView>();
+	Map<Nutrient.Type, Goal> goals;
 
 	public NutritionWatchWidget(Context context) {
 		this(context, null);
@@ -50,20 +54,31 @@ public class NutritionWatchWidget extends LinearLayout {
 		addSeparator();
 	}
 
+	public void setGoals(Map<Nutrient.Type, Goal> goals) {
+		this.goals = goals;
+	}
+
 	public void update(NutritionHolder subject) {
 		for (Nutrient.Type type : watchList) {
-			String amount;
+			TextView display = displays.get(type);
+			String amountString;
 			try {
-				amount = subject.getNutrition(type).toString();
+				Amount amount = subject.getNutrition(type);
+				amountString = amount.toString();
+				if (goals != null) {
+					Goal goal = goals.get(type);
+					if (goal != null) {
+						display.setTextColor(goal.match(amount).color);
+					}
+				}
 			} catch (UnitConversionException e) {
-				amount = getResources().getString(R.string.error);
+				amountString = getResources().getString(R.string.error);
+				display.setTextColor(Application.TEXTCOLOR_ERROR);
 				Helper.logErrorStackTrace(NutritionWatchWidget.this, e,
 						"Unable to determine watched amount");
 			}
-			TextView display = displays.get(type);
 			display.setText(Html.fromHtml("<b>" + type.getAbbrev() + "</b> "
-					+ amount));
-			// display.setTextColor(Color.GREEN);
+					+ amountString));
 		}
 		this.setVisibility(VISIBLE);
 	}
