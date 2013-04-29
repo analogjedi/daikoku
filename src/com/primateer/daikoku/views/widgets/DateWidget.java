@@ -80,6 +80,11 @@ public class DateWidget extends LinearLayout implements
 		dateView.setText(DateFormat.getDateInstance(DateFormat.LONG).format(
 				currentDate));
 	}
+	
+	public void setData(Date data) {
+		this.currentDate = data;
+		updateDate();
+	}
 
 	private void addDays(int d) {
 		Calendar c = Calendar.getInstance();

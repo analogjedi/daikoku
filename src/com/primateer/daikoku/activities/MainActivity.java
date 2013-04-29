@@ -17,6 +17,7 @@ import com.primateer.daikoku.dialogs.FormFragment;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.views.Catalog;
 import com.primateer.daikoku.views.ListCatalog;
+import com.primateer.daikoku.views.forms.MealForm;
 import com.primateer.daikoku.views.forms.ProductForm;
 import com.primateer.daikoku.views.forms.RecipeForm;
 
@@ -80,11 +81,24 @@ public class MainActivity extends FragmentActivity {
 						MealPlanActivity.class));
 			}
 		});
+		
+		Button openMealButton = new Button(this);
+		openMealButton.setText("open meal form");
+		openMealButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FormFragment frag = new FormFragment();
+				frag.setForm(new MealForm(MainActivity.this));
+				frag.show(MainActivity.this.getSupportFragmentManager(),
+						"recipe");
+			}
+		});
 
 		views.addView(getStatsButton);
 		views.addView(openDialogButton);
 		views.addView(openRecipeButton);
 		views.addView(mealPlanButton);
+		views.addView(openMealButton);
 	}
 
 	@Override

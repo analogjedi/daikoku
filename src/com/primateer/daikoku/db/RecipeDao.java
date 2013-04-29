@@ -1,5 +1,6 @@
 package com.primateer.daikoku.db;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,10 +57,7 @@ public class RecipeDao extends Dao<Recipe> {
 		Cursor q = getResolver().query(getUri(RECIPE_TABLE), null, whereId(id),
 				null, null);
 		if (q.moveToFirst()) {
-			vo = new Recipe();
-			vo.setId(id);
-			vo.setLabel(q.getString(q.getColumnIndex(COL_LABEL)));
-			vo.setIngredients(loadIngredients(id));
+			vo = buildRecipe(q);
 		}
 		q.close();
 		return vo;
@@ -79,11 +77,26 @@ public class RecipeDao extends Dao<Recipe> {
 		q.close();
 		return ingredients;
 	}
+	
+	private Recipe buildRecipe(Cursor q) {
+		Recipe vo = new Recipe();
+		long id = q.getLong(q.getColumnIndex(COL_ID));
+		vo.setId(id);
+		vo.setLabel(q.getString(q.getColumnIndex(COL_LABEL)));
+		vo.setIngredients(loadIngredients(id));
+		return vo;
+	}
 
 	@Override
 	public List<Recipe> loadAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Recipe> results = new ArrayList<Recipe>();
+		Cursor q = getResolver().query(getUri(RECIPE_TABLE), null,
+				null, null, null);
+		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
+			results.add(buildRecipe(q));
+		}
+		q.close();
+		return results;
 	}
 
 	@Override

@@ -3,6 +3,9 @@ package com.primateer.daikoku.model.vos;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Ingredient;
@@ -51,6 +54,15 @@ public class Recipe extends ValueObject<Recipe> implements Ingredient {
 			}
 		}
 		return total;
+	}
+	
+	@Override
+	public String toString() {
+		if (Helper.isEmpty(label)) {
+			return Application.getContext().getResources()
+					.getString(R.string.placeholder_empty);
+		}
+		return label;
 	}
 
 	@Override

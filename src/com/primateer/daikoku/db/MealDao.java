@@ -35,7 +35,7 @@ public class MealDao extends Dao<Meal> {
 		vals.put(COL_LABEL, vo.getLabel());
 		vals.put(COL_RECIPE, Data.getInstance().register(vo.getRecipe()));
 		vals.put(COL_DUE, Helper.toString(vo.getDue()));
-		vals.put(COL_STATE, vo.getState());
+		vals.put(COL_STATE, vo.getState().ordinal());
 		long newId = getId(getResolver().insert(getUri(TABLE), vals));
 		if (oldId != newId) {
 			vo.setId(newId);
@@ -61,7 +61,7 @@ public class MealDao extends Dao<Meal> {
 		vo.setRecipe((Recipe) Data.getInstance().get(Recipe.class,
 				q.getLong(q.getColumnIndex(COL_RECIPE))));
 		vo.setDue(Helper.parseDate(q.getString(q.getColumnIndex(COL_DUE))));
-		vo.setState(q.getInt(q.getColumnIndex(COL_STATE)));
+		vo.setState(Meal.State.values()[q.getInt(q.getColumnIndex(COL_STATE))]);
 		return vo;
 	}
 

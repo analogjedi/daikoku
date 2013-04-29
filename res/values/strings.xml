@@ -26,6 +26,11 @@
     <string name="label">Label</string>
     <string name="nutrition">Nutrition</string>
     
+    <string name="meal_state_scheduled">Scheduled</string>
+    <string name="meal_state_reserved">Reserved</string>
+    <string name="meal_state_prepared">Prepared</string>
+    <string name="meal_state_consumed">Consumed</string>
+        
     <string name="form_error_title">Invalid Input</string>
     <string name="form_error_nutrition_list_empty">Nutrient list is empty</string>
     <string name="form_error_product_label_empty">Product label is empty</string>
