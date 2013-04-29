@@ -59,6 +59,11 @@ public class NutrientRegistry {
 	public List<Nutrient.Type> getDefaultNutrientTypes() {
 		return defaultNutrientTypes;
 	}
+	
+	public List<Nutrient.Type> getWatchList() {
+		// TODO make configurable
+		return getDefaultNutrientTypes();
+	}
 
 	public Amount getDefaultReferenceAmount() {
 		return defaultReferenceAmount;

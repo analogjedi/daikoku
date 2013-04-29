@@ -4,7 +4,9 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Ingredient;
+import com.primateer.daikoku.model.Nutrient.Type;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.ValueObject;
 
@@ -47,6 +49,14 @@ public class Product extends ValueObject<Product> implements Ingredient {
 	public Amount getUnitsAmount() {
 		return new Amount(units,Unit.UNIT_UNITS);
 	}
+	
+	@Override
+	public Amount getAmountPerUnit() {
+		if (units <= 0) {
+			return null;
+		}
+		return new Amount(amount.value / units, amount.unit);
+	}
 
 	public void setUnits(double units) {
 		this.units = units;
@@ -75,5 +85,10 @@ public class Product extends ValueObject<Product> implements Ingredient {
 			return new Amount(1,Unit.UNIT_UNITS);
 		}
 		return amount;
+	}
+
+	@Override
+	public Amount getNutrition(Type type) throws UnitConversionException {
+		return nutrition.getAmount(type, amount);
 	}
 }

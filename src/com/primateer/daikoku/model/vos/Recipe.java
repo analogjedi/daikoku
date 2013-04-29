@@ -43,19 +43,24 @@ public class Recipe extends ValueObject<Recipe> implements Ingredient {
 		this.ingredients = ingredients;
 	}
 
-	public Amount getTotalNutrition(Nutrient.Type type)
+	@Override
+	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
 		Amount total = new Amount(0, UnitRegistry.getInstance()
 				.getDefaultUnitByType(Unit.TYPE_MASS));
 		if (ingredients != null) {
-			for (Product product : ingredients.keySet()) {
-				total = total.add(product.getNutrition().getAmount(type,
-						ingredients.get(product)));
+			for (Ingredient ingredient : ingredients.keySet()) {
+				Amount ia = ingredients.get(ingredient);
+				if (ia.unit.type == Unit.TYPE_COUNT) {
+					ia = ingredient.getAmountPerUnit().scale(ia.value);
+				}
+				total = total.add(ingredient.getNutrition(type).scale(
+						ia.divideBy(ingredient.getDefaultAmount())));
 			}
 		}
 		return total;
 	}
-	
+
 	@Override
 	public String toString() {
 		if (Helper.isEmpty(label)) {
@@ -67,12 +72,17 @@ public class Recipe extends ValueObject<Recipe> implements Ingredient {
 
 	@Override
 	public double getUnits() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public Amount getDefaultAmount() {
-		return new Amount(1,Unit.UNIT_UNITS);
+		return new Amount(1, Unit.UNIT_UNITS);
+	}
+
+	@Override
+	public Amount getAmountPerUnit() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

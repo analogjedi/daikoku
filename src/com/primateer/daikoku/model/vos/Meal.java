@@ -7,11 +7,12 @@ import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Nutrient;
+import com.primateer.daikoku.model.NutritionHolder;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.ValueObject;
 
-public class Meal extends ValueObject<Meal> {
+public class Meal extends ValueObject<Meal> implements NutritionHolder {
 
 	public enum State {
 		SCHEDULED(R.string.meal_state_scheduled,
@@ -75,7 +76,8 @@ public class Meal extends ValueObject<Meal> {
 		return extraNutrition;
 	}
 
-	public Amount getTotalNutrition(Nutrient.Type type)
+	@Override
+	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
 		Amount total = new Amount(0, UnitRegistry.getInstance()
 				.getDefaultUnitByType(Unit.TYPE_MASS));
@@ -83,7 +85,7 @@ public class Meal extends ValueObject<Meal> {
 			total = extraNutrition.getNutrients().get(type).amount;
 		}
 		if (recipe != null) {
-			total = total.add(recipe.getTotalNutrition(type));
+			total = total.add(recipe.getNutrition(type));
 		}
 		return total;
 	}

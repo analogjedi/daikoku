@@ -67,6 +67,6 @@ public class MealPlanTest extends DatabaseTestCase {
 
 		Day day = new DayDao().load(today);
 		assertEquals(new Amount("86.25g"),
-				day.getTotalNutrition(Nutrient.TYPE_PROTEIN));
+				day.getNutrition(Nutrient.TYPE_PROTEIN));
 	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.vos.Meal;
 
-public class Day {
+public class Day implements NutritionHolder {
 
 	public final Date date;
 	private List<Meal> meals;
@@ -27,13 +27,14 @@ public class Day {
 		return meals;
 	}
 
-	public Object getTotalNutrition(Nutrient.Type type)
+	@Override
+	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
 		Amount total = new Amount(0, UnitRegistry.getInstance()
 				.getDefaultUnitByType(Unit.TYPE_MASS));
 		if (meals != null) {
 			for (Meal meal : meals) {
-				Amount mealNutrition = meal.getTotalNutrition(type);
+				Amount mealNutrition = meal.getNutrition(type);
 				if (mealNutrition != null) {
 					total = mealNutrition.add(total);
 				}

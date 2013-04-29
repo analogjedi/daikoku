@@ -24,6 +24,7 @@ public class Nutrient {
 		}
 
 		public abstract String getName();
+		public abstract String getAbbrev();
 
 		@Override
 		public int hashCode() {
@@ -59,8 +60,15 @@ public class Nutrient {
 			this.name = name;
 		}
 
+		@Override
 		public String getName() {
 			return Application.getContext().getString(name);
+		}
+
+		@Override
+		public String getAbbrev() {
+			// TODO make configurable
+			return id;
 		}
 	}
 
