@@ -2,6 +2,7 @@ package com.primateer.daikoku.model.vos;
 
 import java.util.Date;
 
+import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
@@ -13,15 +14,18 @@ import com.primateer.daikoku.model.ValueObject;
 public class Meal extends ValueObject<Meal> {
 
 	public enum State {
-		SCHEDULED(R.string.meal_state_scheduled), RESERVED(
-				R.string.meal_state_reserved), PREPARED(
-				R.string.meal_state_prepared), CONSUMED(
-				R.string.meal_state_consumed);
+		SCHEDULED(R.string.meal_state_scheduled,
+				Application.ICON_STATE_SCHEDULED), RESERVED(
+				R.string.meal_state_reserved, Application.ICON_STATE_RESERVED), PREPARED(
+				R.string.meal_state_prepared, Application.ICON_STATE_PREPARED), CONSUMED(
+				R.string.meal_state_consumed, Application.ICON_STATE_CONSUMED);
 
 		public final int string;
+		public final int icon;
 
-		private State(int string) {
+		private State(int string, int icon) {
 			this.string = string;
+			this.icon = icon;
 		}
 	}
 
