@@ -1,13 +1,12 @@
 package com.primateer.daikoku.views.widgets;
 
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
 import android.text.Html;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
@@ -19,11 +18,12 @@ import com.primateer.daikoku.model.Goal;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutritionHolder;
 
-// TODO write a flow layout class with horizontal wrapping and extend from there
-public class NutritionWatchWidget extends LinearLayout {
+public class NutritionWatchWidget extends TextView {
+
+	private static final int BG_COLOR = 0xffe0e0e0;
+	private static final int DEFAULT_COLOR = 0xff000000;
 
 	List<Nutrient.Type> watchList;
-	Map<Nutrient.Type, TextView> displays = new HashMap<Nutrient.Type, TextView>();
 	Map<Nutrient.Type, Goal> goals;
 
 	public NutritionWatchWidget(Context context) {
@@ -32,26 +32,11 @@ public class NutritionWatchWidget extends LinearLayout {
 
 	public NutritionWatchWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		this.setVisibility(INVISIBLE);
-	}
-
-	private void addSeparator() {
-		TextView separator = new TextView(getContext());
-		separator.setText("|");
-		// separator.setPadding(10, 0, 10, 0);
-		this.addView(separator);
+		this.setBackgroundColor(BG_COLOR);
 	}
 
 	public void setWatchList(List<Nutrient.Type> watchList) {
 		this.watchList = watchList;
-		this.removeAllViews();
-		for (int i = 0; i < watchList.size(); i++) {
-			addSeparator();
-			TextView display = new TextView(getContext());
-			this.addView(display);
-			displays.put(watchList.get(i), display);
-		}
-		addSeparator();
 	}
 
 	public void setGoals(Map<Nutrient.Type, Goal> goals) {
@@ -59,28 +44,35 @@ public class NutritionWatchWidget extends LinearLayout {
 	}
 
 	public void update(NutritionHolder subject) {
-		for (Nutrient.Type type : watchList) {
-			TextView display = displays.get(type);
-			String amountString;
+		StringBuilder sb = new StringBuilder();
+		for (Iterator<Nutrient.Type> it = watchList.iterator(); it.hasNext();) {
+			Nutrient.Type type = it.next();
 			try {
 				Amount amount = (subject != null) ? subject.getNutrition(type)
 						: type.getNullAmount();
-				amountString = amount.toRoundString();
+				int color = DEFAULT_COLOR;
 				if (goals != null) {
 					Goal goal = goals.get(type);
 					if (goal != null) {
-						display.setTextColor(goal.match(amount).color);
+						color = goal.match(amount).color;
 					}
 				}
+				sb.append("<font color='").append(color).append("'><b>")
+						.append(type.getAbbrev()).append("</b> ")
+						.append(amount.toRoundString()).append("</font>");
 			} catch (UnitConversionException e) {
-				amountString = getResources().getString(R.string.error);
-				display.setTextColor(Application.TEXTCOLOR_ERROR);
+				sb.append("<font color='").append(Application.TEXTCOLOR_ERROR)
+						.append("'><b>").append(type.getAbbrev())
+						.append("</b> ")
+						.append(getResources().getString(R.string.error))
+						.append("</font>");
 				Helper.logErrorStackTrace(NutritionWatchWidget.this, e,
 						"Unable to determine watched amount");
 			}
-			display.setText(Html.fromHtml("<b>" + type.getAbbrev() + "</b> "
-					+ amountString));
+			if (it.hasNext()) {
+				sb.append(" | ");
+			}
 		}
-		this.setVisibility(VISIBLE);
+		this.setText(Html.fromHtml(sb.toString()));
 	}
 }
