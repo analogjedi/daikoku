@@ -45,7 +45,7 @@ public class Recipe extends ValueObject<Recipe> implements Ingredient {
 	@Override
 	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
-		Amount total = new Amount(0, type.defaultUnit);
+		Amount total = type.getNullAmount();
 		if (ingredients != null) {
 			for (Ingredient ingredient : ingredients.keySet()) {
 				Amount ia = ingredients.get(ingredient);

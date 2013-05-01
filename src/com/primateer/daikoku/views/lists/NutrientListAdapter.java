@@ -2,7 +2,6 @@ package com.primateer.daikoku.views.lists;
 
 import android.content.Context;
 
-import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientSet;
 import com.primateer.daikoku.views.widgets.row.DataRowWidget;
@@ -28,7 +27,7 @@ public class NutrientListAdapter extends DataRowListAdapter<Nutrient> {
 	}
 
 	public Nutrient add(Nutrient.Type type) {
-		Nutrient nutrient = new Nutrient(type, new Amount(0, type.defaultUnit));
+		Nutrient nutrient = new Nutrient(type, type.getNullAmount());
 		add(nutrient);
 		return nutrient;
 	}

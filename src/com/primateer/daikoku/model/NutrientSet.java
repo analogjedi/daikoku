@@ -45,7 +45,7 @@ public class NutrientSet extends ArrayList<Nutrient> {
 		Nutrient nutrient = byType.get(type);
 		if (nutrient == null) {
 			// TODO implement "minimum, open end" amounts for unknown nutrients
-			return new Nutrient(type, new Amount(0,type.defaultUnit));
+			return new Nutrient(type, type.getNullAmount());
 		}
 		return byType.get(type);
 	}

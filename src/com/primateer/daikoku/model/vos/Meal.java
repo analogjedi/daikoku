@@ -77,7 +77,7 @@ public class Meal extends ValueObject<Meal> implements NutritionHolder {
 	@Override
 	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
-		Amount total = new Amount(0, type.defaultUnit);
+		Amount total = type.getNullAmount();
 		if (extraNutrition != null) {
 			total = extraNutrition.getNutrients().get(type).amount;
 		}
