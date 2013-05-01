@@ -14,9 +14,12 @@ public class Amount implements Comparable<Amount> {
 	public final double value;
 	public final Unit unit;
 
-	private static final String DOUBLE_REGEXP = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
-	private static final Pattern AMOUNT_PATTERN = Pattern.compile("("
-			+ DOUBLE_REGEXP + ")([^\\d\\s].*)");
+	// private static final String DOUBLE_REGEXP =
+	// "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
+	public static final String REGEXP_VALUE = "([-+]?\\d*(\\.\\d+)?)";
+	public static final String REGEXP_UNIT = "([a-zA-Z]\\S*)";
+	private static final Pattern AMOUNT_PATTERN = Pattern.compile(REGEXP_VALUE
+			+ REGEXP_UNIT);
 
 	/**
 	 * Parse Amount from compound String.

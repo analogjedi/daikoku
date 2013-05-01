@@ -17,7 +17,7 @@ public class AmountTest extends TestCase {
 		assertEquals(Unit.UNIT_MILLILITER, milliliter.unit);
 		assertEquals(40.0, milliliter.value);
 
-		String invalid[] = { "inv8l1d", "493", "m123", "10 m" };
+		String invalid[] = { "inv8l1d", "493", "m123", "10 m", "120.g" };
 		for (int i = 0; i < invalid.length; i++)
 			try {
 				new Amount(invalid[i]);
