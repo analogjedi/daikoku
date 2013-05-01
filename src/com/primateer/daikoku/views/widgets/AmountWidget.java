@@ -3,9 +3,8 @@ package com.primateer.daikoku.views.widgets;
 import java.util.List;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -13,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
@@ -30,6 +30,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 	private EditText valueView;
 	private Spinner unitView;
 	private List<Unit> units;
+	private double value = 0;
 	private SimpleObservable<Amount> observable = new SimpleObservable<Amount>();
 
 	public AmountWidget(Context context, AttributeSet attrs) {
@@ -42,25 +43,18 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 				| EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
 		valueView.setLayoutParams(new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.8f));
-		valueView.setText("0");
-		valueView.addTextChangedListener(new TextWatcher() {
+		valueView.setText(String.valueOf(value));
+		valueView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				return updateValueView();
 			}
-
+		});
+		valueView.setOnFocusChangeListener(new TextView.OnFocusChangeListener() {
+			
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				try {
-					observable.notifyObservers(getData());
-				} catch (InvalidDataException e) {
-					// do not update with incorrect input
-				}
+			public void onFocusChange(View v, boolean hasFocus) {
+				updateValueView();
 			}
 		});
 
@@ -71,11 +65,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				try {
-					observable.notifyObservers(getData());
-				} catch (InvalidDataException e) {
-					// do not update with incorrect input
-				}
+				updateValueView();
 			}
 
 			@Override
@@ -89,6 +79,19 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 
 	public AmountWidget(Context context) {
 		this(context, null);
+	}
+	
+	private boolean updateValueView() {
+		try {
+			Amount amount = getData();
+			value = amount.value;
+			valueView.setText(String.valueOf(value));
+			observable.notifyObservers(amount);
+			return true;
+		} catch (InvalidDataException e) {
+			valueView.setText(String.valueOf(value));
+			return false;
+		}
 	}
 
 	public void selectUnit(Unit unit) {
