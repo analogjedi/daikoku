@@ -13,6 +13,8 @@ public class Application extends android.app.Application {
 	public static final int ICON_DENY = R.drawable.onebit_1_33;
 	public static final int ICON_SEARCH = R.drawable.onebit_1_02;
 	public static final int ICON_EDIT = R.drawable.onebit_1_20;
+	public static final int ICON_FAVORITE = R.drawable.onebit_1_44;
+	public static final int ICON_UNFAVORITE = R.drawable.onebit_1_46;
 	public static final int ICON_STATE_SCHEDULED = R.drawable.onebit_2_01;
 	public static final int ICON_STATE_RESERVED = R.drawable.onebit_2_02;
 	public static final int ICON_STATE_PREPARED = R.drawable.onebit_2_03;
