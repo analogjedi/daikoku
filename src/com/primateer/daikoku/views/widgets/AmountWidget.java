@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -41,8 +42,9 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 		valueView = new EditText(context);
 		valueView.setInputType(EditorInfo.TYPE_CLASS_NUMBER
 				| EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
-		valueView.setLayoutParams(new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 0.8f));
+		LayoutParams valueLayout = new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 0.8f);
+		valueLayout.gravity = Gravity.CENTER_VERTICAL;
 		valueView.setText(String.valueOf(value));
 		valueView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -59,8 +61,9 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 		});
 
 		unitView = new Spinner(context);
-		unitView.setLayoutParams(new LayoutParams(0, LayoutParams.WRAP_CONTENT,
-				1.0f));
+		LayoutParams unitLayout = new LayoutParams(0, LayoutParams.WRAP_CONTENT,
+				1.0f);
+		unitLayout.gravity = Gravity.CENTER_VERTICAL;
 		unitView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -73,8 +76,8 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 			}
 		});
 
-		this.addView(valueView);
-		this.addView(unitView);
+		this.addView(valueView,valueLayout);
+		this.addView(unitView,unitLayout);
 	}
 
 	public AmountWidget(Context context) {
