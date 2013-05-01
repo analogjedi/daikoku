@@ -4,13 +4,8 @@ import java.util.Date;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.Amount.UnitConversionException;
-import com.primateer.daikoku.model.Nutrient;
-import com.primateer.daikoku.model.NutritionHolder;
-import com.primateer.daikoku.model.ValueObject;
 
-public class Meal extends ValueObject implements NutritionHolder {
+public class Meal extends Recipe {
 
 	public enum State {
 		SCHEDULED(R.string.meal_state_scheduled,
@@ -28,27 +23,9 @@ public class Meal extends ValueObject implements NutritionHolder {
 		}
 	}
 
-	private String label;
-	private Recipe recipe;
 	private Date due;
 	private State state;
-	private Nutrition extraNutrition;
 
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public Recipe getRecipe() {
-		return recipe;
-	}
-
-	public void setRecipe(Recipe recipe) {
-		this.recipe = recipe;
-	}
 
 	public Date getDue() {
 		return due;
@@ -70,20 +47,4 @@ public class Meal extends ValueObject implements NutritionHolder {
 		this.state = state;
 	}
 
-	public Nutrition getExtraNutrition() {
-		return extraNutrition;
-	}
-
-	@Override
-	public Amount getNutrition(Nutrient.Type type)
-			throws UnitConversionException {
-		Amount total = type.getNullAmount();
-		if (extraNutrition != null) {
-			total = extraNutrition.getNutrients().get(type).amount;
-		}
-		if (recipe != null) {
-			total = total.add(recipe.getNutrition(type));
-		}
-		return total;
-	}
 }

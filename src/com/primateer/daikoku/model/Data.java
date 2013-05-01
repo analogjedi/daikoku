@@ -67,19 +67,23 @@ public class Data {
 		}
 		return vos;
 	}
-
-	public long register(ValueObject vo) {
+	
+	public long register(ValueObject vo, Class<? extends ValueObject> voClass) {
 		if (vo == null) {
 			return -1;
 		}
 		long id = vo.getId();
 		if (id < 0) {
-			id = getDao(vo.getClass()).insert(vo);
+			id = getDao(voClass).insert(vo);
 		}
 		if (id >= 0) {
-			getEntries(vo.getClass()).put(id, vo);
+			getEntries(voClass).put(id, vo);
 		}
-		return id;
+		return id;		
+	}
+
+	public long register(ValueObject vo) {
+		return register(vo,vo.getClass());
 	}
 
 	public boolean delete(ValueObject vo) {

@@ -31,7 +31,8 @@ CREATE TABLE 'supply' (
 
 CREATE TABLE 'recipe' (
 	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
-	'label' TEXT NOT NULL
+	'label' TEXT NOT NULL,
+	'is_favorite' INTEGER NOT NULL
 );
 
 CREATE TABLE 'recipe_ingredient' (
@@ -44,20 +45,18 @@ CREATE TABLE 'recipe_ingredient' (
 );
 
 CREATE TABLE 'meal' (
-	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
-	'label' TEXT NOT NULL,
-	'recipe' INTEGER NOT NULL,
+	'_id' INTEGER PRIMARY KEY,
 	'state' INTEGER NOT NULL,
 	'due' TEXT NOT NULL,
-	FOREIGN KEY ('recipe') REFERENCES 'recipe'('_id')
+	FOREIGN KEY ('_id') REFERENCES 'recipe'('_id')
 );
 
-CREATE TABLE 'meal_nutrient' (
-	'meal' INTEGER NOT NULL,
+CREATE TABLE 'recipe_nutrient' (
+	'recipe' INTEGER NOT NULL,
 	'type' TEXT NOT NULL,
 	'amount' TEXT NOT NULL,
-	PRIMARY KEY ('meal','type'),
-	FOREIGN KEY ('meal') REFERENCES 'meal'('_id')
+	PRIMARY KEY ('recipe','type'),
+	FOREIGN KEY ('recipe') REFERENCES 'recipe'('_id')
 );
 
 CREATE TABLE 'vendor' (

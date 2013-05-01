@@ -123,7 +123,7 @@ public class RecipeForm extends VoForm<Recipe> {
 		Map<Product, Amount> ingredients = new HashMap<Product, Amount>();
 		for (Component comp : components) {
 			// FIXME extend this to all ingredients
-			ingredients.put((Product) comp.ingredient, comp.amount);
+			ingredients.put((Product) comp.product, comp.amount);
 		}
 		result.setIngredients(ingredients);
 		return result;

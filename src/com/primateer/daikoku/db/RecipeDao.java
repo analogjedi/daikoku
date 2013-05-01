@@ -16,6 +16,7 @@ import com.primateer.daikoku.model.vos.Recipe;
 public class RecipeDao extends Dao<Recipe> {
 
 	public static final String RECIPE_TABLE = "recipe";
+	public static final String RECIPE_COL_FAVORITE = "is_favorite";
 	public static final String INGREDIENT_TABLE = "recipe_ingredient";
 	public static final String INGREDIENT_COL_RECIPE = "recipe";
 	public static final String INGREDIENT_COL_PRODUCT = "product";
@@ -30,6 +31,7 @@ public class RecipeDao extends Dao<Recipe> {
 			vals.put(COL_ID, id);
 		}
 		vals.put(COL_LABEL, vo.getLabel());
+		vals.put(RECIPE_COL_FAVORITE, vo.isFavorite());
 		id = getId(getResolver().insert(getUri(RECIPE_TABLE), vals));
 		if (vo.getId() != id) {
 			vo.setId(id);
@@ -83,6 +85,7 @@ public class RecipeDao extends Dao<Recipe> {
 		long id = q.getLong(q.getColumnIndex(COL_ID));
 		vo.setId(id);
 		vo.setLabel(q.getString(q.getColumnIndex(COL_LABEL)));
+		vo.setFavorite(q.getInt(q.getColumnIndex(RECIPE_COL_FAVORITE)) > 0);
 		vo.setIngredients(loadIngredients(id));
 		return vo;
 	}

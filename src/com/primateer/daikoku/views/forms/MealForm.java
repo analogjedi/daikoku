@@ -37,36 +37,36 @@ public class MealForm extends VoForm<Meal> {
 	private class RecipeRow extends LinearLayout {
 
 		private Recipe bufferedData;
-		private TextView picker;
-		private AmountWidget amount;
+//		private TextView picker;
+//		private AmountWidget amo/unt;
 
 		public RecipeRow(Context context) {
 			super(context);
 
-			picker = new Button(context);
-			LayoutParams pickerLayout = new LayoutParams(0,
-					LayoutParams.WRAP_CONTENT, 0.5f);
-			amount = new AmountWidget(context);
-			LayoutParams amountLayout = new LayoutParams(0,
-					LayoutParams.WRAP_CONTENT, 0.5f);
-			this.addView(picker, pickerLayout);
-			this.addView(amount, amountLayout);
+//			picker = new Button(context);
+//			LayoutParams pickerLayout = new LayoutParams(0,
+//					LayoutParams.WRAP_CONTENT, 0.5f);
+//			amount = new AmountWidget(context);
+//			LayoutParams amountLayout = new LayoutParams(0,
+//					LayoutParams.WRAP_CONTENT, 0.5f);
+//			this.addView(picker, pickerLayout);
+//			this.addView(amount, amountLayout);
 
-			CatalogDialogConnector<Recipe> recipeConnector = new CatalogDialogConnector<Recipe>();
-			recipeConnector.register(Recipe.class, picker);
-			recipeConnector.setSelectionObserver(new Observer<Recipe>() {
-				@Override
-				public void update(Recipe item) {
-					setData(item);
-				}
-			});
+//			CatalogDialogConnector<Recipe> recipeConnector = new CatalogDialogConnector<Recipe>();
+//			recipeConnector.register(Recipe.class, picker);
+//			recipeConnector.setSelectionObserver(new Observer<Recipe>() {
+//				@Override
+//				public void update(Recipe item) {
+//					setData(item);
+//				}
+//			});
 		}
 
 		public void clear() {
-			picker.setText(getResources().getString(R.string.placeholder_empty));
-			amount.setUnits(UnitRegistry.getInstance().getUnitsByType(
-					Unit.Type.COUNT));
-			amount.setData(new Amount(0, Unit.UNIT_UNITS));
+//			picker.setText(getResources().getString(R.string.placeholder_empty));
+//			amount.setUnits(UnitRegistry.getInstance().getUnitsByType(
+//					Unit.Type.COUNT));
+//			amount.setData(new Amount(0, Unit.UNIT_UNITS));
 		}
 
 		public Recipe getData() {
@@ -78,17 +78,17 @@ public class MealForm extends VoForm<Meal> {
 			if (recipe == null) {
 				this.clear();
 			} else {
-				picker.setText(recipe.toString());
-				Set<Unit> permissibleUnits = new HashSet<Unit>();
-				Amount defaultAmount = recipe.getDefaultAmount();
-				permissibleUnits.add(defaultAmount.unit);
-				permissibleUnits.addAll(UnitRegistry.getInstance()
-						.getUnitsByType(defaultAmount.unit.type));
-				permissibleUnits.add(Unit.UNIT_UNITS);
-				amount.setUnits(new ArrayList<Unit>(permissibleUnits));
-				amount.setData(recipe.getDefaultAmount());
-				
-				watchWidget.update(recipe);
+//				picker.setText(recipe.toString());
+//				Set<Unit> permissibleUnits = new HashSet<Unit>();
+//				Amount defaultAmount = recipe.getDefaultAmount();
+//				permissibleUnits.add(defaultAmount.unit);
+//				permissibleUnits.addAll(UnitRegistry.getInstance()
+//						.getUnitsByType(defaultAmount.unit.type));
+//				permissibleUnits.add(Unit.UNIT_UNITS);
+//				amount.setUnits(new ArrayList<Unit>(permissibleUnits));
+//				amount.setData(recipe.getDefaultAmount());
+//				
+//				watchWidget.update(recipe);
 			}
 		}
 	}
@@ -221,7 +221,7 @@ public class MealForm extends VoForm<Meal> {
 	protected void fillFields(Meal data) throws IllegalArgumentException {
 		dateWidget.setData(data.getDue());
 		labelWidget.setText(data.getLabel());
-		recipeWidget.setData(data.getRecipe());
+//		recipeWidget.setData(data.getRecipe());
 		// TODO
 	}
 

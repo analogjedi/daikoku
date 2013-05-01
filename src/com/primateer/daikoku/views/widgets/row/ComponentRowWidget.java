@@ -76,7 +76,7 @@ public class ComponentRowWidget extends LinearLayout implements
 		amountView.addObserver(new Observer<Amount>() {
 			@Override
 			public void update(Amount amount) {
-				component = new Component(component.ingredient,amount);
+				component = new Component(component.product,amount);
 				observable.notifyObservers(ComponentRowWidget.this);
 			}
 		});
@@ -104,11 +104,11 @@ public class ComponentRowWidget extends LinearLayout implements
 	@Override
 	public void setRowData(Component data) {
 		this.component = data;
-		selectView.setText(data.ingredient.toString());
+		selectView.setText(data.product.toString());
 		Set<Unit> permissibleUnits = new HashSet<Unit>();
 		permissibleUnits.add(data.amount.unit);
 		permissibleUnits.addAll(UnitRegistry.getInstance().getUnitsByType(data.amount.unit.type));
-		if (data.ingredient.getUnits() > 0) {
+		if (data.product.getUnits() > 0) {
 			permissibleUnits.add(Unit.UNIT_UNITS);
 		}
 		amountView.setUnits(new ArrayList<Unit>(permissibleUnits));

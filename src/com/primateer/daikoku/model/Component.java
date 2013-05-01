@@ -1,18 +1,20 @@
 package com.primateer.daikoku.model;
 
+import com.primateer.daikoku.model.vos.Product;
+
 
 public class Component {
 
-	public final Ingredient ingredient;
+	public final Product product;
 	public final Amount amount;
 	
-	public Component(Ingredient ingredient, Amount amount) {
-		this.ingredient = ingredient;
+	public Component(Product product, Amount amount) {
+		this.product = product;
 		this.amount = amount;
 	}
 	
-	public Component(Ingredient item) {
-		this(item,item.getDefaultAmount());
+	public Component(Product product) {
+		this(product,product.getDefaultAmount());
 	}
 
 	@Override
@@ -21,7 +23,7 @@ public class Component {
 		int result = 1;
 		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
 		result = prime * result
-				+ ((ingredient == null) ? 0 : ingredient.hashCode());
+				+ ((product == null) ? 0 : product.hashCode());
 		return result;
 	}
 
@@ -39,10 +41,10 @@ public class Component {
 				return false;
 		} else if (!amount.equals(other.amount))
 			return false;
-		if (ingredient == null) {
-			if (other.ingredient != null)
+		if (product == null) {
+			if (other.product != null)
 				return false;
-		} else if (!ingredient.equals(other.ingredient))
+		} else if (!product.equals(other.product))
 			return false;
 		return true;
 	}

@@ -15,7 +15,6 @@ import com.primateer.daikoku.model.vos.Recipe;
 public class MealDao extends Dao<Meal> {
 
 	public static final String TABLE = "meal";
-	public static final String COL_RECIPE = "recipe";
 	public static final String COL_DUE = "due";
 	public static final String COL_STATE = "state";
 
@@ -29,11 +28,7 @@ public class MealDao extends Dao<Meal> {
 	public long insert(Meal vo) {
 		ContentValues vals = new ContentValues();
 		long oldId = vo.getId();
-		if (oldId >= 0) {
-			vals.put(COL_ID, oldId);
-		}
-		vals.put(COL_LABEL, vo.getLabel());
-		vals.put(COL_RECIPE, Data.getInstance().register(vo.getRecipe()));
+		vals.put(COL_ID, Data.getInstance().register(vo, Recipe.class));
 		vals.put(COL_DUE, Helper.toString(vo.getDue()));
 		vals.put(COL_STATE, vo.getState().ordinal());
 		long newId = getId(getResolver().insert(getUri(TABLE), vals));
@@ -56,10 +51,11 @@ public class MealDao extends Dao<Meal> {
 
 	private Meal buildMeal(Cursor q) {
 		Meal vo = new Meal();
-		vo.setId(q.getLong(q.getColumnIndex(COL_ID)));
-		vo.setLabel(q.getString(q.getColumnIndex(COL_LABEL)));
-		vo.setRecipe((Recipe) Data.getInstance().get(Recipe.class,
-				q.getLong(q.getColumnIndex(COL_RECIPE))));
+		long id = q.getLong(q.getColumnIndex(COL_ID));
+		vo.setId(id);
+		Recipe recipe = (Recipe)Data.getInstance().get(Recipe.class, id);
+		vo.add(recipe);
+		vo.setLabel(recipe.getLabel());
 		vo.setDue(Helper.parseDate(q.getString(q.getColumnIndex(COL_DUE))));
 		vo.setState(Meal.State.values()[q.getInt(q.getColumnIndex(COL_STATE))]);
 		return vo;

@@ -43,19 +43,19 @@ public class MealPlanTest extends DatabaseTestCase {
 
 		Meal meal1 = new Meal();
 		meal1.setLabel("1st meal");
-		meal1.setRecipe(recipeLentils);
+		meal1.add(recipeLentils);
 		meal1.setDue(today);
 		meal1.setState(Meal.State.CONSUMED);
 
 		Meal meal2 = new Meal();
 		meal2.setLabel("2nd meal");
-		meal2.setRecipe(recipeLentils);
+		meal2.add(recipeLentils);
 		meal2.setDue(today);
 		meal2.setState(Meal.State.CONSUMED);
 
 		Meal meal3 = new Meal();
 		meal3.setLabel("3rd meal");
-		meal3.setRecipe(recipeLentils);
+		meal3.add(recipeLentils);
 		meal3.setDue(today);
 		meal3.setState(Meal.State.SCHEDULED);
 

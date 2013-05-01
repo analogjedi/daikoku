@@ -8,15 +8,18 @@ import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
-import com.primateer.daikoku.model.Ingredient;
 import com.primateer.daikoku.model.Nutrient;
+import com.primateer.daikoku.model.NutrientSet;
+import com.primateer.daikoku.model.NutritionHolder;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.ValueObject;
 
-public class Recipe extends ValueObject implements Ingredient {
+public class Recipe extends ValueObject implements NutritionHolder {
 
 	private String label;
+	private boolean favorite;
 	private Map<Product, Amount> ingredients;
+	private NutrientSet extraNutrition;
 
 	public Recipe add(Product product, Amount amount) {
 		getIngredients().put(product, amount);
@@ -25,6 +28,14 @@ public class Recipe extends ValueObject implements Ingredient {
 
 	public String getLabel() {
 		return label;
+	}
+	
+	public void add(Recipe other) {
+		getIngredients().putAll(other.getIngredients());
+		getExtraNutrition().absorb(other.getExtraNutrition());
+		if (Helper.isEmpty(label)) {
+			setLabel(other.getLabel());
+		}
 	}
 
 	public void setLabel(String label) {
@@ -38,22 +49,37 @@ public class Recipe extends ValueObject implements Ingredient {
 		return ingredients;
 	}
 
+	public NutrientSet getExtraNutrition() {
+		if (extraNutrition == null) {
+			extraNutrition = new NutrientSet();
+		}
+		return extraNutrition;
+	}
+
 	public void setIngredients(Map<Product, Amount> ingredients) {
 		this.ingredients = ingredients;
+	}
+
+	public boolean isFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(boolean favorite) {
+		this.favorite = favorite;
 	}
 
 	@Override
 	public Amount getNutrition(Nutrient.Type type)
 			throws UnitConversionException {
-		Amount total = type.getNullAmount();
+		Amount total = getExtraNutrition().get(type).amount;
 		if (ingredients != null) {
-			for (Ingredient ingredient : ingredients.keySet()) {
-				Amount ia = ingredients.get(ingredient);
+			for (Product product : ingredients.keySet()) {
+				Amount ia = ingredients.get(product);
 				if (ia.unit.type == Unit.Type.COUNT) {
-					ia = ingredient.getAmountPerUnit().scale(ia.value);
+					ia = product.getAmountPerUnit().scale(ia.value);
 				}
-				total = total.add(ingredient.getNutrition(type).scale(
-						ia.divideBy(ingredient.getDefaultAmount())));
+				total = total.add(product.getNutrition(type).scale(
+						ia.divideBy(product.getDefaultAmount())));
 			}
 		}
 		return total;
@@ -66,21 +92,5 @@ public class Recipe extends ValueObject implements Ingredient {
 					.getString(R.string.placeholder_empty);
 		}
 		return label;
-	}
-
-	@Override
-	public double getUnits() {
-		return 1;
-	}
-
-	@Override
-	public Amount getDefaultAmount() {
-		return new Amount(1, Unit.UNIT_UNITS);
-	}
-
-	@Override
-	public Amount getAmountPerUnit() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

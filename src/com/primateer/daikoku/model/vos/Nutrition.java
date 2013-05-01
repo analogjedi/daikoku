@@ -48,4 +48,9 @@ public class Nutrition extends ValueObject {
 		return nutrients.get(type).amount.scale(multiplier
 				.divideBy(getReferenceAmount()));
 	}
+
+	public void add(Nutrition other) {
+		// TODO Auto-generated method stub
+		
+	}
 }
