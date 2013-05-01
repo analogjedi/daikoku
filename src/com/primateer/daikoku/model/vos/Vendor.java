@@ -2,7 +2,7 @@ package com.primateer.daikoku.model.vos;
 
 import com.primateer.daikoku.model.ValueObject;
 
-public class Vendor extends ValueObject<Vendor> {
+public class Vendor extends ValueObject {
 
 	String label;
 

@@ -11,7 +11,7 @@ import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.widgets.row.CatalogRowWidget;
 import com.primateer.daikoku.views.widgets.row.DataRowWidget;
 
-public class CatalogListAdapter<T extends ValueObject<T>> extends
+public class CatalogListAdapter<T extends ValueObject> extends
 		DataRowListAdapter<T> {
 
 	private Class<T> dataClass;

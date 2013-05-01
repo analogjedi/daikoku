@@ -13,7 +13,7 @@ import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.ValueObject;
 
-public class Recipe extends ValueObject<Recipe> implements Ingredient {
+public class Recipe extends ValueObject implements Ingredient {
 
 	private String label;
 	private Map<Product, Amount> ingredients;

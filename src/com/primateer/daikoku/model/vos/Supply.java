@@ -2,7 +2,7 @@ package com.primateer.daikoku.model.vos;
 
 import com.primateer.daikoku.model.ValueObject;
 
-public class Supply extends ValueObject<Supply> {
+public class Supply extends ValueObject {
 
 	double total;
 	double available;

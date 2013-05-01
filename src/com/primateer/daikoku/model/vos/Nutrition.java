@@ -7,7 +7,7 @@ import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.NutrientSet;
 import com.primateer.daikoku.model.ValueObject;
 
-public class Nutrition extends ValueObject<Nutrition> {
+public class Nutrition extends ValueObject {
 
 	private Amount referenceAmount;
 	private NutrientSet nutrients;

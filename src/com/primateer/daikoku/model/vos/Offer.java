@@ -3,7 +3,7 @@ package com.primateer.daikoku.model.vos;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.ValueObject;
 
-public class Offer extends ValueObject<Offer> {
+public class Offer extends ValueObject {
 	
 	Product product;
 	Vendor vendor;

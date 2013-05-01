@@ -10,7 +10,7 @@ import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutritionHolder;
 import com.primateer.daikoku.model.ValueObject;
 
-public class Meal extends ValueObject<Meal> implements NutritionHolder {
+public class Meal extends ValueObject implements NutritionHolder {
 
 	public enum State {
 		SCHEDULED(R.string.meal_state_scheduled,

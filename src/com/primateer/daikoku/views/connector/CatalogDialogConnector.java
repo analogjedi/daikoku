@@ -12,7 +12,7 @@ import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.Catalog;
 import com.primateer.daikoku.views.ListCatalog;
 
-public class CatalogDialogConnector<T extends ValueObject<T>> implements
+public class CatalogDialogConnector<T extends ValueObject> implements
 		Catalog<T>, Connector<T> {
 
 	private Class<T> dataClass;

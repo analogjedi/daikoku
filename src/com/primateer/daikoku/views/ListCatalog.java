@@ -15,7 +15,7 @@ import com.primateer.daikoku.views.connector.FormDialogConnector;
 import com.primateer.daikoku.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.views.widgets.Separator;
 
-public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
+public class ListCatalog<T extends ValueObject> extends LinearLayout
 		implements Catalog<T> {
 
 	private Observer<T> selectionObserver;
@@ -82,7 +82,7 @@ public class ListCatalog<T extends ValueObject<T>> extends LinearLayout
 			}
 		});
 		// load items from database
-		for (ValueObject<T> vo : Data.getInstance().getAll(dataClass)) {
+		for (ValueObject vo : Data.getInstance().getAll(dataClass)) {
 			this.add((T)vo);
 		}
 	}

@@ -8,7 +8,7 @@ import android.net.Uri;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.ValueObject;
 
-public abstract class Dao<T extends ValueObject<T>> {
+public abstract class Dao<T extends ValueObject> {
 
 	public static final String COL_ID = "_id";
 	public static final String COL_LABEL = "label";

@@ -10,7 +10,7 @@ import com.primateer.daikoku.model.Nutrient.Type;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.ValueObject;
 
-public class Product extends ValueObject<Product> implements Ingredient {
+public class Product extends ValueObject implements Ingredient {
 
 	private String label;
 	private Nutrition nutrition;
