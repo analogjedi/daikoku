@@ -10,15 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
 import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
+import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.views.forms.InvalidDataException;
 import com.primateer.daikoku.views.widgets.row.DataRowWidget;
 
 public abstract class DataRowListAdapter<T> implements ListAdapter,
-		View.OnClickListener {
+		View.OnClickListener, Observable<DataRowListAdapter<T>> {
 
 	protected List<T> data = new ArrayList<T>();
 	private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
+	// for data change notifications without rebuilding the corresponding list
+	private SimpleObservable<DataRowListAdapter<T>> observable = new SimpleObservable<DataRowListAdapter<T>>();
 
 	public void add(T item) {
 		data.add(item);
@@ -30,6 +34,10 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 		notifyObservers();
 	}
 
+	public List<T> getData() {
+		return data;
+	}
+
 	public void remove(T item) {
 		data.remove(item);
 		notifyObservers();
@@ -39,6 +47,7 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 		for (DataSetObserver observer : observers) {
 			observer.onChanged();
 		}
+		observable.notifyObservers(this);
 	}
 
 	@Override
@@ -83,7 +92,12 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 				public void update(DataRowWidget<T> observable) {
 					int index = observable.restoreRowPosition();
 					try {
-						data.set(index, observable.getRowData());
+						T item = observable.getRowData();
+						if (!data.get(index).equals(item)) {
+							data.set(index, item);
+							DataRowListAdapter.this.observable
+									.notifyObservers(DataRowListAdapter.this);
+						}
 					} catch (InvalidDataException e) {
 						Helper.logErrorStackTrace(this, e,
 								"Unable to bind widget to list adapter");
@@ -120,17 +134,17 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 	public boolean isEnabled(int position) {
 		return true;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected T getItemFromView(View v) {
-		return data.get(((DataRowWidget<T>) v.getParent()).restoreRowPosition());
+		return data
+				.get(((DataRowWidget<T>) v.getParent()).restoreRowPosition());
 	}
 
 	@Override
 	public void onClick(View v) {
 		this.remove(getItemFromView(v));
 	}
-
 
 	/**
 	 * Instantiate a new instance of the corresponding data row.
@@ -140,4 +154,14 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 	 * @return the instantiated instance
 	 */
 	protected abstract DataRowWidget<T> newWidget(Context context);
+
+	@Override
+	public void addObserver(Observer<DataRowListAdapter<T>> observer) {
+		observable.addObserver(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer<DataRowListAdapter<T>> observer) {
+		observable.removeObserver(observer);
+	}
 }

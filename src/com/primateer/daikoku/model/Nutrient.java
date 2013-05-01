@@ -17,6 +17,10 @@ public class Nutrient {
 			this.id = id;
 			this.defaultUnit = defaultUnit;
 		}
+		
+		public Amount getNullAmount() {
+			return new Amount(0,defaultUnit);
+		}
 
 		@Override
 		public String toString() {

@@ -63,7 +63,8 @@ public class NutritionWatchWidget extends LinearLayout {
 			TextView display = displays.get(type);
 			String amountString;
 			try {
-				Amount amount = subject.getNutrition(type);
+				Amount amount = (subject != null) ? subject.getNutrition(type)
+						: type.getNullAmount();
 				amountString = amount.toString();
 				if (goals != null) {
 					Goal goal = goals.get(type);

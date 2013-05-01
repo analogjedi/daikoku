@@ -82,7 +82,7 @@ public class Product extends ValueObject<Product> implements Ingredient {
 	@Override
 	public Amount getDefaultAmount() {
 		if (units > 0) {
-			return new Amount(1,Unit.UNIT_UNITS);
+			return amount.scale(1/units);
 		}
 		return amount;
 	}
