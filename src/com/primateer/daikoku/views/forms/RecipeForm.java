@@ -1,12 +1,15 @@
 package com.primateer.daikoku.views.forms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
@@ -31,6 +34,8 @@ public class RecipeForm extends VoForm<Recipe> {
 	private ListView componentList;
 	private ComponentListAdapter listAdapter;
 	private ImageButton addButton;
+	private ImageButton favButton;
+	private boolean favButtonState;
 	private NutritionWatchWidget watchWidget;
 
 	public RecipeForm(Context context) {
@@ -76,10 +81,31 @@ public class RecipeForm extends VoForm<Recipe> {
 		watchWidget.setWatchList(NutrientRegistry.getInstance().getWatchList());
 		watchWidget.update(null);
 
-		this.addView(label);
+		favButton = new ImageButton(context);
+		favButton.setBackgroundColor(Color.TRANSPARENT);
+		favButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setFavorite(!favButtonState);
+			}
+		});
+		setFavorite(false);
+
+		LinearLayout labelRow = new LinearLayout(context);
+		labelRow.addView(label, new LayoutParams(0, LayoutParams.WRAP_CONTENT,
+				1.0f));
+		labelRow.addView(favButton);
+
+		this.addView(labelRow);
 		this.addView(watchWidget);
 		this.addView(componentList);
 		this.addView(addButton);
+	}
+
+	private void setFavorite(boolean isFavorite) {
+		this.favButtonState = isFavorite;
+		favButton.setImageResource(isFavorite ? Application.ICON_FAVORITE
+				: Application.ICON_UNFAVORITE);
 	}
 
 	private void updateWatcher() {
@@ -102,8 +128,9 @@ public class RecipeForm extends VoForm<Recipe> {
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		label.setText("");
+		listAdapter.clear();
+		setFavorite(false);
 	}
 
 	@Override
@@ -118,17 +145,23 @@ public class RecipeForm extends VoForm<Recipe> {
 		List<Component> components = listAdapter.getData();
 		Map<Product, Amount> ingredients = new HashMap<Product, Amount>();
 		for (Component comp : components) {
-			// FIXME extend this to all ingredients
 			ingredients.put((Product) comp.product, comp.amount);
 		}
 		result.setIngredients(ingredients);
+		result.setFavorite(favButtonState);
 		return result;
 	}
 
 	@Override
 	protected void fillFields(Recipe data) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-
+		label.setText(data.getLabel());
+		List<Component> components = new ArrayList<Component>();
+		Map<Product,Amount> ingredients = data.getIngredients();
+		for (Product product : ingredients.keySet()) {
+			components.add(new Component(product,ingredients.get(product)));
+		}
+		listAdapter.setData(components);
+		setFavorite(data.isFavorite());
 	}
 
 }

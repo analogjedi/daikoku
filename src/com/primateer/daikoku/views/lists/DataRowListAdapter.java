@@ -37,6 +37,11 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 	public List<T> getData() {
 		return data;
 	}
+	
+	public void setData(List<T> data) {
+		this.data = data;
+		notifyObservers();
+	}
 
 	public void remove(T item) {
 		data.remove(item);
