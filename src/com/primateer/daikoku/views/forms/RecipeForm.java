@@ -8,6 +8,7 @@ import java.util.Map;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -33,7 +34,8 @@ public class RecipeForm extends VoForm<Recipe> {
 	private LabelWidget label;
 	private ListView componentList;
 	private ComponentListAdapter listAdapter;
-	private ImageButton addButton;
+	private Button addProductButton;
+	private Button addRecipeButton;
 	private ImageButton favButton;
 	private boolean favButtonState;
 	private NutritionWatchWidget watchWidget;
@@ -57,23 +59,54 @@ public class RecipeForm extends VoForm<Recipe> {
 		});
 		componentList.setAdapter(listAdapter);
 
-		addButton = new ImageButton(context);
-		addButton.setImageResource(Application.ICON_ADD);
-		addButton.setOnClickListener(new OnClickListener() {
+		addProductButton = new Button(context);
+		addProductButton.setText(R.string.add_product);
+		addProductButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CatalogDialogConnector<Product> connector = new CatalogDialogConnector<Product>();
 				connector.register(Product.class, getContext());
+				connector.setTitle(getResources().getString(
+						R.string.title_pick_product));
 				connector.setSelectionObserver(new Observer<Product>() {
 					@Override
 					public void update(Product item) {
 						listAdapter.add(item);
-						// updateWatcher();
 					}
 				});
 				connector.showDialog();
 			}
 		});
+
+		addRecipeButton = new Button(context);
+		addRecipeButton.setText(R.string.add_recipe);
+		addRecipeButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CatalogDialogConnector<Recipe> connector = new CatalogDialogConnector<Recipe>();
+				connector.register(Recipe.class, getContext());
+				connector.setTitle(getResources().getString(
+						R.string.title_pick_recipe));
+				connector.setSelectionObserver(new Observer<Recipe>() {
+					@Override
+					public void update(Recipe item) {
+						Map<Product, Amount> ingredients = item
+								.getIngredients();
+						for (Product product : ingredients.keySet()) {
+							listAdapter.add(new Component(product, ingredients
+									.get(product)));
+						}
+					}
+				});
+				connector.showDialog();
+			}
+		});
+
+		LinearLayout addRow = new LinearLayout(context);
+		addRow.addView(addProductButton, new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 0.5f));
+		addRow.addView(addRecipeButton, new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 0.5f));
 
 		watchWidget = new NutritionWatchWidget(context);
 		watchWidget.setGoals(GoalRegistry.getInstance().getGoals(
@@ -99,7 +132,7 @@ public class RecipeForm extends VoForm<Recipe> {
 		this.addView(labelRow);
 		this.addView(watchWidget);
 		this.addView(componentList);
-		this.addView(addButton);
+		this.addView(addRow);
 	}
 
 	private void setFavorite(boolean isFavorite) {
@@ -156,9 +189,9 @@ public class RecipeForm extends VoForm<Recipe> {
 	protected void fillFields(Recipe data) throws IllegalArgumentException {
 		label.setText(data.getLabel());
 		List<Component> components = new ArrayList<Component>();
-		Map<Product,Amount> ingredients = data.getIngredients();
+		Map<Product, Amount> ingredients = data.getIngredients();
 		for (Product product : ingredients.keySet()) {
-			components.add(new Component(product,ingredients.get(product)));
+			components.add(new Component(product, ingredients.get(product)));
 		}
 		listAdapter.setData(components);
 		setFavorite(data.isFavorite());

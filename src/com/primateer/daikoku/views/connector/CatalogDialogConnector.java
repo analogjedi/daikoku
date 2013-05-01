@@ -20,6 +20,7 @@ public class CatalogDialogConnector<T extends ValueObject> implements
 	private Catalog<T> catalog;
 	private Dialog dialog;
 	private Observer<T> selectionObserver;
+	private String title;
 
 	@Override
 	public void showDialog() {
@@ -28,7 +29,7 @@ public class CatalogDialogConnector<T extends ValueObject> implements
 			catalog.setDataClass(dataClass);
 			setSelectionObserver(selectionObserver);
 			dialog = new Dialog(context);
-			dialog.setTitle("PRODUCT CATALOG"); // FIXME
+			dialog.setTitle(title);
 			ViewGroup content = (ViewGroup) catalog;
 			content.setBackgroundColor(Color.WHITE); // FIXME
 			dialog.setContentView(content);
@@ -83,4 +84,7 @@ public class CatalogDialogConnector<T extends ValueObject> implements
 		}
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
 }

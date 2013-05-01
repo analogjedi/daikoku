@@ -4,11 +4,14 @@
     <string name="app_name">Daikoku</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_meal_plan">Schedule Meals</string>
     <string name="reference_amount">Reference Amount</string>
     <string name="choose_nutrient_type">Choose Nutrient Type</string>
     
     <string name="error">(ERROR)</string>
+
+    <string name="title_activity_meal_plan">Schedule Meals</string>
+    <string name="title_pick_product">Select A Product</string>
+    <string name="title_pick_recipe">Select A Recipe</string>
     
     <string name="nutrient_type_energy">Energy</string>
     <string name="nutrient_type_protein">Protein</string>
@@ -27,6 +30,9 @@
     <string name="units">Units</string>
     <string name="label">Label</string>
     <string name="nutrition">Nutrition</string>
+    
+    <string name="add_product">Add Product</string>
+    <string name="add_recipe">Add Recipe</string>
     
     <string name="meal_state_scheduled">Scheduled</string>
     <string name="meal_state_reserved">Reserved</string>
