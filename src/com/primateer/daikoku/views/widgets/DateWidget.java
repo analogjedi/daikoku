@@ -81,6 +81,10 @@ public class DateWidget extends LinearLayout implements
 				currentDate));
 	}
 	
+	public Date getData() {
+		return currentDate;
+	}
+	
 	public void setData(Date data) {
 		this.currentDate = data;
 		updateDate();
