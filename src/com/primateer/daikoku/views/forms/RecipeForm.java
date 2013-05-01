@@ -6,7 +6,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -28,7 +27,7 @@ import com.primateer.daikoku.views.widgets.NutritionWatchWidget;
 
 public class RecipeForm extends VoForm<Recipe> {
 
-	private EditText label;
+	private LabelWidget label;
 	private ListView componentList;
 	private ComponentListAdapter listAdapter;
 	private ImageButton addButton;
@@ -94,10 +93,7 @@ public class RecipeForm extends VoForm<Recipe> {
 
 	@Override
 	public void validate() throws InvalidDataException {
-		if (label.getText().length() < 1) {
-			throw new InvalidDataException(getResources().getString(
-					R.string.form_error_recipe_label_empty));
-		}
+		label.validate();
 		if (listAdapter.isEmpty()) {
 			throw new InvalidDataException(getResources().getString(
 					R.string.form_error_recipe_list_empty));

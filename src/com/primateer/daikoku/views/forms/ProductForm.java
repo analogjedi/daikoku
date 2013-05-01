@@ -2,7 +2,6 @@ package com.primateer.daikoku.views.forms;
 
 import android.content.Context;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.vos.Nutrition;
@@ -14,7 +13,7 @@ import com.primateer.daikoku.views.widgets.UnitsAmountWidget;
 
 public class ProductForm extends VoForm<Product> {
 
-	private EditText label;
+	private LabelWidget label;
 	private ReferenceAmountWidget amount;
 	FormDialogConnector<Nutrition> nutritionConnector;
 	private UnitsAmountWidget units;
@@ -43,10 +42,7 @@ public class ProductForm extends VoForm<Product> {
 	@Override
 	public void validate()
 			throws com.primateer.daikoku.views.forms.InvalidDataException {
-		if (label.getText().length() < 1) {
-			throw new InvalidDataException(getResources().getString(
-					R.string.form_error_product_label_empty));
-		}
+		label.validate();
 		if (nutritionConnector.getData() == null) {
 			throw new InvalidDataException(getResources().getString(
 					R.string.form_error_product_nutrition_is_null));
