@@ -126,6 +126,14 @@ public class Amount implements Comparable<Amount> {
 		return "" + this.value + this.unit;
 	}
 
+	/**
+	 * @return As {@code toString()}, but with value rounded to the next whole
+	 *         number.
+	 */
+	public String toRoundString() {
+		return "" + Math.round(this.value) + this.unit;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
