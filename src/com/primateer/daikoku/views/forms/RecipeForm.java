@@ -128,7 +128,7 @@ public class RecipeForm extends VoForm<Recipe> {
 
 	@Override
 	public void clear() {
-		label.setText("");
+		label.clear();
 		listAdapter.clear();
 		setFavorite(false);
 	}

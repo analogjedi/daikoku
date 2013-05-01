@@ -25,4 +25,8 @@ public class LabelWidget extends EditText {
 					R.string.form_error_label_empty));
 		}
 	}
+
+	public void clear() {
+		this.setText("");
+	}
 }

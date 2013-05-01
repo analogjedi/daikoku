@@ -116,7 +116,6 @@ public class MealForm extends RecipeForm {
 	@Override
 	public void validate() throws InvalidDataException {
 		super.validate();
-		// TODO
 	}
 
 	@Override

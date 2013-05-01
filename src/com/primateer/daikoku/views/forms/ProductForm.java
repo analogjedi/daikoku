@@ -65,8 +65,10 @@ public class ProductForm extends VoForm<Product> {
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		amount.clear();
+		label.clear();
+		units.clear();
+		nutritionConnector.clear();
 	}
 
 	@Override
