@@ -208,6 +208,9 @@ public class RecipeForm extends VoForm<Recipe> {
 							@Override
 							public void update(Product item) {
 								listAdapter.add(item);
+								if (label.isEmpty()) {
+									label.setText(item.getLabel());
+								}
 							}
 						}, getResources()
 								.getString(R.string.title_pick_product));
@@ -230,6 +233,9 @@ public class RecipeForm extends VoForm<Recipe> {
 								for (Product product : ingredients.keySet()) {
 									listAdapter.add(new Component(product,
 											ingredients.get(product)));
+									if (label.isEmpty()) {
+										label.setText(item.getLabel());
+									}
 								}
 							}
 						}, getResources().getString(R.string.title_pick_recipe));

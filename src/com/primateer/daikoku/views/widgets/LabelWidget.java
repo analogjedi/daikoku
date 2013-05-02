@@ -1,11 +1,11 @@
 package com.primateer.daikoku.views.widgets;
 
-import com.primateer.daikoku.R;
-import com.primateer.daikoku.views.forms.InvalidDataException;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.EditText;
+
+import com.primateer.daikoku.R;
+import com.primateer.daikoku.views.forms.InvalidDataException;
 
 public class LabelWidget extends EditText {
 
@@ -20,10 +20,14 @@ public class LabelWidget extends EditText {
 	}
 	
 	public void validate() throws InvalidDataException {
-		if (this.getText().length() < 1) {
+		if (this.isEmpty()) {
 			throw new InvalidDataException(getResources().getString(
 					R.string.form_error_label_empty));
 		}
+	}
+	
+	public boolean isEmpty() {
+		return this.getText().length() < 1;
 	}
 
 	public void clear() {
