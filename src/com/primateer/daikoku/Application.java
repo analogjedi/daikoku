@@ -8,6 +8,7 @@ import android.graphics.Color;
  * ---------
  * FIXME new meal form should be initialized with date from meal planner
  * FIXME clicking on meal label in meal planner causes crash
+ * FIXME meals deleted from the planner are not deleted from the database
  */
 
 public class Application extends android.app.Application {

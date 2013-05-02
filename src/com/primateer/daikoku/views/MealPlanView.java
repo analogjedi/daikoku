@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.db.MealDao;
 import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Day;
@@ -76,7 +77,10 @@ public class MealPlanView extends LinearLayout {
 				connector.addObserver(new Observer<Meal>() {
 					@Override
 					public void update(Meal item) {
-						listAdapter.add(item);
+						if (Helper.isSameDay(item.getDue(),
+								datePicker.getData())) {
+							listAdapter.add(item);
+						}
 						Data.getInstance().register(item);
 					}
 				});
@@ -88,7 +92,7 @@ public class MealPlanView extends LinearLayout {
 		this.addView(watcher);
 		this.addView(listView);
 		this.addView(addButton);
-		
+
 		setDate(datePicker.getData());
 	}
 

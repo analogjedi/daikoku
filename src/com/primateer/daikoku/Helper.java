@@ -43,6 +43,13 @@ public class Helper {
 				Integer.parseInt(m.group(3)));
 		return c.getTime();
 	}
+	
+	public static boolean isSameDay(Date date1, Date date2) {
+		if (date1 == null || date2 == null) {
+			return false;
+		}
+		return toString(date1).equals(toString(date2));
+	}
 
 	public static String toString(Date date) {
 		return DATE_FORMAT.format(date);
