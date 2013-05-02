@@ -21,7 +21,6 @@ import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.views.connector.FormDialogConnector;
 import com.primateer.daikoku.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.views.lists.DataRowListAdapter;
-import com.primateer.daikoku.views.lists.MealListAdapter;
 import com.primateer.daikoku.views.widgets.DateWidget;
 import com.primateer.daikoku.views.widgets.NutritionWatchWidget;
 
@@ -30,7 +29,6 @@ public class MealPlanView extends LinearLayout {
 	private DateWidget datePicker;
 	private NutritionWatchWidget watcher;
 	private ListView listView;
-//	private MealListAdapter listAdapter;
 	private CatalogListAdapter<Meal> listAdapter;
 	private ImageButton addButton;
 
@@ -54,9 +52,7 @@ public class MealPlanView extends LinearLayout {
 		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0,
 				1.0f));
 		listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-//		listAdapter = new MealListAdapter();
-		listAdapter = new CatalogListAdapter<Meal>();
-		listAdapter.register(Meal.class, null);
+		listAdapter = new CatalogListAdapter<Meal>(Meal.class, null);
 		listAdapter.addObserver(new Observer<DataRowListAdapter<Meal>>() {
 			@Override
 			public void update(DataRowListAdapter<Meal> observable) {

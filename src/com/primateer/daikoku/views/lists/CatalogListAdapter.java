@@ -17,17 +17,18 @@ public class CatalogListAdapter<T extends ValueObject> extends
 	private Class<T> dataClass;
 	private Observer<T> selectionObserver;
 
+	public CatalogListAdapter(Class<T> dataClass, Observer<T> selectionObserver) {
+		super();
+		this.dataClass = dataClass;
+		this.selectionObserver = selectionObserver;
+	}
+
 	@Override
 	protected DataRowWidget<T> newWidget(Context context) {
 		CatalogRowWidget<T> widget = new CatalogRowWidget<T>(context);
 		widget.setDataClass(dataClass);
 		widget.setSelectionObserver(selectionObserver);
 		return widget;
-	}
-
-	public void register(Class<T> dataClass, Observer<T> observer) {
-		this.dataClass = dataClass;
-		this.selectionObserver = observer;
 	}
 
 	@Override

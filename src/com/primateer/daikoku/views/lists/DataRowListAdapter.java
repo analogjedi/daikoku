@@ -18,6 +18,7 @@ import com.primateer.daikoku.views.widgets.row.DataRowWidget;
 
 public abstract class DataRowListAdapter<T> implements ListAdapter,
 		View.OnClickListener, Observable<DataRowListAdapter<T>> {
+	
 
 	protected List<T> data = new ArrayList<T>();
 	private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
