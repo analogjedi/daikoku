@@ -67,9 +67,9 @@ public class ListCatalog<T extends ValueObject> extends LinearLayout implements
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				FormDialogConnector<T> connector = new FormDialogConnector<T>();
-				connector.register(ListCatalog.this.dataClass,
-						ListCatalog.this.getContext());
+				FormDialogConnector<T> connector = new FormDialogConnector<T>(
+						ListCatalog.this.dataClass, ListCatalog.this
+								.getContext());
 				connector.addObserver(new Observer<T>() {
 					@Override
 					public void update(T item) {

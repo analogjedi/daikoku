@@ -15,8 +15,8 @@ import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.views.forms.Form;
 import com.primateer.daikoku.views.forms.InvalidDataException;
 
-public class FormDialogConnector<T> implements Form<T>, Connector<T>, Observer<T>,
-	Observable<T> {
+public class FormDialogConnector<T> implements Form<T>, Observer<T>,
+		Observable<T> {
 
 	private SimpleObservable<T> observable = new SimpleObservable<T>();
 	private Form<T> form;
@@ -25,25 +25,12 @@ public class FormDialogConnector<T> implements Form<T>, Connector<T>, Observer<T
 	private T data;
 	private Class<T> dataClass;
 	private Context context;
-	
-	@Override
-	public void showDialog() {
-		Form<T> form = getForm(dataClass, this.context);
-		form.setData(data);
-		fragment = new FormFragment<T>();
-		fragment.setForm(form);
-		fragment.addObserver(FormDialogConnector.this);
-		fragment.show(((FragmentActivity) this.context)
-				.getSupportFragmentManager(), null);
-		viewUsed = true;
-	}
-	
-	@Override
-	public void register(Class<T> dataClass, View launcher) {
-		register(dataClass,launcher.getContext());
+
+	public FormDialogConnector(Class<T> dataClass, View launcher) {
+		this(dataClass, launcher.getContext());
 		if (launcher instanceof TextView) {
-			((TextView) launcher).setText(getForm(dataClass, launcher.getContext())
-					.getTitle());
+			((TextView) launcher).setText(getForm(dataClass,
+					launcher.getContext()).getTitle());
 		}
 		launcher.setOnClickListener(new OnClickListener() {
 			@Override
@@ -52,13 +39,23 @@ public class FormDialogConnector<T> implements Form<T>, Connector<T>, Observer<T
 			}
 		});
 	}
-	
-	@Override
-	public void register(Class<T> dataClass, Context context) {
+
+	public FormDialogConnector(Class<T> dataClass, Context context) {
 		this.dataClass = dataClass;
 		this.context = context;
 	}
 
+	public void showDialog() {
+		Form<T> form = getForm(dataClass, this.context);
+		form.setData(data);
+		fragment = new FormFragment<T>();
+		fragment.setForm(form);
+		fragment.addObserver(FormDialogConnector.this);
+		fragment.show(
+				((FragmentActivity) this.context).getSupportFragmentManager(),
+				null);
+		viewUsed = true;
+	}
 
 	@SuppressWarnings("unchecked")
 	private Form<T> getForm(Class<T> type, Context context) {

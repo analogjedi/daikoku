@@ -60,7 +60,7 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 	}
 
 	public void setDataClass(Class<T> dataClass) {
-		formConnector = new FormDialogConnector<T>();
+		formConnector = new FormDialogConnector<T>(dataClass, editButton);
 		formConnector.addObserver(new Observer<T>() {
 			@Override
 			public void update(T data) {
@@ -68,7 +68,6 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 				selectView.setText(data.toString());
 			}
 		});
-		formConnector.register(dataClass, editButton);
 	}
 
 	@Override

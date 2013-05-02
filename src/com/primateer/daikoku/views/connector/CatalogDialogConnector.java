@@ -13,7 +13,7 @@ import com.primateer.daikoku.views.Catalog;
 import com.primateer.daikoku.views.ListCatalog;
 
 public class CatalogDialogConnector<T extends ValueObject> implements
-		Catalog<T>, Connector<T> {
+		Catalog<T> {
 
 	private Class<T> dataClass;
 	private Context context;
@@ -22,7 +22,22 @@ public class CatalogDialogConnector<T extends ValueObject> implements
 	private Observer<T> selectionObserver;
 	private String title;
 
-	@Override
+	public CatalogDialogConnector(Class<T> dataClass, View launcher, String title) {
+		this(dataClass, launcher.getContext(), title);
+		launcher.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CatalogDialogConnector.this.showDialog();
+			}
+		});
+	}
+
+	public CatalogDialogConnector(Class<T> dataClass, Context context, String title) {
+		this.title = title;
+		this.context = context;
+		setDataClass(dataClass);
+	}
+
 	public void showDialog() {
 		if (dialog == null) {
 			catalog = new ListCatalog<T>(context);
@@ -35,23 +50,6 @@ public class CatalogDialogConnector<T extends ValueObject> implements
 			dialog.setContentView(content);
 		}
 		dialog.show();
-	}
-
-	@Override
-	public void register(Class<T> dataClass, View launcher) {
-		register(dataClass, launcher.getContext());
-		launcher.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				CatalogDialogConnector.this.showDialog();
-			}
-		});
-	}
-
-	@Override
-	public void register(Class<T> dataClass, Context context) {
-		this.context = context;
-		setDataClass(dataClass);
 	}
 
 	@Override
@@ -82,9 +80,5 @@ public class CatalogDialogConnector<T extends ValueObject> implements
 				}
 			});
 		}
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 }

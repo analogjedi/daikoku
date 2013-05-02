@@ -65,8 +65,8 @@ public class MealPlanView extends LinearLayout {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				FormDialogConnector<Meal> connector = new FormDialogConnector<Meal>();
-				connector.register(Meal.class, MealPlanView.this.getContext());
+				FormDialogConnector<Meal> connector = new FormDialogConnector<Meal>(
+						Meal.class, MealPlanView.this.getContext());
 				connector.addObserver(new Observer<Meal>() {
 					@Override
 					public void update(Meal item) {

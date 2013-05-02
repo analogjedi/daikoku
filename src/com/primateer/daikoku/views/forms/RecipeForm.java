@@ -63,10 +63,9 @@ public class RecipeForm extends VoForm<Recipe> {
 		addProductButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CatalogDialogConnector<Product> connector = new CatalogDialogConnector<Product>();
-				connector.register(Product.class, getContext());
-				connector.setTitle(getResources().getString(
-						R.string.title_pick_product));
+				CatalogDialogConnector<Product> connector = new CatalogDialogConnector<Product>(
+						Product.class, getContext(), getResources().getString(
+								R.string.title_pick_product));
 				connector.setSelectionObserver(new Observer<Product>() {
 					@Override
 					public void update(Product item) {
@@ -82,10 +81,9 @@ public class RecipeForm extends VoForm<Recipe> {
 		addRecipeButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CatalogDialogConnector<Recipe> connector = new CatalogDialogConnector<Recipe>();
-				connector.register(Recipe.class, getContext());
-				connector.setTitle(getResources().getString(
-						R.string.title_pick_recipe));
+				CatalogDialogConnector<Recipe> connector = new CatalogDialogConnector<Recipe>(
+						Recipe.class, getContext(), getResources().getString(
+								R.string.title_pick_recipe));
 				connector.setSelectionObserver(new Observer<Recipe>() {
 					@Override
 					public void update(Recipe item) {

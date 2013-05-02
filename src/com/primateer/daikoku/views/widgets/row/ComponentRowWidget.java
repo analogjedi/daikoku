@@ -57,8 +57,8 @@ public class ComponentRowWidget extends LinearLayout implements
 		selectView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CatalogDialogConnector<Product> connector = new CatalogDialogConnector<Product>();
-				connector.register(Product.class, getContext());
+				CatalogDialogConnector<Product> connector = new CatalogDialogConnector<Product>(
+						Product.class, getContext(), null);
 				connector.setSelectionObserver(new Observer<Product>() {
 					@Override
 					public void update(Product item) {
@@ -76,7 +76,7 @@ public class ComponentRowWidget extends LinearLayout implements
 		amountView.addObserver(new Observer<Amount>() {
 			@Override
 			public void update(Amount amount) {
-				component = new Component(component.product,amount);
+				component = new Component(component.product, amount);
 				observable.notifyObservers(ComponentRowWidget.this);
 			}
 		});
@@ -107,7 +107,8 @@ public class ComponentRowWidget extends LinearLayout implements
 		selectView.setText(data.product.toString());
 		Set<Unit> permissibleUnits = new HashSet<Unit>();
 		permissibleUnits.add(data.amount.unit);
-		permissibleUnits.addAll(UnitRegistry.getInstance().getUnitsByType(data.amount.unit.type));
+		permissibleUnits.addAll(UnitRegistry.getInstance().getUnitsByType(
+				data.amount.unit.type));
 		if (data.product.getUnits() > 0) {
 			permissibleUnits.add(Unit.UNIT_UNITS);
 		}

@@ -29,8 +29,8 @@ public class ProductForm extends VoForm<Product> {
 		units = new UnitsAmountWidget(context);
 
 		Button nutritionButton = new Button(context);
-		nutritionConnector = new FormDialogConnector<Nutrition>();
-		nutritionConnector.register(Nutrition.class, nutritionButton);
+		nutritionConnector = new FormDialogConnector<Nutrition>(
+				Nutrition.class, nutritionButton);
 
 		this.addView(label);
 		this.addView(amount);
