@@ -6,7 +6,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.text.Html;
-import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
@@ -28,25 +27,16 @@ public class NutritionWatchWidget extends TextView {
 	private Map<Nutrient.Type, Goal> goals;
 	private NutritionHolder subject;
 
-	public static NutritionWatchWidget create(Context context) {
-		return create(context, NutrientRegistry.getInstance().getWatchList());
-	}
-
-	public static NutritionWatchWidget create(Context context,
+	public NutritionWatchWidget (Context context,
 			List<Nutrient.Type> watchList) {
-		NutritionWatchWidget result = new NutritionWatchWidget(context);
-		result.setWatchList(watchList);
-		result.update(null);
-		return result;
-	}
-
-	private NutritionWatchWidget(Context context) {
-		this(context, null);
-	}
-
-	private NutritionWatchWidget(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		super(context,null);
 		this.setBackgroundColor(BG_COLOR);
+		this.setWatchList(watchList);
+		this.update(null);
+	}
+
+	public NutritionWatchWidget(Context context) {
+		this(context, NutrientRegistry.getInstance().getWatchList());
 	}
 
 	public void setWatchList(List<Nutrient.Type> watchList) {

@@ -41,7 +41,7 @@ public class MealPlanView extends LinearLayout {
 
 		datePicker = new DateWidget(context);
 
-		watcher = NutritionWatchWidget.create(context);
+		watcher = new NutritionWatchWidget(context);
 		watcher.setGoals(GoalRegistry.getInstance()
 				.getGoals(Goal.Scope.PER_DAY));
 

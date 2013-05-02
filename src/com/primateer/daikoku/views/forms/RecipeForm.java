@@ -102,7 +102,7 @@ public class RecipeForm extends VoForm<Recipe> {
 		addRow.addView(addRecipeButton, new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.5f));
 
-		watchWidget = NutritionWatchWidget.create(context);
+		watchWidget = new NutritionWatchWidget(context);
 		watchWidget.setGoals(GoalRegistry.getInstance().getGoals(
 				Goal.Scope.PER_MEAL));
 
