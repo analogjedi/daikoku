@@ -26,6 +26,27 @@ import com.primateer.daikoku.views.widgets.NutritionWatchWidget;
 
 public class MealPlanView extends LinearLayout {
 
+	private class MealListAdapter extends CatalogListAdapter<Meal> {
+
+		public MealListAdapter() {
+			super(Meal.class, null);
+			this.addObserver(new Observer<DataRowListAdapter<Meal>>() {
+				@Override
+				public void update(DataRowListAdapter<Meal> observable) {
+					Day day = new Day(datePicker.getData());
+					day.setMeals(observable.getData());
+					watcher.update(day);
+				}
+			});
+		}
+
+		@Override
+		public void onClick(View v) {
+			Data.getInstance().delete(getItemFromView(v));
+			super.onClick(v);
+		}
+	}
+
 	private DateWidget datePicker;
 	private NutritionWatchWidget watcher;
 	private ListView listView;
@@ -56,15 +77,7 @@ public class MealPlanView extends LinearLayout {
 		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0,
 				1.0f));
 		listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-		listAdapter = new CatalogListAdapter<Meal>(Meal.class, null);
-		listAdapter.addObserver(new Observer<DataRowListAdapter<Meal>>() {
-			@Override
-			public void update(DataRowListAdapter<Meal> observable) {
-				Day day = new Day(datePicker.getData());
-				day.setMeals(observable.getData());
-				watcher.update(day);
-			}
-		});
+		listAdapter = new MealListAdapter();
 		listView.setAdapter(listAdapter);
 
 		addButton = new ImageButton(context);

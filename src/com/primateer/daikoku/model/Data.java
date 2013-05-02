@@ -91,7 +91,7 @@ public class Data {
 			return false;
 		}
 		long id = vo.getId();
-		if (id < 0 || !getEntries(vo.getClass()).containsKey(id)) {
+		if (id < 0) {// || !getEntries(vo.getClass()).containsKey(id)) {
 			return false;
 		}
 		if (getDao(vo.getClass()).delete(vo) > 0) {

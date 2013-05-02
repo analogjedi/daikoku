@@ -53,7 +53,7 @@ public class MealDao extends Dao<Meal> {
 		Meal vo = new Meal();
 		long id = q.getLong(q.getColumnIndex(COL_ID));
 		vo.setId(id);
-		Recipe recipe = (Recipe)Data.getInstance().get(Recipe.class, id);
+		Recipe recipe = (Recipe) Data.getInstance().get(Recipe.class, id);
 		vo.add(recipe);
 		vo.setLabel(recipe.getLabel());
 		vo.setDue(Helper.parseDate(q.getString(q.getColumnIndex(COL_DUE))));
@@ -81,7 +81,9 @@ public class MealDao extends Dao<Meal> {
 
 	@Override
 	public int delete(Meal vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (!vo.isFavorite()) {
+			(new RecipeDao()).delete((Recipe) vo);
+		}
+		return delete(TABLE, vo.getId());
 	}
 }

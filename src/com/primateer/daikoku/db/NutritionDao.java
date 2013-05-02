@@ -93,8 +93,9 @@ public class NutritionDao extends Dao<Nutrition> {
 
 	@Override
 	public int delete(Nutrition vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		getResolver().delete(getUri(NUTRIENT_TABLE),
+				where(NUTRIENT_COL_NUTRITION, vo.getId()), null);
+		return delete(NUTRITION_TABLE, vo.getId());
 	}
 
 }

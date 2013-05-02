@@ -79,9 +79,7 @@ public class ProductDao extends Dao<Product> {
 
 	@Override
 	public int delete(Product vo) {
-		if (vo.getId() < 0) {
-			return 0;
-		}
-		return getResolver().delete(getUri(TABLE), whereId(vo.getId()), null);
+		(new NutritionDao()).delete(vo.getNutrition());
+		return delete(TABLE,vo.getId());
 	}
 }

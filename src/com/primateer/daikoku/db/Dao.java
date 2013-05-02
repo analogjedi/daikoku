@@ -14,7 +14,7 @@ public abstract class Dao<T extends ValueObject> {
 	public static final String COL_LABEL = "label";
 
 	private ContentResolver resolver;
-	
+
 	protected ContentResolver getResolver() {
 		if (resolver == null) {
 			resolver = Application.getContext().getContentResolver();
@@ -22,7 +22,6 @@ public abstract class Dao<T extends ValueObject> {
 		return resolver;
 	}
 
-	
 	protected static String whereId(long id) {
 		return where(COL_ID, id);
 	}
@@ -35,15 +34,27 @@ public abstract class Dao<T extends ValueObject> {
 		return Uri.parse("content://" + DatabaseProvider.AUTHORITY + "/"
 				+ table);
 	}
-	
+
 	protected static long getId(Uri uri) {
 		List<String> segments = uri.getPathSegments();
-		return Long.parseLong(segments.get(segments.size()-1));
+		return Long.parseLong(segments.get(segments.size() - 1));
 	}
-	
+
 	public abstract T load(long id);
+
 	public abstract List<T> loadAll();
+
 	public abstract long insert(T vo);
+
 	public abstract int update(T vo);
+
 	public abstract int delete(T vo);
+
+	protected int delete(String tableName, long id) {
+		if (id < 0) {
+			return 0;
+		}
+		return getResolver().delete(getUri(tableName), whereId(id),
+				null);
+	}
 }
