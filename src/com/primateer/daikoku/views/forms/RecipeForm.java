@@ -64,14 +64,13 @@ public class RecipeForm extends VoForm<Recipe> {
 			@Override
 			public void onClick(View v) {
 				CatalogDialogConnector<Product> connector = new CatalogDialogConnector<Product>(
-						Product.class, getContext(), getResources().getString(
-								R.string.title_pick_product));
-				connector.setSelectionObserver(new Observer<Product>() {
-					@Override
-					public void update(Product item) {
-						listAdapter.add(item);
-					}
-				});
+						Product.class, getContext(), new Observer<Product>() {
+							@Override
+							public void update(Product item) {
+								listAdapter.add(item);
+							}
+						}, getResources()
+								.getString(R.string.title_pick_product));
 				connector.showDialog();
 			}
 		});
@@ -82,19 +81,17 @@ public class RecipeForm extends VoForm<Recipe> {
 			@Override
 			public void onClick(View v) {
 				CatalogDialogConnector<Recipe> connector = new CatalogDialogConnector<Recipe>(
-						Recipe.class, getContext(), getResources().getString(
-								R.string.title_pick_recipe));
-				connector.setSelectionObserver(new Observer<Recipe>() {
-					@Override
-					public void update(Recipe item) {
-						Map<Product, Amount> ingredients = item
-								.getIngredients();
-						for (Product product : ingredients.keySet()) {
-							listAdapter.add(new Component(product, ingredients
-									.get(product)));
-						}
-					}
-				});
+						Recipe.class, getContext(), new Observer<Recipe>() {
+							@Override
+							public void update(Recipe item) {
+								Map<Product, Amount> ingredients = item
+										.getIngredients();
+								for (Product product : ingredients.keySet()) {
+									listAdapter.add(new Component(product,
+											ingredients.get(product)));
+								}
+							}
+						}, getResources().getString(R.string.title_pick_recipe));
 				connector.showDialog();
 			}
 		});

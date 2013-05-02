@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.Catalog;
-import com.primateer.daikoku.views.ListCatalog;
 
-public class CatalogDialogConnector<T extends ValueObject> implements
-		Catalog<T> {
+public class CatalogDialogConnector<T extends ValueObject> {
 
 	private Class<T> dataClass;
 	private Context context;
@@ -22,8 +20,9 @@ public class CatalogDialogConnector<T extends ValueObject> implements
 	private Observer<T> selectionObserver;
 	private String title;
 
-	public CatalogDialogConnector(Class<T> dataClass, View launcher, String title) {
-		this(dataClass, launcher.getContext(), title);
+	public CatalogDialogConnector(Class<T> dataClass, View launcher,
+			Observer<T> selectionObserver, String title) {
+		this(dataClass, launcher.getContext(), selectionObserver, title);
 		launcher.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -32,17 +31,24 @@ public class CatalogDialogConnector<T extends ValueObject> implements
 		});
 	}
 
-	public CatalogDialogConnector(Class<T> dataClass, Context context, String title) {
+	public CatalogDialogConnector(Class<T> dataClass, Context context,
+			Observer<T> selectionObserver, String title) {
 		this.title = title;
 		this.context = context;
-		setDataClass(dataClass);
+		this.dataClass = dataClass;
+		this.selectionObserver = selectionObserver;
 	}
 
 	public void showDialog() {
 		if (dialog == null) {
-			catalog = new ListCatalog<T>(context);
-			catalog.setDataClass(dataClass);
-			setSelectionObserver(selectionObserver);
+			catalog = new Catalog<T>(context, dataClass, new Observer<T>() {
+				@Override
+				public void update(T item) {
+					dialog.dismiss();
+					dialog = null;
+					selectionObserver.update(item);
+				}
+			});
 			dialog = new Dialog(context);
 			dialog.setTitle(title);
 			ViewGroup content = (ViewGroup) catalog;
@@ -52,33 +58,11 @@ public class CatalogDialogConnector<T extends ValueObject> implements
 		dialog.show();
 	}
 
-	@Override
 	public void add(T item) {
 		catalog.add(item);
 	}
 
-	@Override
-	public void setDataClass(Class<T> dataClass) {
-		this.dataClass = dataClass;
-	}
-
-	@Override
 	public View getView() {
-		return catalog.getView();
-	}
-
-	@Override
-	public void setSelectionObserver(Observer<T> observer) {
-		this.selectionObserver = observer;
-		if (catalog != null) {
-			catalog.setSelectionObserver(new Observer<T>() {
-				@Override
-				public void update(T item) {
-					dialog.dismiss();
-					dialog = null;
-					selectionObserver.update(item);
-				}
-			});
-		}
+		return catalog;
 	}
 }

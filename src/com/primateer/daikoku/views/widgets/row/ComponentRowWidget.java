@@ -58,13 +58,12 @@ public class ComponentRowWidget extends LinearLayout implements
 			@Override
 			public void onClick(View v) {
 				CatalogDialogConnector<Product> connector = new CatalogDialogConnector<Product>(
-						Product.class, getContext(), null);
-				connector.setSelectionObserver(new Observer<Product>() {
-					@Override
-					public void update(Product item) {
-						setRowData(new Component(item));
-					}
-				});
+						Product.class, getContext(), new Observer<Product>() {
+							@Override
+							public void update(Product item) {
+								setRowData(new Component(item));
+							}
+						}, null);
 				connector.showDialog();
 			}
 		});
