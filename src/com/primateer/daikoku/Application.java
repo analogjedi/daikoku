@@ -3,6 +3,13 @@ package com.primateer.daikoku;
 import android.content.Context;
 import android.graphics.Color;
 
+/**
+ * ToDo List
+ * ---------
+ * FIXME new meal form should be initialized with date from meal planner
+ * FIXME clicking on meal label in meal planner causes crash
+ */
+
 public class Application extends android.app.Application {
 
 	public static final int ICON_ADD = R.drawable.onebit_1_31;
