@@ -19,6 +19,10 @@ public class Day implements NutritionHolder {
 	public void addMeal(Meal meal) {
 		getMeals().add(meal);
 	}
+	
+	public void setMeals(List<Meal> meals) {
+		this.meals = meals;
+	}
 
 	public List<Meal> getMeals() {
 		if (meals == null) {
