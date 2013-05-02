@@ -37,6 +37,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				final Catalog<Product> catalog = new Catalog<Product>(
 						MainActivity.this, Product.class, null);
+				catalog.loadAll();
 				Dialog dialog = new Dialog(MainActivity.this);
 				dialog.setTitle("PRODUCT CATALOG");
 				ViewGroup content = (ViewGroup) catalog;

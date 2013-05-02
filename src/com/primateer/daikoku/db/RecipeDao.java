@@ -92,14 +92,23 @@ public class RecipeDao extends Dao<Recipe> {
 
 	@Override
 	public List<Recipe> loadAll() {
+		return loadAll(null);
+	}
+	
+	public List<Recipe> loadAll(String where) {
 		ArrayList<Recipe> results = new ArrayList<Recipe>();
 		Cursor q = getResolver().query(getUri(RECIPE_TABLE), null,
-				null, null, null);
+				where, null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
 			results.add(buildRecipe(q));
 		}
 		q.close();
 		return results;
+	}
+	
+
+	public List<Recipe> loadFavorites() {
+		return loadAll(RECIPE_COL_FAVORITE + "!= 0");
 	}
 
 	@Override

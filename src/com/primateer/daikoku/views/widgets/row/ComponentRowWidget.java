@@ -64,6 +64,7 @@ public class ComponentRowWidget extends LinearLayout implements
 								setRowData(new Component(item));
 							}
 						}, null);
+				connector.getCatalog().loadAll();
 				connector.showDialog();
 			}
 		});

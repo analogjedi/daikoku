@@ -17,6 +17,6 @@ INSERT INTO 'nutrition' VALUES (1,'100g');
 INSERT INTO 'nutrient' VALUES (1,'E','55kcal');
 INSERT INTO 'product' VALUES (1,'Apples',1,'120g',1);
 
-INSERT INTO 'meal' VALUES (0,4,'2013-04-10');
+INSERT INTO 'meal' VALUES (0,3,'2013-04-30');
 INSERT INTO 'recipe' VALUES (0,'Linsenrezept',1);
 INSERT INTO 'recipe_ingredient' VALUES (0,0,'500g');

@@ -53,7 +53,6 @@ public class Catalog<T extends ValueObject> extends LinearLayout {
 		this.addView(addButton);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void setDataClass(Class<T> dataClass) {
 		this.dataClass = dataClass;
 		listAdapter = new CatalogListAdapter<T>(dataClass, new Observer<T>() {
@@ -69,8 +68,7 @@ public class Catalog<T extends ValueObject> extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 				FormDialogConnector<T> connector = new FormDialogConnector<T>(
-						Catalog.this.dataClass, Catalog.this
-								.getContext());
+						Catalog.this.dataClass, Catalog.this.getContext());
 				connector.addObserver(new Observer<T>() {
 					@Override
 					public void update(T item) {
@@ -81,7 +79,10 @@ public class Catalog<T extends ValueObject> extends LinearLayout {
 				connector.showDialog();
 			}
 		});
-		// load items from database
+	}
+
+	@SuppressWarnings("unchecked")
+	public void loadAll() {
 		for (ValueObject vo : Data.getInstance().getAll(dataClass)) {
 			this.add((T) vo);
 		}

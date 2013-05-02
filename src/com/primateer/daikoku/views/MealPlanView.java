@@ -40,6 +40,12 @@ public class MealPlanView extends LinearLayout {
 		this.setOrientation(VERTICAL);
 
 		datePicker = new DateWidget(context);
+		datePicker.addObserver(new Observer<Date>() {
+			@Override
+			public void update(Date date) {
+				setDate(date);
+			}
+		});
 
 		watcher = new NutritionWatchWidget(context);
 		watcher.setGoals(GoalRegistry.getInstance()
@@ -82,10 +88,14 @@ public class MealPlanView extends LinearLayout {
 		this.addView(watcher);
 		this.addView(listView);
 		this.addView(addButton);
+		
+		setDate(datePicker.getData());
 	}
 
 	public void setDate(Date date) {
-		datePicker.setData(date);
+		if (!date.equals(datePicker.getData())) {
+			datePicker.setData(date);
+		}
 		listAdapter.setData(new MealDao().loadAll(date));
 	}
 }

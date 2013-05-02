@@ -17,10 +17,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.primateer.daikoku.dialogs.DatePickerFragment;
+import com.primateer.daikoku.model.Observable;
+import com.primateer.daikoku.model.Observer;
+import com.primateer.daikoku.model.SimpleObservable;
 
 public class DateWidget extends LinearLayout implements
-		DatePickerDialog.OnDateSetListener {
+		DatePickerDialog.OnDateSetListener, Observable<Date> {
 
+	private SimpleObservable<Date> observable = new SimpleObservable<Date>();
 	private TextView dateView;
 	private Button incrButton;
 	private Button decrButton;
@@ -78,7 +82,8 @@ public class DateWidget extends LinearLayout implements
 
 	private void updateDate() {
 		dateView.setText(DateFormat.getDateInstance(DateFormat.LONG).format(
-				currentDate));
+				currentDate));		
+		observable.notifyObservers(currentDate);
 	}
 	
 	public Date getData() {
@@ -105,5 +110,15 @@ public class DateWidget extends LinearLayout implements
 		c.set(year, monthOfYear, dayOfMonth);
 		currentDate = c.getTime();
 		updateDate();
+	}
+
+	@Override
+	public void addObserver(Observer<Date> observer) {
+		observable.addObserver(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer<Date> observer) {
+		observable.removeObserver(observer);
 	}
 }

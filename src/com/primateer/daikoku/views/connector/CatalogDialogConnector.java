@@ -13,12 +13,8 @@ import com.primateer.daikoku.views.Catalog;
 
 public class CatalogDialogConnector<T extends ValueObject> {
 
-	private Class<T> dataClass;
-	private Context context;
 	private Catalog<T> catalog;
 	private Dialog dialog;
-	private Observer<T> selectionObserver;
-	private String title;
 
 	public CatalogDialogConnector(Class<T> dataClass, View launcher,
 			Observer<T> selectionObserver, String title) {
@@ -32,37 +28,27 @@ public class CatalogDialogConnector<T extends ValueObject> {
 	}
 
 	public CatalogDialogConnector(Class<T> dataClass, Context context,
-			Observer<T> selectionObserver, String title) {
-		this.title = title;
-		this.context = context;
-		this.dataClass = dataClass;
-		this.selectionObserver = selectionObserver;
+			final Observer<T> selectionObserver, String title) {
+		catalog = new Catalog<T>(context, dataClass, new Observer<T>() {
+			@Override
+			public void update(T item) {
+				dialog.dismiss();
+				dialog = null;
+				selectionObserver.update(item);
+			}
+		});
+		dialog = new Dialog(context);
+		dialog.setTitle(title);
+		ViewGroup content = (ViewGroup) catalog;
+		content.setBackgroundColor(Color.WHITE); // FIXME
+		dialog.setContentView(content);
 	}
 
 	public void showDialog() {
-		if (dialog == null) {
-			catalog = new Catalog<T>(context, dataClass, new Observer<T>() {
-				@Override
-				public void update(T item) {
-					dialog.dismiss();
-					dialog = null;
-					selectionObserver.update(item);
-				}
-			});
-			dialog = new Dialog(context);
-			dialog.setTitle(title);
-			ViewGroup content = (ViewGroup) catalog;
-			content.setBackgroundColor(Color.WHITE); // FIXME
-			dialog.setContentView(content);
-		}
 		dialog.show();
 	}
 
-	public void add(T item) {
-		catalog.add(item);
-	}
-
-	public View getView() {
+	public Catalog<T> getCatalog() {
 		return catalog;
 	}
 }

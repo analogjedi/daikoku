@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.db.RecipeDao;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Component;
 import com.primateer.daikoku.model.Goal;
@@ -71,6 +72,7 @@ public class RecipeForm extends VoForm<Recipe> {
 							}
 						}, getResources()
 								.getString(R.string.title_pick_product));
+				connector.getCatalog().loadAll();
 				connector.showDialog();
 			}
 		});
@@ -92,6 +94,9 @@ public class RecipeForm extends VoForm<Recipe> {
 								}
 							}
 						}, getResources().getString(R.string.title_pick_recipe));
+				for (Recipe recipe : (new RecipeDao()).loadFavorites()) {
+					connector.getCatalog().add(recipe);
+				}
 				connector.showDialog();
 			}
 		});
