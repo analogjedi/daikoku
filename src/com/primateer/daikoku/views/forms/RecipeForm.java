@@ -19,7 +19,6 @@ import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Component;
 import com.primateer.daikoku.model.Goal;
 import com.primateer.daikoku.model.GoalRegistry;
-import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
@@ -108,11 +107,9 @@ public class RecipeForm extends VoForm<Recipe> {
 		addRow.addView(addRecipeButton, new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.5f));
 
-		watchWidget = new NutritionWatchWidget(context);
+		watchWidget = NutritionWatchWidget.create(context);
 		watchWidget.setGoals(GoalRegistry.getInstance().getGoals(
 				Goal.Scope.PER_MEAL));
-		watchWidget.setWatchList(NutrientRegistry.getInstance().getWatchList());
-		watchWidget.update(null);
 
 		favButton = new ImageButton(context);
 		favButton.setBackgroundColor(Color.TRANSPARENT);

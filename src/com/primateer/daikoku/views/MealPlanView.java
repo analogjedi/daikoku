@@ -15,7 +15,6 @@ import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.Goal;
 import com.primateer.daikoku.model.GoalRegistry;
-import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.views.connector.FormDialogConnector;
@@ -42,11 +41,9 @@ public class MealPlanView extends LinearLayout {
 
 		datePicker = new DateWidget(context);
 
-		watcher = new NutritionWatchWidget(context);
+		watcher = NutritionWatchWidget.create(context);
 		watcher.setGoals(GoalRegistry.getInstance()
 				.getGoals(Goal.Scope.PER_DAY));
-		watcher.setWatchList(NutrientRegistry.getInstance().getWatchList());
-		watcher.update(null);
 
 		listView = new ListView(context);
 		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0,
