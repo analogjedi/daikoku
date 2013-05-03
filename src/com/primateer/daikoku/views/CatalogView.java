@@ -15,7 +15,7 @@ import com.primateer.daikoku.views.connector.FormDialogConnector;
 import com.primateer.daikoku.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.views.widgets.Separator;
 
-public class Catalog<T extends ValueObject> extends LinearLayout {
+public class CatalogView<T extends ValueObject> extends LinearLayout {
 
 	private Observer<T> selectionObserver;
 	private ImageButton addButton;
@@ -23,14 +23,14 @@ public class Catalog<T extends ValueObject> extends LinearLayout {
 	private CatalogListAdapter<T> listAdapter;
 	private Class<T> dataClass;
 
-	public Catalog(Context context, Class<T> dataClass,
+	public CatalogView(Context context, Class<T> dataClass,
 			Observer<T> selectionObserver) {
 		this(context, null);
 		this.setDataClass(dataClass);
 		this.setSelectionObserver(selectionObserver);
 	}
 
-	private Catalog(Context context, AttributeSet attrs) {
+	private CatalogView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.setOrientation(LinearLayout.VERTICAL);
 		this.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
@@ -68,7 +68,7 @@ public class Catalog<T extends ValueObject> extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 				FormDialogConnector<T> connector = new FormDialogConnector<T>(
-						Catalog.this.dataClass, Catalog.this.getContext());
+						CatalogView.this.dataClass, CatalogView.this.getContext());
 				connector.addObserver(new Observer<T>() {
 					@Override
 					public void update(T item) {
@@ -82,7 +82,8 @@ public class Catalog<T extends ValueObject> extends LinearLayout {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void loadAll() {
+	public void reload() {
+		listAdapter.clear();
 		for (ValueObject vo : Data.getInstance().getAll(dataClass)) {
 			this.add((T) vo);
 		}

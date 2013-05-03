@@ -3,9 +3,9 @@ package com.primateer.daikoku.views.lists;
 import android.content.Context;
 import android.view.View;
 
-import com.primateer.daikoku.Helper;
-import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Data;
+import com.primateer.daikoku.Application;
+import com.primateer.daikoku.actions.Action;
+import com.primateer.daikoku.actions.DeleteDataAction;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.widgets.row.CatalogRowWidget;
@@ -33,16 +33,8 @@ public class CatalogListAdapter<T extends ValueObject> extends
 
 	@Override
 	public void onClick(final View v) {
-		final T item = getItemFromView(v);
-		Helper.executeUponConfirmation(v.getContext(), v.getResources()
-				.getString(R.string.dialog_confirm_delete_title), v
-				.getResources().getString(R.string.dialog_confirm_delete_msg)
-				+ " " + item.toString(), new Runnable() {
-			@Override
-			public void run() {
-				Data.getInstance().delete(item);
-				CatalogListAdapter.super.onClick(v);
-			}
-		});
+		Action action = new DeleteDataAction<T>(getItemFromView(v),
+				v.getContext());
+		Application.getInstance().dispatch(action);
 	}
 }

@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.dialogs.FormFragment;
 import com.primateer.daikoku.model.vos.Product;
-import com.primateer.daikoku.views.Catalog;
+import com.primateer.daikoku.views.CatalogView;
 import com.primateer.daikoku.views.forms.MealForm;
 import com.primateer.daikoku.views.forms.ProductForm;
 import com.primateer.daikoku.views.forms.RecipeForm;
@@ -35,9 +35,9 @@ public class MainActivity extends FragmentActivity {
 		getStatsButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final Catalog<Product> catalog = new Catalog<Product>(
+				final CatalogView<Product> catalog = new CatalogView<Product>(
 						MainActivity.this, Product.class, null);
-				catalog.loadAll();
+				catalog.reload();
 				Dialog dialog = new Dialog(MainActivity.this);
 				dialog.setTitle("PRODUCT CATALOG");
 				ViewGroup content = (ViewGroup) catalog;

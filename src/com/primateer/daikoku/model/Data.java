@@ -56,7 +56,7 @@ public class Data implements Observable<Class<ValueObject>> {
 
 		if (vo == null) {
 			vo = (ValueObject) getDao(voClass).load(id);
-			register(vo);
+			getEntries(voClass).put(id, vo);
 		}
 		return vo;
 	}

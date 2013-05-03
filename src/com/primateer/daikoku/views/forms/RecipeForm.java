@@ -103,7 +103,7 @@ public class RecipeForm extends VoForm<Recipe> {
 									setRowData(new Component(item));
 								}
 							}, null);
-					connector.getCatalog().loadAll();
+					connector.getCatalog().reload();
 					connector.showDialog();
 				}
 			});
@@ -214,7 +214,7 @@ public class RecipeForm extends VoForm<Recipe> {
 							}
 						}, getResources()
 								.getString(R.string.title_pick_product));
-				connector.getCatalog().loadAll();
+				connector.getCatalog().reload();
 				connector.showDialog();
 			}
 		});

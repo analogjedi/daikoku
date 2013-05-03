@@ -7,13 +7,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.views.Catalog;
+import com.primateer.daikoku.views.CatalogView;
 
 public class CatalogDialogConnector<T extends ValueObject> {
 
-	private Catalog<T> catalog;
+	private CatalogView<T> catalog;
 	private Dialog dialog;
 
 	public CatalogDialogConnector(Class<T> dataClass, View launcher,
@@ -27,12 +28,22 @@ public class CatalogDialogConnector<T extends ValueObject> {
 		});
 	}
 
-	public CatalogDialogConnector(Class<T> dataClass, Context context,
+	public CatalogDialogConnector(final Class<T> dataClass, Context context,
 			final Observer<T> selectionObserver, String title) {
-		catalog = new Catalog<T>(context, dataClass, new Observer<T>() {
+		final Observer<Class<ValueObject>> dbObserver = new Observer<Class<ValueObject>>() {
+			@Override
+			public void update(Class<ValueObject> observable) {
+				if (observable.equals(dataClass)) {
+					catalog.reload();
+				}
+			}
+		};
+		Data.getInstance().addObserver(dbObserver);
+		catalog = new CatalogView<T>(context, dataClass, new Observer<T>() {
 			@Override
 			public void update(T item) {
 				dialog.dismiss();
+				Data.getInstance().removeObserver(dbObserver);
 				dialog = null;
 				selectionObserver.update(item);
 			}
@@ -48,7 +59,7 @@ public class CatalogDialogConnector<T extends ValueObject> {
 		dialog.show();
 	}
 
-	public Catalog<T> getCatalog() {
+	public CatalogView<T> getCatalog() {
 		return catalog;
 	}
 }

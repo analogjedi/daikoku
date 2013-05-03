@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.actions.Action;
+import com.primateer.daikoku.actions.DeleteDataAction;
 import com.primateer.daikoku.actions.EditFormAction;
 import com.primateer.daikoku.db.MealDao;
 import com.primateer.daikoku.model.Data;
@@ -56,8 +57,10 @@ public class MealPlanView extends LinearLayout {
 
 		@Override
 		public void onClick(View v) {
-			Data.getInstance().delete(getItemFromView(v));
-			super.onClick(v);
+			Action action = new DeleteDataAction<Meal>(getItemFromView(v),
+					getContext());
+			Application.getInstance().dispatch(action);
+			// super.onClick(v);
 		}
 
 		@Override
@@ -104,20 +107,6 @@ public class MealPlanView extends LinearLayout {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// FormDialogConnector<Meal> connector = new
-				// FormDialogConnector<Meal>(
-				// Meal.class, MealPlanView.this.getContext());
-				// connector.addObserver(new Observer<Meal>() {
-				// @Override
-				// public void update(Meal item) {
-				// if (Helper.isSameDay(item.getDue(),
-				// datePicker.getData())) {
-				// listAdapter.add(item);
-				// }
-				// Data.getInstance().register(item);
-				// }
-				// });
-				// connector.showDialog();
 				Meal meal = new Meal();
 				meal.setDue(datePicker.getData());
 				meal.setFavorite(false);
