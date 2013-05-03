@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
-import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.actions.Action;
 import com.primateer.daikoku.actions.EditFormAction;
 import com.primateer.daikoku.db.MealDao;
 import com.primateer.daikoku.model.Data;
@@ -18,8 +18,9 @@ import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.Goal;
 import com.primateer.daikoku.model.GoalRegistry;
 import com.primateer.daikoku.model.Observer;
+import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.model.vos.Meal;
-import com.primateer.daikoku.views.connector.FormDialogConnector;
+import com.primateer.daikoku.model.vos.Meal.State;
 import com.primateer.daikoku.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.views.widgets.DateWidget;
@@ -27,14 +28,14 @@ import com.primateer.daikoku.views.widgets.NutritionWatchWidget;
 
 public class MealPlanView extends LinearLayout {
 
-	private class MealListAdapter extends CatalogListAdapter<Meal> {
+	private class MealListAdapter extends CatalogListAdapter<Meal> implements
+			Observer<Class<ValueObject>> {
 
 		public MealListAdapter() {
 			super(Meal.class, new Observer<Meal>() {
 				@Override
 				public void update(Meal item) {
-					EditFormAction<Meal> action = new EditFormAction<Meal>(
-							getContext(), item);
+					Action action = new EditFormAction<Meal>(getContext(), item);
 					Application.getInstance().dispatch(action);
 				}
 			});
@@ -46,6 +47,11 @@ public class MealPlanView extends LinearLayout {
 					watcher.update(day);
 				}
 			});
+			Data.getInstance().addObserver(this);
+		}
+
+		public void reload() {
+			this.setData(new MealDao().loadAll(datePicker.getData()));
 		}
 
 		@Override
@@ -53,12 +59,17 @@ public class MealPlanView extends LinearLayout {
 			Data.getInstance().delete(getItemFromView(v));
 			super.onClick(v);
 		}
+
+		@Override
+		public void update(Class<ValueObject> observable) {
+			reload();
+		}
 	}
 
 	private DateWidget datePicker;
 	private NutritionWatchWidget watcher;
 	private ListView listView;
-	private CatalogListAdapter<Meal> listAdapter;
+	private MealListAdapter listAdapter;
 	private ImageButton addButton;
 
 	public MealPlanView(Context context) {
@@ -93,19 +104,26 @@ public class MealPlanView extends LinearLayout {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				FormDialogConnector<Meal> connector = new FormDialogConnector<Meal>(
-						Meal.class, MealPlanView.this.getContext());
-				connector.addObserver(new Observer<Meal>() {
-					@Override
-					public void update(Meal item) {
-						if (Helper.isSameDay(item.getDue(),
-								datePicker.getData())) {
-							listAdapter.add(item);
-						}
-						Data.getInstance().register(item);
-					}
-				});
-				connector.showDialog();
+				// FormDialogConnector<Meal> connector = new
+				// FormDialogConnector<Meal>(
+				// Meal.class, MealPlanView.this.getContext());
+				// connector.addObserver(new Observer<Meal>() {
+				// @Override
+				// public void update(Meal item) {
+				// if (Helper.isSameDay(item.getDue(),
+				// datePicker.getData())) {
+				// listAdapter.add(item);
+				// }
+				// Data.getInstance().register(item);
+				// }
+				// });
+				// connector.showDialog();
+				Meal meal = new Meal();
+				meal.setDue(datePicker.getData());
+				meal.setFavorite(false);
+				meal.setState(State.SCHEDULED);
+				Action action = new EditFormAction<Meal>(getContext(), meal);
+				Application.getInstance().dispatch(action);
 			}
 		});
 
@@ -121,6 +139,10 @@ public class MealPlanView extends LinearLayout {
 		if (!date.equals(datePicker.getData())) {
 			datePicker.setData(date);
 		}
-		listAdapter.setData(new MealDao().loadAll(date));
+		listAdapter.reload();
+	}
+
+	public void cleanUp() {
+		Data.getInstance().removeObserver(listAdapter);
 	}
 }

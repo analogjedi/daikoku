@@ -12,10 +12,11 @@ import com.primateer.daikoku.dialogs.FormFragment;
 import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.forms.Form;
 import com.primateer.daikoku.views.forms.InvalidDataException;
 
-public class FormDialogConnector<T> implements Form<T>, Observer<T>,
+public class FormDialogConnector<T extends ValueObject> implements Form<T>, Observer<T>,
 		Observable<T> {
 
 	private SimpleObservable<T> observable = new SimpleObservable<T>();
@@ -103,6 +104,7 @@ public class FormDialogConnector<T> implements Form<T>, Observer<T>,
 	@Override
 	public void setData(T data) throws IllegalArgumentException {
 		update(data);
+//		this.data = data;
 		if (form != null) {
 			form.setData(data);
 		}

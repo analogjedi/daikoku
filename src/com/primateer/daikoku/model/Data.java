@@ -7,10 +7,12 @@ import java.util.Map;
 import com.primateer.daikoku.db.Dao;
 
 @SuppressWarnings("rawtypes")
-public class Data {
+public class Data implements Observable<Class<ValueObject>> {
 
 	private static Data instance;
 
+	/** Notifies observers when the DB has changed. */
+	private SimpleObservable<Class<ValueObject>> observable = new SimpleObservable<Class<ValueObject>>();
 	private Map<Class, Map<Long, ValueObject>> registry = new HashMap<Class, Map<Long, ValueObject>>();
 
 	public static Data getInstance() {
@@ -75,6 +77,7 @@ public class Data {
 		long id = vo.getId();
 		if (id < 0) {
 			id = getDao(voClass).insert(vo);
+			observable.notifyObservers((Class<ValueObject>)voClass);
 		}
 		if (id >= 0) {
 			getEntries(voClass).put(id, vo);
@@ -96,8 +99,19 @@ public class Data {
 		}
 		if (getDao(vo.getClass()).delete(vo) > 0) {
 			getEntries(vo.getClass()).remove(id);
+			observable.notifyObservers((Class<ValueObject>)vo.getClass());
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void addObserver(Observer<Class<ValueObject>> observer) {
+		observable.addObserver(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer<Class<ValueObject>> observer) {
+		observable.removeObserver(observer);
 	}
 }

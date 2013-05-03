@@ -12,10 +12,11 @@ import android.widget.TextView;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.connector.FormDialogConnector;
 
-public class CatalogRowWidget<T> extends LinearLayout implements
-		DataRowWidget<T> {
+public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
+		implements DataRowWidget<T> {
 
 	private T bufferedData;
 	private ImageButton deleteButton;
@@ -59,7 +60,7 @@ public class CatalogRowWidget<T> extends LinearLayout implements
 		this.addView(selectView, selectLayout);
 	}
 
-	public void setDataClass(Class<T> dataClass) {
+	public void setDataClass(Class<T> dataClass) { // TODO make this private
 		formConnector = new FormDialogConnector<T>(dataClass, editButton);
 		formConnector.addObserver(new Observer<T>() {
 			@Override

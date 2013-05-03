@@ -6,18 +6,17 @@ import android.graphics.Color;
 import com.primateer.daikoku.actions.Action;
 
 /**
- * ToDo List
- * ---------
- * FIXME new meal form should be initialized with date from meal planner
- * FIXME clicking on meal label in meal planner causes crash
- * FIXME meals deleted from the planner are not deleted from the database
+ * ToDo List --------- FIXME new meal form should be initialized with date from
+ * meal planner FIXME clicking on meal label in meal planner causes crash FIXME
+ * meals deleted from the planner are not deleted from the database
  */
 
 public class Application extends android.app.Application {
 
 	public static final int ICON_ADD = R.drawable.onebit_1_31;
 	public static final int ICON_REMOVE = R.drawable.onebit_1_32;
-	public static final int ICON_CREATE = R.drawable.onebit_1_31;	
+	public static final int ICON_CREATE = R.drawable.onebit_1_31;
+	public static final int ICON_SAVE = R.drawable.onebit_1_34;
 	public static final int ICON_DELETE = R.drawable.onebit_1_33;
 	public static final int ICON_ACCEPT = R.drawable.onebit_1_34;
 	public static final int ICON_DENY = R.drawable.onebit_1_33;
@@ -29,13 +28,13 @@ public class Application extends android.app.Application {
 	public static final int ICON_STATE_RESERVED = R.drawable.onebit_2_02;
 	public static final int ICON_STATE_PREPARED = R.drawable.onebit_2_03;
 	public static final int ICON_STATE_CONSUMED = R.drawable.onebit_2_04;
-	
+
 	public static final int TEXTCOLOR_ERROR = Color.RED;
 	public static final int TEXTCOLOR_GREY = 0xff404040;
 	public static final int TEXTCOLOR_GREEN = 0xff008000;
 	public static final int TEXTCOLOR_BLUE = 0xff000080;
 	public static final int TEXTCOLOR_RED = 0xff800000;
-	
+
 	private static Application instance;
 	private static Context alternateContext;
 
@@ -62,6 +61,11 @@ public class Application extends android.app.Application {
 
 	public void dispatch(Action action) {
 		// TODO multithreading
+		if (!action.isReady()) {
+			throw new RuntimeException("Action "
+					+ action.getClass().getSimpleName()
+					+ " is not ready to be dispatched.");
+		}
 		action.run();
 	}
 

@@ -13,14 +13,18 @@ import android.widget.LinearLayout.LayoutParams;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.actions.Action;
+import com.primateer.daikoku.actions.SaveDataAction;
 import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.forms.Form;
 import com.primateer.daikoku.views.forms.InvalidDataException;
 import com.primateer.daikoku.views.widgets.Separator;
 
-public class FormFragment<T> extends DialogFragment implements Observable<T> {
+public class FormFragment<T extends ValueObject> extends DialogFragment
+		implements Observable<T> {
 
 	private Form<T> form;
 	private SimpleObservable<T> observable = new SimpleObservable<T>();
@@ -52,6 +56,8 @@ public class FormFragment<T> extends DialogFragment implements Observable<T> {
 			public void onClick(View v) {
 				try {
 					form.validate();
+					Action action = new SaveDataAction<T>(form.getData());
+					Application.getInstance().dispatch(action);
 				} catch (InvalidDataException e1) {
 					Helper.displayErrorMessage(getActivity(), getResources()
 							.getString(R.string.form_error_title), e1

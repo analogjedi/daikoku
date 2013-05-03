@@ -7,10 +7,18 @@ import com.primateer.daikoku.views.MealPlanView;
 
 public class MealPlanActivity extends FragmentActivity {
 
+	MealPlanView view;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_meal_plan);
-		this.setContentView(new MealPlanView(this));
+		view = new MealPlanView(this);
+		this.setContentView(view);
+	}
+	
+	@Override
+	protected void onDestroy() {		
+		view.cleanUp();
+		super.onDestroy();
 	}
 }
