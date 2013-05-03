@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.actions.EditFormAction;
 import com.primateer.daikoku.db.MealDao;
 import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Day;
@@ -29,7 +30,14 @@ public class MealPlanView extends LinearLayout {
 	private class MealListAdapter extends CatalogListAdapter<Meal> {
 
 		public MealListAdapter() {
-			super(Meal.class, null);
+			super(Meal.class, new Observer<Meal>() {
+				@Override
+				public void update(Meal item) {
+					EditFormAction<Meal> action = new EditFormAction<Meal>(
+							getContext(), item);
+					Application.getInstance().dispatch(action);
+				}
+			});
 			this.addObserver(new Observer<DataRowListAdapter<Meal>>() {
 				@Override
 				public void update(DataRowListAdapter<Meal> observable) {

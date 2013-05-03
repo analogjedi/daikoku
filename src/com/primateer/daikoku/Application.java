@@ -3,6 +3,8 @@ package com.primateer.daikoku;
 import android.content.Context;
 import android.graphics.Color;
 
+import com.primateer.daikoku.actions.Action;
+
 /**
  * ToDo List
  * ---------
@@ -56,6 +58,11 @@ public class Application extends android.app.Application {
 	public void onCreate() {
 		super.onCreate();
 		instance = this;
+	}
+
+	public void dispatch(Action action) {
+		// TODO multithreading
+		action.run();
 	}
 
 }
