@@ -1,5 +1,6 @@
 package com.primateer.daikoku.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -20,6 +21,7 @@ public class NutritionDao extends Dao<Nutrition> {
 	public static final String NUTRIENT_COL_TYPE = "type";
 	public static final String NUTRIENT_COL_AMOUNT = "amount";
 
+	@Override
 	public Nutrition load(long id) {
 		Nutrition vo = null;
 		Cursor q = getResolver().query(getUri(NUTRITION_TABLE), null,
@@ -50,33 +52,28 @@ public class NutritionDao extends Dao<Nutrition> {
 		return result;
 	}
 
+	@Override
 	public long insert(Nutrition vo) {
-		long id = vo.getId();
-
-		// nutrition table
-		ContentValues vals = new ContentValues();
-		if (id >= 0) {
-			vals.put(COL_ID, id);
+		long id = vo.setId(getId(getResolver().insert(getUri(NUTRITION_TABLE),
+				toCV(vo))));
+		for (ContentValues vals : toCV(vo.getNutrients(), id)) {
+			getResolver().insert(getUri(NUTRIENT_TABLE), vals);
 		}
-		vals.put(NUTRITION_COL_AMOUNT, vo.getReferenceAmount().toString());
-		id = getId(getResolver().insert(getUri(NUTRITION_TABLE), vals));
-		if (vo.getId() != id) {
-			vo.setId(id);
-		}
+		return id;
+	}
 
-		// nutrient table
-		NutrientSet nutrients = vo.getNutrients();
+	private List<ContentValues> toCV(NutrientSet nutrients, long id) {
+		List<ContentValues> list = new ArrayList<ContentValues>();
 		if (nutrients != null) {
 			for (Nutrient nutrient : nutrients) {
-				ContentValues nv = new ContentValues();
-				nv.put(NUTRIENT_COL_NUTRITION, id);
-				nv.put(NUTRIENT_COL_TYPE, nutrient.type.id);
-				nv.put(NUTRIENT_COL_AMOUNT, nutrient.amount.toString());
-				getResolver().insert(getUri(NUTRIENT_TABLE), nv);
+				ContentValues vals = new ContentValues();
+				vals.put(NUTRIENT_COL_NUTRITION, id);
+				vals.put(NUTRIENT_COL_TYPE, nutrient.type.id);
+				vals.put(NUTRIENT_COL_AMOUNT, nutrient.amount.toString());
+				list.add(vals);
 			}
 		}
-
-		return id;
+		return list;
 	}
 
 	@Override
@@ -87,8 +84,17 @@ public class NutritionDao extends Dao<Nutrition> {
 
 	@Override
 	public int update(Nutrition vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		for (ContentValues vals : toCV(vo.getNutrients(), vo.getId())) {
+			getResolver().update(
+					getUri(NUTRIENT_TABLE),
+					vals,
+					where(new String[] { NUTRIENT_COL_TYPE,
+							NUTRIENT_COL_NUTRITION },
+							new Object[] { vals.get(NUTRIENT_COL_TYPE),
+									vo.getId() }), null);
+		}
+		return getResolver().update(getUri(NUTRITION_TABLE), toCV(vo),
+				whereId(vo.getId()), null);
 	}
 
 	@Override
@@ -96,6 +102,23 @@ public class NutritionDao extends Dao<Nutrition> {
 		getResolver().delete(getUri(NUTRIENT_TABLE),
 				where(NUTRIENT_COL_NUTRITION, vo.getId()), null);
 		return delete(NUTRITION_TABLE, vo.getId());
+	}
+
+	@Override
+	protected Nutrition buildFrom(Cursor q) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected ContentValues toCV(Nutrition vo) {
+		long id = vo.getId();
+		ContentValues vals = new ContentValues();
+		if (id >= 0) {
+			vals.put(COL_ID, id);
+		}
+		vals.put(NUTRITION_COL_AMOUNT, vo.getReferenceAmount().toString());
+		return vals;
 	}
 
 }

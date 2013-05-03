@@ -6,9 +6,13 @@ import android.view.View;
 import android.view.ViewParent;
 import android.widget.LinearLayout;
 
-public abstract class VoForm<T> extends LinearLayout implements Form<T> {
+import com.primateer.daikoku.model.ValueObject;
+
+public abstract class VoForm<T extends ValueObject> extends LinearLayout implements Form<T> {
 
 	private static final int PADDING_LEFT = 50;
+	
+	private long dataId = -1;
 
 	public VoForm(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -27,7 +31,9 @@ public abstract class VoForm<T> extends LinearLayout implements Form<T> {
 	@Override
 	public final T getData() throws InvalidDataException {
 		validate();
-		return gatherData();
+		T data = gatherData();
+		data.setId(dataId);
+		return data;
 	}
 	
 	@Override
@@ -36,6 +42,7 @@ public abstract class VoForm<T> extends LinearLayout implements Form<T> {
 		if (data == null) {
 			return;
 		}
+		dataId = data.getId();
 		fillFields(data);
 	}
 

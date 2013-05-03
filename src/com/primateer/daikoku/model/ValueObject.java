@@ -7,7 +7,8 @@ public class ValueObject extends SimpleObservable<ValueObject> {
 		return id;
 	}
 
-	public void setId(long id) {
+	public long setId(long id) {
 		this.id = id;
+		return id;
 	}
 }

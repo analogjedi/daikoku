@@ -18,24 +18,10 @@ public class MealDao extends Dao<Meal> {
 	public static final String COL_DUE = "due";
 	public static final String COL_STATE = "state";
 
-	/**
-	 * Create new meal entry.
-	 * 
-	 * @param vo
-	 *            value holding object
-	 * @return ID of created entry
-	 */
+	@Override
 	public long insert(Meal vo) {
-		ContentValues vals = new ContentValues();
-		long oldId = vo.getId();
-		vals.put(COL_ID, Data.getInstance().register(vo, Recipe.class));
-		vals.put(COL_DUE, Helper.toString(vo.getDue()));
-		vals.put(COL_STATE, vo.getState().ordinal());
-		long newId = getId(getResolver().insert(getUri(TABLE), vals));
-		if (oldId != newId) {
-			vo.setId(newId);
-		}
-		return newId;
+		return vo
+				.setId(getId(getResolver().insert(getUri(TABLE), toCV(vo))));
 	}
 
 	public List<Meal> loadAll(Date date) {
@@ -43,22 +29,10 @@ public class MealDao extends Dao<Meal> {
 		Cursor q = getResolver().query(getUri(TABLE), null,
 				where(COL_DUE, Helper.toString(date)), null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
-			results.add(buildMeal(q));
+			results.add(buildFrom(q));
 		}
 		q.close();
 		return results;
-	}
-
-	private Meal buildMeal(Cursor q) {
-		Meal vo = new Meal();
-		long id = q.getLong(q.getColumnIndex(COL_ID));
-		vo.setId(id);
-		Recipe recipe = (Recipe) Data.getInstance().get(Recipe.class, id);
-		vo.add(recipe);
-		vo.setLabel(recipe.getLabel());
-		vo.setDue(Helper.parseDate(q.getString(q.getColumnIndex(COL_DUE))));
-		vo.setState(Meal.State.values()[q.getInt(q.getColumnIndex(COL_STATE))]);
-		return vo;
 	}
 
 	@Override
@@ -75,8 +49,8 @@ public class MealDao extends Dao<Meal> {
 
 	@Override
 	public int update(Meal vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getResolver().update(getUri(TABLE), toCV(vo),
+				whereId(vo.getId()), null);
 	}
 
 	@Override
@@ -85,5 +59,27 @@ public class MealDao extends Dao<Meal> {
 			(new RecipeDao()).delete((Recipe) vo);
 		}
 		return delete(TABLE, vo.getId());
+	}
+
+	@Override
+	protected Meal buildFrom(Cursor q) {
+		Meal vo = new Meal();
+		long id = q.getLong(q.getColumnIndex(COL_ID));
+		vo.setId(id);
+		Recipe recipe = (Recipe) Data.getInstance().get(Recipe.class, id);
+		vo.add(recipe);
+		vo.setLabel(recipe.getLabel());
+		vo.setDue(Helper.parseDate(q.getString(q.getColumnIndex(COL_DUE))));
+		vo.setState(Meal.State.values()[q.getInt(q.getColumnIndex(COL_STATE))]);
+		return vo;
+	}
+
+	@Override
+	protected ContentValues toCV(Meal vo) {
+		ContentValues vals = new ContentValues();
+		vals.put(COL_ID, Data.getInstance().register(vo, Recipe.class));
+		vals.put(COL_DUE, Helper.toString(vo.getDue()));
+		vals.put(COL_STATE, vo.getState().ordinal());
+		return vals;
 	}
 }

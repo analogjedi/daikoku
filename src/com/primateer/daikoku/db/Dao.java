@@ -3,6 +3,8 @@ package com.primateer.daikoku.db;
 import java.util.List;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 
 import com.primateer.daikoku.Application;
@@ -30,6 +32,17 @@ public abstract class Dao<T extends ValueObject> {
 		return column + " = '" + value.toString() + "'";
 	}
 
+	protected static String where(String[] columns, Object[] values) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < columns.length; i++) {
+			sb.append(where(columns[i], values[i]));
+			if (i < columns.length - 1) {
+				sb.append(" AND ");
+			}
+		}
+		return sb.toString();
+	}
+
 	protected static Uri getUri(String table) {
 		return Uri.parse("content://" + DatabaseProvider.AUTHORITY + "/"
 				+ table);
@@ -50,11 +63,14 @@ public abstract class Dao<T extends ValueObject> {
 
 	public abstract int delete(T vo);
 
+	protected abstract T buildFrom(Cursor q);
+
+	protected abstract ContentValues toCV(T vo);
+
 	protected int delete(String tableName, long id) {
 		if (id < 0) {
 			return 0;
 		}
-		return getResolver().delete(getUri(tableName), whereId(id),
-				null);
+		return getResolver().delete(getUri(tableName), whereId(id), null);
 	}
 }

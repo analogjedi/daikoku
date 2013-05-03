@@ -22,38 +22,33 @@ public class RecipeDao extends Dao<Recipe> {
 	public static final String INGREDIENT_COL_PRODUCT = "product";
 	public static final String INGREDIENT_COL_AMOUNT = "amount";
 
+	@Override
 	public long insert(Recipe vo) {
-		long id = vo.getId();
-
-		// recipe table
-		ContentValues vals = new ContentValues();
-		if (id >= 0) {
-			vals.put(COL_ID, id);
+		long id = vo.setId(getId(getResolver().insert(getUri(RECIPE_TABLE),
+				toCV(vo))));
+		for (ContentValues vals : toCV(vo.getIngredients(), id)) {
+			getResolver().insert(getUri(INGREDIENT_TABLE), vals);
 		}
-		vals.put(COL_LABEL, vo.getLabel());
-		vals.put(RECIPE_COL_FAVORITE, vo.isFavorite());
-		id = getId(getResolver().insert(getUri(RECIPE_TABLE), vals));
-		if (vo.getId() != id) {
-			vo.setId(id);
-		}
-
-		// recipe_ingredient table
-		Map<Product, Amount> ingredients = vo.getIngredients();
-		if (ingredients != null) {
-			for (Product product : ingredients.keySet()) {
-				ContentValues iv = new ContentValues();
-				iv.put(INGREDIENT_COL_RECIPE, id);
-				iv.put(INGREDIENT_COL_PRODUCT,
-						Data.getInstance().register(product));
-				iv.put(INGREDIENT_COL_AMOUNT, ingredients.get(product)
-						.toString());
-				getResolver().insert(getUri(INGREDIENT_TABLE), iv);
-			}
-		}
-
 		return id;
 	}
 
+	private List<ContentValues> toCV(Map<Product, Amount> ingredients, long id) {
+		List<ContentValues> list = new ArrayList<ContentValues>();
+		if (ingredients != null) {
+			for (Product product : ingredients.keySet()) {
+				ContentValues vals = new ContentValues();
+				vals.put(INGREDIENT_COL_RECIPE, id);
+				vals.put(INGREDIENT_COL_PRODUCT,
+						Data.getInstance().register(product));
+				vals.put(INGREDIENT_COL_AMOUNT, ingredients.get(product)
+						.toString());
+				list.add(vals);
+			}
+		}
+		return list;
+	}
+
+	@Override
 	public Recipe load(long id) {
 		Recipe vo = null;
 		Cursor q = getResolver().query(getUri(RECIPE_TABLE), null, whereId(id),
@@ -112,8 +107,17 @@ public class RecipeDao extends Dao<Recipe> {
 
 	@Override
 	public int update(Recipe vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		for (ContentValues vals : toCV(vo.getIngredients(), vo.getId())) {
+			getResolver().update(
+					getUri(INGREDIENT_TABLE),
+					vals,
+					where(new String[] { INGREDIENT_COL_RECIPE,
+							INGREDIENT_COL_PRODUCT }, new Object[] {
+							vo.getId(), vals.get(INGREDIENT_COL_PRODUCT) }),
+					null);
+		}
+		return getResolver().update(getUri(RECIPE_TABLE), toCV(vo),
+				whereId(vo.getId()), null);
 	}
 
 	@Override
@@ -121,5 +125,23 @@ public class RecipeDao extends Dao<Recipe> {
 		getResolver().delete(getUri(INGREDIENT_TABLE),
 				where(INGREDIENT_COL_RECIPE, vo.getId()), null);
 		return delete(RECIPE_TABLE, vo.getId());
+	}
+
+	@Override
+	protected Recipe buildFrom(Cursor q) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected ContentValues toCV(Recipe vo) {
+		long id = vo.getId();
+		ContentValues vals = new ContentValues();
+		if (id >= 0) {
+			vals.put(COL_ID, id);
+		}
+		vals.put(COL_LABEL, vo.getLabel());
+		vals.put(RECIPE_COL_FAVORITE, vo.isFavorite());
+		return vals;
 	}
 }

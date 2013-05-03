@@ -77,11 +77,11 @@ public class Data implements Observable<Class<ValueObject>> {
 		long id = vo.getId();
 		if (id < 0) {
 			id = getDao(voClass).insert(vo);
-			observable.notifyObservers((Class<ValueObject>)voClass);
+		} else {
+			getDao(voClass).update(vo);
 		}
-		if (id >= 0) {
-			getEntries(voClass).put(id, vo);
-		}
+		getEntries(voClass).put(id, vo);
+		observable.notifyObservers((Class<ValueObject>)voClass);
 		return id;		
 	}
 

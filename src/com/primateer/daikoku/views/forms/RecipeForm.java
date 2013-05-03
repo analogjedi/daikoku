@@ -285,7 +285,7 @@ public class RecipeForm extends VoForm<Recipe> {
 
 	private void updateWatcher() {
 		try {
-			watchWidget.update(RecipeForm.this.gatherData());
+			watchWidget.update(RecipeForm.this.getData());
 		} catch (InvalidDataException e) {
 			e.printStackTrace();
 			// don't update if you can't
