@@ -1,0 +1,43 @@
+MISSING FEATURES
+================
+
+Goals
+* Set daily goals
+* Set weekly goals
+* Set monthly goals
+* Set goals per meal
+
+Settings
+* Configure Nutrient Types
+* Configure Units
+* Configure Default Nutrient Selection
+
+Shopping & Supplies
+
+Units
+* Cascaded unit conversion
+
+Styling
+
+
+
+MISSING CODE
+============
+
+Tests
+* for persistency layer
+* use cases
+* user interface
+
+
+
+KNOWN BUGS
+==========
+
+
+
+POSTPONED FEATURES
+==================
+
+Goals
+* goal history (apply goals for the time they were active)

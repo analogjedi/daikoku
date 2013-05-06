@@ -5,12 +5,6 @@ import android.graphics.Color;
 
 import com.primateer.daikoku.actions.Action;
 
-/**
- * ToDo List --------- FIXME new meal form should be initialized with date from
- * meal planner FIXME clicking on meal label in meal planner causes crash FIXME
- * meals deleted from the planner are not deleted from the database
- */
-
 public class Application extends android.app.Application {
 
 	public static final int ICON_ADD = R.drawable.onebit_1_31;
