@@ -1,5 +1,6 @@
 package com.primateer.daikoku.views.widgets;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,15 +22,14 @@ import com.primateer.daikoku.model.NutritionHolder;
 public class NutritionWatchWidget extends TextView {
 
 	private static final int BG_COLOR = 0xffe0e0e0;
-	private static final int DEFAULT_COLOR = 0xff000000;
+	// private static final int DEFAULT_COLOR = 0xff000000;
 
 	private List<Nutrient.Type> watchList;
-	private Map<Nutrient.Type, Goal> goals;
+	private List<Goal> goals;
 	private NutritionHolder subject;
 
-	public NutritionWatchWidget (Context context,
-			List<Nutrient.Type> watchList) {
-		super(context,null);
+	public NutritionWatchWidget(Context context, List<Nutrient.Type> watchList) {
+		super(context, null);
 		this.setBackgroundColor(BG_COLOR);
 		this.setWatchList(watchList);
 		this.update(null);
@@ -43,7 +43,7 @@ public class NutritionWatchWidget extends TextView {
 		this.watchList = watchList;
 	}
 
-	public void setGoals(Map<Nutrient.Type, Goal> goals) {
+	public void setGoals(List<Goal> goals) {
 		this.goals = goals;
 		this.update(this.subject);
 	}
@@ -51,21 +51,36 @@ public class NutritionWatchWidget extends TextView {
 	public void update(NutritionHolder subject) {
 		this.subject = subject;
 		StringBuilder sb = new StringBuilder();
+
+		Map<Nutrient.Type, Goal.Status> status = new HashMap<Nutrient.Type, Goal.Status>();
+		for (Nutrient.Type type : watchList) {
+			status.put(type, Goal.Status.UNRATED);
+		}
+
+		if (goals != null && subject != null) {
+			for (Goal goal : goals) {
+				try {
+					Goal.Status match = goal.match(subject
+							.getNutrition(goal.nutrientType));
+					if (match.ordinal() > status.get(goal.nutrientType)
+							.ordinal()) {
+						status.put(goal.nutrientType, match);
+					}
+				} catch (UnitConversionException e) {
+					Helper.logErrorStackTrace(this, e, "Unable to match goal");
+				}
+			}
+		}
+
 		for (Iterator<Nutrient.Type> it = watchList.iterator(); it.hasNext();) {
 			Nutrient.Type type = it.next();
 			try {
 				Amount amount = (subject != null) ? subject.getNutrition(type)
 						: type.getNullAmount();
-				int color = DEFAULT_COLOR;
-				if (goals != null) {
-					Goal goal = goals.get(type);
-					if (goal != null) {
-						color = goal.match(amount).color;
-					}
-				}
-				sb.append("<font color='").append(color).append("'><b>")
-						.append(type.getAbbrev()).append("</b> ")
-						.append(amount.toRoundString()).append("</font>");
+				sb.append("<font color='").append(status.get(type).color)
+						.append("'><b>").append(type.getAbbrev())
+						.append("</b> ").append(amount.toRoundString())
+						.append("</font>");
 			} catch (UnitConversionException e) {
 				sb.append("<font color='").append(Application.TEXTCOLOR_ERROR)
 						.append("'><b>").append(type.getAbbrev())

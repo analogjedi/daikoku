@@ -2,7 +2,7 @@ package com.primateer.daikoku.model;
 
 import com.primateer.daikoku.Application;
 
-public interface Goal {
+public abstract class Goal {
 	
 	public enum Scope {
 		PER_MEAL, PER_DAY, PER_WEEK, PER_MONTH;
@@ -19,6 +19,14 @@ public interface Goal {
 			this.color = color;
 		}
 	}
+	
+	public final Scope scope;
+	public final Nutrient.Type nutrientType;
+	
+	public Goal(Scope scope, Nutrient.Type nutrientType) {
+		this.scope = scope;
+		this.nutrientType = nutrientType;
+	}
 
-	Status match(Amount amount);
+	public abstract Status match(Amount amount);
 }
