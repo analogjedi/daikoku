@@ -92,11 +92,23 @@ public class MainActivity extends FragmentActivity {
 						"recipe");
 			}
 		});
+		
 
+		Button goalsButton = new Button(this);
+		goalsButton.setText("start goals activity");
+		goalsButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainActivity.this,
+						GoalsActivity.class));
+			}
+		});
+
+		views.addView(mealPlanButton);
+		views.addView(goalsButton);
 		views.addView(getStatsButton);
 		views.addView(openDialogButton);
 		views.addView(openRecipeButton);
-		views.addView(mealPlanButton);
 		views.addView(openMealButton);
 	}
 

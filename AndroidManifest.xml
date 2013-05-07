@@ -27,6 +27,10 @@
             android:name="com.primateer.daikoku.activities.MealPlanActivity"
             android:label="@string/title_activity_meal_plan" >
         </activity>
+        <activity
+            android:name="com.primateer.daikoku.activities.GoalsActivity"
+            android:label="@string/title_activity_goals" >
+        </activity>
         <provider
             android:name="com.primateer.daikoku.db.DatabaseProvider"
             android:authorities="daikoku"

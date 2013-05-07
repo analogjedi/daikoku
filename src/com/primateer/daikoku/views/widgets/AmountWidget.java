@@ -100,6 +100,10 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 	public void selectUnit(Unit unit) {
 		unitView.setSelection(units.indexOf(unit));
 	}
+	
+	public void setUnits(Unit.Type type) {
+		this.setUnits(UnitRegistry.getInstance().getUnitsByType(type));
+	}
 
 	public void setUnits(List<Unit> units) {
 		this.units = units;

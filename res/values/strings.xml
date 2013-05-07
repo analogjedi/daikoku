@@ -8,8 +8,12 @@
     <string name="choose_nutrient_type">Choose Nutrient Type</string>
     
     <string name="error">(ERROR)</string>
-
+    
+    <string name="abbrev_minimum">min</string>
+    <string name="abbrev_maximum">max</string>
+    
     <string name="title_activity_meal_plan">Schedule Meals</string>
+    <string name="title_activity_goals">Set Goals</string>
     <string name="title_pick_product">Select A Product</string>
     <string name="title_pick_recipe">Select A Recipe</string>
     
