@@ -1,3 +1,11 @@
+CREATE TABLE 'goal' (
+	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
+	'goal_type' INTEGER NOT NULL,
+	'scope' INTEGER NOT NULL,
+	'nutrient_type' TEXT NOT NULL,
+	'amount' TEXT NOT NULL
+);
+
 CREATE TABLE 'nutrition' (
 	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
 	'reference_amount' TEXT NOT NULL

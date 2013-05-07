@@ -14,7 +14,7 @@ import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
-import com.primateer.daikoku.model.Goal;
+import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.NutritionHolder;

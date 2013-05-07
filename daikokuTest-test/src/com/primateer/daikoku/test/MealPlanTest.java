@@ -1,15 +1,21 @@
 package com.primateer.daikoku.test;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 
 import com.primateer.daikoku.db.DayDao;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
-import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.Data;
+import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.Nutrient;
+import com.primateer.daikoku.model.Unit;
+import com.primateer.daikoku.model.ValueObject;
+import com.primateer.daikoku.model.vos.Goal;
+import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
@@ -19,6 +25,14 @@ import com.primateer.daikoku.testutil.DatabaseTestCase;
 public class MealPlanTest extends DatabaseTestCase {
 
 	public void testDay() throws UnitConversionException, NameNotFoundException {
+		List<Goal> goals = new ArrayList<Goal>();
+		goals.add(new Goal(Goal.Type.MINIMUM, Scope.PER_DAY,
+				Nutrient.TYPE_ENERGY, new Amount(1500, Unit.UNIT_KILOCALORIE)));
+		goals.add(new Goal(Goal.Type.MAXIMUM, Scope.PER_DAY,
+				Nutrient.TYPE_ENERGY, new Amount(2000, Unit.UNIT_KILOCALORIE)));
+		goals.add(new Goal(Goal.Type.MINIMUM, Scope.PER_DAY,
+				Nutrient.TYPE_PROTEIN, new Amount(30, Unit.UNIT_GRAM)));
+
 		Date today = new Date();
 
 		Nutrition lentilsNutrition = new Nutrition();
@@ -65,8 +79,17 @@ public class MealPlanTest extends DatabaseTestCase {
 		model.register(meal2); // deliberate duplicate
 		model.register(meal3);
 
+		for (Goal goal : goals) {
+			model.register(goal);
+		}
+
 		Day day = new DayDao().load(today);
 		assertEquals(new Amount("86.25g"),
 				day.getNutrition(Nutrient.TYPE_PROTEIN));
+
+		List<ValueObject> goalVos = Data.getInstance().getAll(Goal.class);
+		assertEquals(Goal.Status.ACHIEVABLE, ((Goal) goalVos.get(0)).match(day));
+		assertEquals(Goal.Status.MET, ((Goal) goalVos.get(1)).match(day));
+		assertEquals(Goal.Status.MET, ((Goal) goalVos.get(2)).match(day));
 	}
 }
