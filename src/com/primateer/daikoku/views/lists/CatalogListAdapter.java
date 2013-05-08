@@ -19,6 +19,7 @@ public class CatalogListAdapter<T extends ValueObject> extends
 	public CatalogListAdapter(Catalog<T> catalog) {
 		super();
 		this.data = catalog;
+		catalog.reload();
 	}
 
 	@Override

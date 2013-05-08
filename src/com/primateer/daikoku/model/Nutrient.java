@@ -5,7 +5,7 @@ import com.primateer.daikoku.R;
 
 public class Nutrient {
 
-	public static abstract class Type {
+	public static abstract class Type extends ValueObject {
 		public final String id;
 		public final Unit defaultUnit;
 

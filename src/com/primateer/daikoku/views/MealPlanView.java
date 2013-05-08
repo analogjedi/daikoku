@@ -1,5 +1,6 @@
 package com.primateer.daikoku.views;
 
+import java.util.Collection;
 import java.util.Date;
 
 import android.content.Context;
@@ -93,8 +94,8 @@ public class MealPlanView extends LinearLayout {
 		Catalog<Meal> catalog = new Catalog<Meal>(Meal.class);
 		catalog.setLoader(new Catalog.Loader<Meal>() {
 			@Override
-			public void load(Catalog<Meal> catalog) {
-				catalog.addAll(new MealDao().loadAll(datePicker.getData()));
+			public Collection<Meal> load(Catalog<Meal> catalog) {
+				return new MealDao().loadAll(datePicker.getData());
 			}
 		});
 		listAdapter = new MealListAdapter(catalog);

@@ -1,5 +1,7 @@
 package com.primateer.daikoku.views;
 
+import java.util.Collection;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -15,6 +17,8 @@ import com.primateer.daikoku.R;
 import com.primateer.daikoku.actions.CatalogAction;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Nutrient;
+import com.primateer.daikoku.model.Nutrient.Type;
+import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.vos.Goal;
@@ -153,25 +157,35 @@ public class GoalsView extends LinearLayout {
 
 		addButton = new ImageButton(context);
 		addButton.setImageResource(Application.ICON_ADD);
-//		addButton.setOnClickListener(new OnClickListener() {			
-//			@Override
-//			public void onClick(View v) {
-//				Catalog<Nutrient.Type> catalog = new Catalog<Nutrient.Type>(Nutrient.Type.class);
-//				catalog.setOnSelectionListener(new Catalog.OnSelectionListener<Nutrient.Type>() {
-//					@Override
-//					public void onSelection(Nutrient.Type type) {
-//						GoalsView.this.addGoal(type);
-//					}
-//				});
-//				CatalogAction action = new CatalogAction(catalog);
-//				Application.getInstance().dispatch(action);
-//			}
-//		});
+		addButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Catalog<Nutrient.Type> catalog = new Catalog<Nutrient.Type>(
+						Nutrient.Type.class);
+				catalog.setLoader(new Catalog.Loader<Nutrient.Type>() {
+					@Override
+					public Collection<Nutrient.Type> load(Catalog<Type> catalog) {
+						return NutrientRegistry.getInstance()
+								.getAllNutrientTypes();
+					}
+				});
+				catalog.addObserver(new Observer<Nutrient.Type>() {
+					@Override
+					public void update(Nutrient.Type type) {
+						GoalsView.this.addGoal(type);
+					}
+				});
+				CatalogAction<Nutrient.Type> action = new CatalogAction<Nutrient.Type>(
+						getContext(), catalog, getResources().getString(
+								R.string.title_pick_nutrient_type));
+				Application.getInstance().dispatch(action);
+			}
+		});
 
 		this.addView(listView);
 		this.addView(addButton);
 	}
-	
+
 	private void addGoal(Nutrient.Type type) {
 		// TODO
 	}

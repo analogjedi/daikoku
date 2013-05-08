@@ -1,44 +1,52 @@
 package com.primateer.daikoku.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-public class Catalog<T extends ValueObject> extends ArrayList<T> {
+public class Catalog<T extends ValueObject> extends ArrayList<T> implements
+		Observable<T> {
 
-	public interface SelectionListener<T> {
-		public void onSelection(T item);
-	}
-	
 	public interface Loader<T extends ValueObject> {
-		public void load(Catalog<T> catalog);		
+		public Collection<T> load(Catalog<T> catalog);
 	}
 
+	private SimpleObservable<T> selectionObservable = new SimpleObservable<T>();
 	public final Class<T> dataClass;
-	private SelectionListener<T> listener;
 	private Loader<T> loader;
 
-	public Catalog(Class<T> dataClass) {
+	public Catalog(final Class<T> dataClass) {
 		this.dataClass = dataClass;
+		this.setLoader(new Loader<T>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public Collection<T> load(Catalog<T> cat) {
+				return (Collection<T>) Data.getInstance().getAll(dataClass);
+			}
+		});
 	}
 
-	public void setSelectionListener(SelectionListener<T> listener) {
-		this.listener = listener;
-	}
-	
 	public void setLoader(Loader<T> loader) {
 		this.loader = loader;
 	}
 
 	public void select(T item) {
-		// TODO check if item is contained
-		if (listener != null) {
-		listener.onSelection(item);
-		}
+		selectionObservable.notifyObservers(item);
 	}
-	
+
 	public void reload() {
 		this.clear();
 		if (loader != null) {
-			loader.load(this);
+			this.addAll(loader.load(this));
 		}
+	}
+
+	@Override
+	public void addObserver(Observer<T> observer) {
+		selectionObservable.addObserver(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer<T> observer) {
+		selectionObservable.removeObserver(observer);
 	}
 }

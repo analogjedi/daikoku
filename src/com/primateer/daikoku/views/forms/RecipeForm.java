@@ -1,6 +1,7 @@
 package com.primateer.daikoku.views.forms;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,8 +21,10 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.actions.CatalogAction;
 import com.primateer.daikoku.db.RecipeDao;
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Component;
 import com.primateer.daikoku.model.GoalRegistry;
 import com.primateer.daikoku.model.Observer;
@@ -31,7 +34,6 @@ import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
-import com.primateer.daikoku.views.connector.CatalogDialogConnector;
 import com.primateer.daikoku.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.views.widgets.AmountWidget;
 import com.primateer.daikoku.views.widgets.LabelWidget;
@@ -95,16 +97,18 @@ public class RecipeForm extends VoForm<Recipe> {
 			selectView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					CatalogDialogConnector<Product> connector = new CatalogDialogConnector<Product>(
-							Product.class, getContext(),
-							new Observer<Product>() {
-								@Override
-								public void update(Product item) {
-									setRowData(new Component(item));
-								}
-							}, null);
-					connector.getCatalog().reload();
-					connector.showDialog();
+					Catalog<Product> catalog = new Catalog<Product>(
+							Product.class);
+					catalog.addObserver(new Observer<Product>() {
+						@Override
+						public void update(Product item) {
+							setRowData(new Component(item));
+						}
+					});
+					CatalogAction<Product> action = new CatalogAction<Product>(
+							getContext(), catalog, getResources().getString(
+									R.string.title_pick_product));
+					Application.getInstance().dispatch(action);
 				}
 			});
 
@@ -203,19 +207,20 @@ public class RecipeForm extends VoForm<Recipe> {
 		addProductButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CatalogDialogConnector<Product> connector = new CatalogDialogConnector<Product>(
-						Product.class, getContext(), new Observer<Product>() {
-							@Override
-							public void update(Product item) {
-								listAdapter.add(item);
-								if (label.isEmpty()) {
-									label.setText(item.getLabel());
-								}
-							}
-						}, getResources()
-								.getString(R.string.title_pick_product));
-				connector.getCatalog().reload();
-				connector.showDialog();
+				Catalog<Product> catalog = new Catalog<Product>(Product.class);
+				catalog.addObserver(new Observer<Product>() {
+					@Override
+					public void update(Product item) {
+						listAdapter.add(item);
+						if (label.isEmpty()) {
+							label.setText(item.getLabel());
+						}
+					}
+				});
+				CatalogAction<Product> action = new CatalogAction<Product>(
+						getContext(), catalog, getResources().getString(
+								R.string.title_pick_product));
+				Application.getInstance().dispatch(action);
 			}
 		});
 
@@ -224,25 +229,35 @@ public class RecipeForm extends VoForm<Recipe> {
 		addRecipeButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CatalogDialogConnector<Recipe> connector = new CatalogDialogConnector<Recipe>(
-						Recipe.class, getContext(), new Observer<Recipe>() {
-							@Override
-							public void update(Recipe item) {
-								Map<Product, Amount> ingredients = item
-										.getIngredients();
-								for (Product product : ingredients.keySet()) {
-									listAdapter.add(new Component(product,
-											ingredients.get(product)));
-									if (label.isEmpty()) {
-										label.setText(item.getLabel());
-									}
-								}
+				Catalog<Recipe> catalog = new Catalog<Recipe>(Recipe.class);
+				catalog.setLoader(new Catalog.Loader<Recipe>() {
+					@Override
+					public Collection<Recipe> load(Catalog<Recipe> catalog) {
+						ArrayList<Recipe> list = new ArrayList<Recipe>();
+						for (Recipe recipe : (new RecipeDao()).loadFavorites()) {
+							list.add(recipe);
+						}
+						return list;
+					}
+				});
+				catalog.addObserver(new Observer<Recipe>() {
+					@Override
+					public void update(Recipe item) {
+						Map<Product, Amount> ingredients = item
+								.getIngredients();
+						for (Product product : ingredients.keySet()) {
+							listAdapter.add(new Component(product, ingredients
+									.get(product)));
+							if (label.isEmpty()) {
+								label.setText(item.getLabel());
 							}
-						}, getResources().getString(R.string.title_pick_recipe));
-				for (Recipe recipe : (new RecipeDao()).loadFavorites()) {
-					connector.getCatalog().add(recipe);
-				}
-				connector.showDialog();
+						}
+					}
+				});
+				CatalogAction<Recipe> action = new CatalogAction<Recipe>(
+						getContext(), catalog, getResources().getString(
+								R.string.title_pick_recipe));
+				Application.getInstance().dispatch(action);
 			}
 		});
 

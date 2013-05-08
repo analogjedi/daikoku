@@ -11,10 +11,11 @@
     
     <string name="abbrev_minimum">min</string>
     <string name="abbrev_maximum">max</string>
-    
+
     <string name="title_activity_meal_plan">Schedule Meals</string>
     <string name="title_activity_goals">Set Goals</string>
     <string name="title_pick_product">Select A Product</string>
+    <string name="title_pick_nutrient_type">Select A Nutrient Type</string>
     <string name="title_pick_recipe">Select A Recipe</string>
     
     <string name="nutrient_type_energy">Energy</string>

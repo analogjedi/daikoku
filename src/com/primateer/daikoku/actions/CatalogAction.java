@@ -1,19 +1,28 @@
 package com.primateer.daikoku.actions;
 
-import com.primateer.daikoku.model.Catalog;
+import android.content.Context;
 
-public class CatalogAction implements Action {
-	
-	private Catalog<?> catalog;
-	
-	public CatalogAction(Catalog<?> catalog) {
+import com.primateer.daikoku.model.Catalog;
+import com.primateer.daikoku.model.ValueObject;
+import com.primateer.daikoku.views.connector.CatalogDialogConnector;
+
+public class CatalogAction<T extends ValueObject> implements Action {
+
+	private Context context;
+	private Catalog<T> catalog;
+	private String title;
+
+	public CatalogAction(Context context, Catalog<T> catalog, String title) {
+		this.context = context;
 		this.catalog = catalog;
+		this.title = title;
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		CatalogDialogConnector<T> connector = new CatalogDialogConnector<T>(
+				catalog, context, title);
+		connector.showDialog();
 	}
 
 	@Override
