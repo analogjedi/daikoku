@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.dialogs.FormFragment;
+import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.views.CatalogView;
 import com.primateer.daikoku.views.forms.MealForm;
@@ -35,8 +36,9 @@ public class MainActivity extends FragmentActivity {
 		getStatsButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Catalog cat = new Catalog<Product>(Product.class);
 				final CatalogView<Product> catalog = new CatalogView<Product>(
-						MainActivity.this, Product.class, null);
+						MainActivity.this, cat);
 				catalog.reload();
 				Dialog dialog = new Dialog(MainActivity.this);
 				dialog.setTitle("PRODUCT CATALOG");
@@ -92,15 +94,13 @@ public class MainActivity extends FragmentActivity {
 						"recipe");
 			}
 		});
-		
 
 		Button goalsButton = new Button(this);
 		goalsButton.setText("start goals activity");
 		goalsButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(MainActivity.this,
-						GoalsActivity.class));
+				startActivity(new Intent(MainActivity.this, GoalsActivity.class));
 			}
 		});
 

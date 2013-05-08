@@ -1,5 +1,7 @@
 package com.primateer.daikoku.views.connector;
 
+import java.util.Collection;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -7,6 +9,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.primateer.daikoku.model.Catalog;
+import com.primateer.daikoku.model.Catalog.SelectionListener;
+import com.primateer.daikoku.model.Catalog.Loader;
 import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
@@ -14,7 +19,7 @@ import com.primateer.daikoku.views.CatalogView;
 
 public class CatalogDialogConnector<T extends ValueObject> {
 
-	private CatalogView<T> catalog;
+	private CatalogView<T> catalogView;
 	private Dialog dialog;
 
 	public CatalogDialogConnector(Class<T> dataClass, View launcher,
@@ -34,23 +39,33 @@ public class CatalogDialogConnector<T extends ValueObject> {
 			@Override
 			public void update(Class<ValueObject> observable) {
 				if (observable.equals(dataClass)) {
-					catalog.reload();
+					catalogView.reload();
 				}
 			}
 		};
 		Data.getInstance().addObserver(dbObserver);
-		catalog = new CatalogView<T>(context, dataClass, new Observer<T>() {
+		Catalog<T> catalog = new Catalog<T>(dataClass);
+		catalog.setLoader(new Loader<T>() {
+			@SuppressWarnings("unchecked")
 			@Override
-			public void update(T item) {
+			public void load(Catalog<T> cat) {
+				cat.addAll((Collection<? extends T>) Data.getInstance()
+						.getAll(dataClass));
+			}
+		});
+		catalog.setSelectionListener(new SelectionListener<T>() {
+			@Override
+			public void onSelection(T item) {
 				dialog.dismiss();
 				Data.getInstance().removeObserver(dbObserver);
 				dialog = null;
 				selectionObserver.update(item);
 			}
 		});
+		catalogView = new CatalogView<T>(context, catalog);
 		dialog = new Dialog(context);
 		dialog.setTitle(title);
-		ViewGroup content = (ViewGroup) catalog;
+		ViewGroup content = (ViewGroup) catalogView;
 		content.setBackgroundColor(Color.WHITE); // FIXME
 		dialog.setContentView(content);
 	}
@@ -60,6 +75,6 @@ public class CatalogDialogConnector<T extends ValueObject> {
 	}
 
 	public CatalogView<T> getCatalog() {
-		return catalog;
+		return catalogView;
 	}
 }

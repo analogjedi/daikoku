@@ -14,6 +14,7 @@ import com.primateer.daikoku.actions.Action;
 import com.primateer.daikoku.actions.DeleteDataAction;
 import com.primateer.daikoku.actions.EditFormAction;
 import com.primateer.daikoku.db.MealDao;
+import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.GoalRegistry;
@@ -32,14 +33,9 @@ public class MealPlanView extends LinearLayout {
 	private class MealListAdapter extends CatalogListAdapter<Meal> implements
 			Observer<Class<ValueObject>> {
 
-		public MealListAdapter() {
-			super(Meal.class, new Observer<Meal>() {
-				@Override
-				public void update(Meal item) {
-					Action action = new EditFormAction<Meal>(getContext(), item);
-					Application.getInstance().dispatch(action);
-				}
-			});
+		public MealListAdapter(Catalog<Meal> catalog) {
+			super(catalog);
+
 			this.addObserver(new Observer<DataRowListAdapter<Meal>>() {
 				@Override
 				public void update(DataRowListAdapter<Meal> observable) {
@@ -51,21 +47,16 @@ public class MealPlanView extends LinearLayout {
 			Data.getInstance().addObserver(this);
 		}
 
-		public void reload() {
-			this.setData(new MealDao().loadAll(datePicker.getData()));
-		}
-
 		@Override
 		public void onClick(View v) {
 			Action action = new DeleteDataAction<Meal>(getItemFromView(v),
 					getContext());
 			Application.getInstance().dispatch(action);
-			// super.onClick(v);
 		}
 
 		@Override
 		public void update(Class<ValueObject> observable) {
-			reload();
+			super.reload();
 		}
 	}
 
@@ -99,7 +90,14 @@ public class MealPlanView extends LinearLayout {
 		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0,
 				1.0f));
 		listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-		listAdapter = new MealListAdapter();
+		Catalog<Meal> catalog = new Catalog<Meal>(Meal.class);
+		catalog.setLoader(new Catalog.Loader<Meal>() {
+			@Override
+			public void load(Catalog<Meal> catalog) {
+				catalog.addAll(new MealDao().loadAll(datePicker.getData()));
+			}
+		});
+		listAdapter = new MealListAdapter(catalog);
 		listView.setAdapter(listAdapter);
 
 		addButton = new ImageButton(context);

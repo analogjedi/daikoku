@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
-import com.primateer.daikoku.model.Data;
+import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.views.connector.FormDialogConnector;
@@ -17,28 +17,19 @@ import com.primateer.daikoku.views.widgets.Separator;
 
 public class CatalogView<T extends ValueObject> extends LinearLayout {
 
-	private Observer<T> selectionObserver;
 	private ImageButton addButton;
 	private ListView itemList;
 	private CatalogListAdapter<T> listAdapter;
-	private Class<T> dataClass;
 
-	public CatalogView(Context context, Class<T> dataClass,
-			Observer<T> selectionObserver) {
-		this(context, null);
-		this.setDataClass(dataClass);
-		this.setSelectionObserver(selectionObserver);
+	public CatalogView(Context context, Catalog<T> catalog) {
+		this(context, null, catalog);
 	}
 
-	private CatalogView(Context context, AttributeSet attrs) {
+	private CatalogView(Context context, AttributeSet attrs, Catalog<T> catalog) {
 		super(context, attrs);
 		this.setOrientation(LinearLayout.VERTICAL);
 		this.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT));
-
-		// add button
-		addButton = new ImageButton(context);
-		addButton.setImageResource(Application.ICON_ADD);
 
 		// item list
 		itemList = new ListView(context);
@@ -46,6 +37,27 @@ public class CatalogView<T extends ValueObject> extends LinearLayout {
 				1.0f));
 		itemList.setScrollContainer(false);
 		itemList.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		listAdapter = new CatalogListAdapter<T>(catalog);
+		itemList.setAdapter(listAdapter);
+
+		// add button
+		addButton = new ImageButton(context);
+		addButton.setImageResource(Application.ICON_ADD);
+		addButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FormDialogConnector<T> connector = new FormDialogConnector<T>(
+						listAdapter.getCatalog().dataClass, CatalogView.this
+								.getContext());
+				connector.addObserver(new Observer<T>() {
+					@Override
+					public void update(T item) {
+						listAdapter.add(item);
+					}
+				});
+				connector.showDialog();
+			}
+		});
 
 		// composition
 		this.addView(itemList);
@@ -53,47 +65,11 @@ public class CatalogView<T extends ValueObject> extends LinearLayout {
 		this.addView(addButton);
 	}
 
-	private void setDataClass(Class<T> dataClass) {
-		this.dataClass = dataClass;
-		listAdapter = new CatalogListAdapter<T>(dataClass, new Observer<T>() {
-			@Override
-			public void update(T item) {
-				if (selectionObserver != null) {
-					selectionObserver.update(item);
-				}
-			}
-		});
-		itemList.setAdapter(listAdapter);
-		addButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FormDialogConnector<T> connector = new FormDialogConnector<T>(
-						CatalogView.this.dataClass, CatalogView.this.getContext());
-				connector.addObserver(new Observer<T>() {
-					@Override
-					public void update(T item) {
-						add(item);
-						Data.getInstance().register(item);
-					}
-				});
-				connector.showDialog();
-			}
-		});
-	}
-
-	@SuppressWarnings("unchecked")
-	public void reload() {
-		listAdapter.clear();
-		for (ValueObject vo : Data.getInstance().getAll(dataClass)) {
-			this.add((T) vo);
-		}
-	}
-
 	public void add(T item) {
 		listAdapter.add(item);
 	}
 
-	private void setSelectionObserver(Observer<T> observer) {
-		this.selectionObserver = observer;
+	public void reload() {
+		listAdapter.reload();
 	}
 }
