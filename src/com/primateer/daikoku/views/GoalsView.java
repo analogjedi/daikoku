@@ -15,13 +15,17 @@ import android.widget.TextView;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.actions.CatalogAction;
+import com.primateer.daikoku.actions.DeleteDataAction;
+import com.primateer.daikoku.actions.SaveDataAction;
 import com.primateer.daikoku.model.Catalog;
+import com.primateer.daikoku.model.GoalRegistry;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Nutrient.Type;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.vos.Goal;
+import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.views.forms.InvalidDataException;
 import com.primateer.daikoku.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.views.widgets.AmountWidget;
@@ -51,19 +55,35 @@ public class GoalsView extends LinearLayout {
 			deleteButton.setImageResource(Application.ICON_DELETE);
 			deleteButton.setBackgroundColor(Color.TRANSPARENT);
 			LinearLayout.LayoutParams deleteLayout = new LayoutParams(0,
-					LayoutParams.WRAP_CONTENT, 0.25f);
+					LayoutParams.WRAP_CONTENT, 0.2f);
 			deleteLayout.gravity = Gravity.CENTER;
 
 			nutrientTypeView = new TextView(context);
+			LinearLayout.LayoutParams nutrientLayout = new LayoutParams(0,
+					LayoutParams.WRAP_CONTENT, 0.6f);
+			nutrientLayout.gravity = Gravity.CENTER;
 
 			goalTypeView = new TextView(context);
+			goalTypeView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					setGoalType(goalType == Goal.Type.MINIMUM ? Goal.Type.MAXIMUM
+							: Goal.Type.MINIMUM);
+				}
+			});
+			LinearLayout.LayoutParams goalTypeLayout = new LayoutParams(0,
+					LayoutParams.WRAP_CONTENT, 0.2f);
+			goalTypeLayout.gravity = Gravity.CENTER;
 
 			amountView = new AmountWidget(context);
+			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
+					LayoutParams.WRAP_CONTENT, 1.0f);
+			amountLayout.gravity = Gravity.CENTER;
 
-			this.addView(deleteButton);
-			this.addView(nutrientTypeView);
-			this.addView(goalTypeView);
-			this.addView(amountView);
+			this.addView(deleteButton, deleteLayout);
+			this.addView(nutrientTypeView, nutrientLayout);
+			this.addView(goalTypeView, goalTypeLayout);
+			this.addView(amountView, amountLayout);
 		}
 
 		@Override
@@ -87,10 +107,13 @@ public class GoalsView extends LinearLayout {
 			switch (goalType) {
 			case MINIMUM:
 				goalTypeView.setText(R.string.abbrev_minimum);
+				goalTypeView.setTextColor(Goal.Status.ACHIEVABLE.color);
 				break;
 			case MAXIMUM:
 				goalTypeView.setText(R.string.abbrev_maximum);
+				goalTypeView.setTextColor(Goal.Status.FAILED.color);
 			}
+			observable.notifyObservers(this);
 		}
 
 		private void setNutrientType(Nutrient.Type type) {
@@ -130,9 +153,31 @@ public class GoalsView extends LinearLayout {
 	}
 
 	private class GoalListAdapter extends DataRowListAdapter<Goal> {
+		public GoalListAdapter() {
+			super();
+			reload();
+		}
+		
 		@Override
 		protected DataRowWidget<Goal> newWidget(Context context) {
 			return new GoalRowWidget(context);
+		}
+
+		@Override
+		public void add(Goal goal) {
+			Application.getInstance().dispatch(new SaveDataAction<Goal>(goal));
+			reload();
+		}
+
+		@Override
+		public void remove(Goal goal) {
+			Application.getInstance().dispatch(
+					new DeleteDataAction<Goal>(goal, getContext()));
+			reload();
+		}
+
+		private void reload() {
+			super.setData(GoalRegistry.getInstance().getGoals(Scope.PER_DAY));
 		}
 	}
 
@@ -187,6 +232,9 @@ public class GoalsView extends LinearLayout {
 	}
 
 	private void addGoal(Nutrient.Type type) {
+		Goal goal = new Goal(Goal.Type.MINIMUM, Goal.Scope.PER_DAY, type,
+				type.getNullAmount());
+		listAdapter.add(goal);
 		// TODO
 	}
 

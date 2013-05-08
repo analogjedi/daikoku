@@ -10,6 +10,7 @@ import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.vos.Goal;
+import com.primateer.daikoku.model.vos.Goal.Scope;
 
 public class GoalDao extends Dao<Goal> {
 
@@ -33,13 +34,21 @@ public class GoalDao extends Dao<Goal> {
 
 	@Override
 	public List<Goal> loadAll() {
+		return loadAll("");
+	}
+	
+	public List<Goal> loadAll(String where) {
 		ArrayList<Goal> results = new ArrayList<Goal>();
-		Cursor q = getResolver().query(getUri(TABLE), null, null, null, null);
+		Cursor q = getResolver().query(getUri(TABLE), null, where, null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
 			results.add(buildFrom(q));
 		}
 		q.close();
 		return results;
+	}
+	
+	public List<Goal> loadAll(Scope scope) {
+		return loadAll(where(COL_SCOPE,Goal.Scope.PER_DAY.ordinal()));
 	}
 
 	@Override
@@ -85,5 +94,4 @@ public class GoalDao extends Dao<Goal> {
 		vals.put(COL_TYPE,vo.type.ordinal());
 		return vals;
 	}
-
 }

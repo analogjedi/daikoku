@@ -2,6 +2,7 @@ package com.primateer.daikoku.model.vos;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Nutrient;
@@ -11,11 +12,34 @@ import com.primateer.daikoku.model.ValueObject;
 public class Goal extends ValueObject {
 
 	public enum Type {
-		MINIMUM, MAXIMUM
+		MINIMUM(R.string.abbrev_minimum), MAXIMUM(R.string.abbrev_maximum);
+
+		private String label;
+
+		private Type(int stringId) {
+			this.label = Application.getInstance().getResources()
+					.getString(stringId);
+		}
+
+		public String toString() {
+			return label;
+		}
 	}
 
 	public enum Scope {
-		PER_MEAL, PER_DAY, PER_WEEK, PER_MONTH;
+		PER_MEAL(R.string.per_meal), PER_DAY(R.string.per_day), PER_WEEK(
+				R.string.per_week), PER_MONTH(R.string.per_month);
+
+		private String label;
+
+		private Scope(int stringId) {
+			this.label = Application.getInstance().getResources()
+					.getString(stringId);
+		}
+
+		public String toString() {
+			return label;
+		}
 	}
 
 	public enum Status {
@@ -40,6 +64,10 @@ public class Goal extends ValueObject {
 		this.scope = scope;
 		this.nutrientType = nutrientType;
 		this.amount = amount;
+	}
+
+	public String toString() {
+		return type + " " + amount + " " + nutrientType + " " + scope;
 	}
 
 	public Status match(Amount amount) {

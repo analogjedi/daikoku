@@ -11,6 +11,11 @@
     
     <string name="abbrev_minimum">min</string>
     <string name="abbrev_maximum">max</string>
+    
+    <string name="per_meal">per meal</string>
+    <string name="per_day">daily</string>
+    <string name="per_week">weekly</string>
+    <string name="per_month">monthly</string>
 
     <string name="title_activity_meal_plan">Schedule Meals</string>
     <string name="title_activity_goals">Set Goals</string>
