@@ -3,7 +3,7 @@ package com.primateer.daikoku;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.primateer.daikoku.actions.Action;
+import com.primateer.daikoku.ui.actions.Action;
 
 public class Application extends android.app.Application {
 
