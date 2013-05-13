@@ -22,7 +22,7 @@ public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 			@SuppressWarnings("unchecked")
 			@Override
 			public Collection<T> load(Catalog<T> cat) {
-				return (Collection<T>) Database.getInstance().getAll(dataClass);
+				return (Collection<T>) Database.getInstance().loadAll(dataClass);
 			}
 		});
 	}

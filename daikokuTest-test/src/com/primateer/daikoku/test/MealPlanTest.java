@@ -86,7 +86,7 @@ public class MealPlanTest extends DatabaseTestCase {
 		assertEquals(new Amount("86.25g"),
 				day.getNutrition(Nutrient.TYPE_PROTEIN));
 
-		List<ValueObject> goalVos = Database.getInstance().getAll(Goal.class);
+		List<ValueObject> goalVos = Database.getInstance().loadAll(Goal.class);
 		assertEquals(Goal.Status.ACHIEVABLE, ((Goal) goalVos.get(0)).match(day));
 		assertEquals(Goal.Status.MET, ((Goal) goalVos.get(1)).match(day));
 		assertEquals(Goal.Status.MET, ((Goal) goalVos.get(2)).match(day));

@@ -35,7 +35,7 @@ public class MealDao extends Dao<Meal> {
 	protected Meal buildFrom(Cursor q) {
 		Meal vo = new Meal();
 		setKey(q, vo);
-		Recipe recipe = (Recipe) Database.getInstance().get(Recipe.class,
+		Recipe recipe = (Recipe) Database.getInstance().load(Recipe.class,
 				vo.getId());
 		vo.add(recipe);
 		vo.setLabel(recipe.getLabel());
