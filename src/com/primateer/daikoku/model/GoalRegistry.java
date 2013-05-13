@@ -1,10 +1,7 @@
 package com.primateer.daikoku.model;
 
-import java.util.List;
-
 import com.primateer.daikoku.db.GoalDao;
 import com.primateer.daikoku.model.vos.Goal;
-import com.primateer.daikoku.model.vos.Goal.Scope;
 
 public class GoalRegistry {
 
@@ -20,7 +17,7 @@ public class GoalRegistry {
 	private GoalRegistry() {
 	}
 
-	public List<Goal> getGoals(Goal.Scope scope) {
-		return new GoalDao().loadAll(Scope.PER_DAY);
+	public GoalSet getGoals(Goal.Scope scope) {
+		return new GoalSet(new GoalDao().loadAll(scope));
 	}
 }

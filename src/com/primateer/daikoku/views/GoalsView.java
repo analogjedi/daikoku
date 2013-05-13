@@ -17,6 +17,7 @@ import com.primateer.daikoku.R;
 import com.primateer.daikoku.actions.CatalogAction;
 import com.primateer.daikoku.actions.DeleteDataAction;
 import com.primateer.daikoku.actions.SaveDataAction;
+import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.GoalRegistry;
 import com.primateer.daikoku.model.Nutrient;
@@ -78,6 +79,12 @@ public class GoalsView extends LinearLayout {
 			amountView = new AmountWidget(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 1.0f);
+			amountView.addObserver(new Observer<Amount>() {				
+				@Override
+				public void update(Amount amount) {
+					observable.notifyObservers(GoalRowWidget.this);
+				}
+			});
 			amountLayout.gravity = Gravity.CENTER;
 
 			this.addView(deleteButton, deleteLayout);
@@ -131,9 +138,10 @@ public class GoalsView extends LinearLayout {
 
 		@Override
 		public Goal getRowData() throws InvalidDataException {
-			// TODO validation
-			return new Goal(goalType, Goal.Scope.PER_DAY, nutrientType,
+			Goal goal = new Goal(goalType, Goal.Scope.PER_DAY, nutrientType,
 					amountView.getData());
+			Application.getInstance().dispatch(new SaveDataAction<Goal>(goal));
+			return goal;
 		}
 
 		@Override
@@ -165,7 +173,7 @@ public class GoalsView extends LinearLayout {
 
 		@Override
 		public void add(Goal goal) {
-			Application.getInstance().dispatch(new SaveDataAction<Goal>(goal));
+//			Application.getInstance().dispatch(new SaveDataAction<Goal>(goal));
 			reload();
 		}
 

@@ -104,4 +104,44 @@ public class Goal extends ValueObject {
 			return Status.UNRATED;
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+		result = prime * result
+				+ ((nutrientType == null) ? 0 : nutrientType.hashCode());
+		result = prime * result + ((scope == null) ? 0 : scope.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Goal other = (Goal) obj;
+		if (amount == null) {
+			if (other.amount != null)
+				return false;
+		} else if (!amount.equals(other.amount))
+			return false;
+		if (nutrientType == null) {
+			if (other.nutrientType != null)
+				return false;
+		} else if (!nutrientType.equals(other.nutrientType))
+			return false;
+		if (scope != other.scope)
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+	
+	
 }
