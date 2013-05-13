@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.primateer.daikoku.model.Day;
+import com.primateer.daikoku.model.GoalSet;
 import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
@@ -110,5 +111,15 @@ public class Database implements Observable<Class<ValueObject>> {
 
 	public Day loadAllMeals(Date date) {
 		return (new DayDao()).load(date);
+	}
+
+	public void registerGoalSet(GoalSet data) {
+		if (data == null) {
+			return;
+		}
+		new GoalDao().deleteAll();
+		for (Goal goal : data) {
+			register(goal);
+		}
 	}
 }

@@ -11,8 +11,13 @@ public class GoalSet extends ArrayList<Goal> {
 
 	private Map<Nutrient.Type, Goal> minGoals = new HashMap<Nutrient.Type, Goal>();
 	private Map<Nutrient.Type, Goal> maxGoals = new HashMap<Nutrient.Type, Goal>();
-	
+
+	public GoalSet() {
+		super();
+	}
+
 	public GoalSet(Collection<Goal> goals) {
+		super();
 		for (Goal goal : goals) {
 			this.add(goal);
 		}
@@ -47,13 +52,13 @@ public class GoalSet extends ArrayList<Goal> {
 	@Override
 	public boolean remove(Object object) {
 		if (super.remove(object)) {
-			minGoals.remove(((Nutrient) object).type);
-			maxGoals.remove(((Nutrient) object).type);
+			minGoals.remove(((Goal) object).nutrientType);
+			maxGoals.remove(((Goal) object).nutrientType);
 			return true;
 		}
 		return false;
 	}
-	
+
 	public Goal.Status match(NutritionHolder nutrients) {
 		Goal.Status result = Goal.Status.UNRATED;
 		for (Goal goal : this) {
@@ -62,10 +67,10 @@ public class GoalSet extends ArrayList<Goal> {
 		}
 		return result;
 	}
-	
-	public Map<Goal,Goal.Status> matchAll(NutritionHolder nutrients) {
-		Map<Goal,Goal.Status> results = new HashMap<Goal, Goal.Status>();
-		for (Goal goal: this) {
+
+	public Map<Goal, Goal.Status> matchAll(NutritionHolder nutrients) {
+		Map<Goal, Goal.Status> results = new HashMap<Goal, Goal.Status>();
+		for (Goal goal : this) {
 			results.put(goal, goal.match(nutrients));
 		}
 		return results;
