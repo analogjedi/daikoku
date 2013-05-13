@@ -1,6 +1,5 @@
 package com.primateer.daikoku.db;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -20,51 +19,28 @@ public class GoalDao extends Dao<Goal> {
 	public static final String COL_AMOUNT = "amount";
 	public static final String COL_NUTRIENT_TYPE = "nutrient_type";
 
+	protected GoalDao() {
+	}
+
 	@Override
 	public Goal load(long id) {
-		Goal vo = null;
-		Cursor q = getResolver().query(getUri(TABLE), null, whereId(id), null,
-				null);
-		if (q.moveToFirst()) {
-			vo = buildFrom(q);
-		}
-		q.close();
-		return vo;
+		throw new IllegalAccessError("Goal record may not be loaded by ID");
 	}
 
-	@Override
-	public List<Goal> loadAll() {
-		return loadAll("");
-	}
-	
-	public List<Goal> loadAll(String where) {
-		ArrayList<Goal> results = new ArrayList<Goal>();
-		Cursor q = getResolver().query(getUri(TABLE), null, where, null, null);
-		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
-			results.add(buildFrom(q));
-		}
-		q.close();
-		return results;
-	}
-	
 	public List<Goal> loadAll(Scope scope) {
-		return loadAll(where(COL_SCOPE,Goal.Scope.PER_DAY.ordinal()));
+		return loadAll(where(COL_SCOPE, Goal.Scope.PER_DAY.ordinal()));
 	}
 
 	@Override
-	public long insert(Goal vo) {
-		return vo.setId(getId(getResolver().insert(getUri(TABLE), toCV(vo))));
+	protected String whereKey(Goal vo) {
+		return where(new String[] { COL_TYPE, COL_SCOPE, COL_NUTRIENT_TYPE },
+				new String[] { "" + vo.type.ordinal(), "" + vo.scope.ordinal(),
+						vo.nutrientType.id });
 	}
 
 	@Override
-	public int update(Goal vo) {
-		return getResolver().update(getUri(TABLE), toCV(vo),
-				whereId(vo.getId()), null);
-	}
-
-	@Override
-	public int delete(Goal vo) {
-		return delete(TABLE, vo.getId());
+	protected void setKey(Cursor q, Goal vo) {
+		// do nothing
 	}
 
 	@Override
@@ -76,9 +52,7 @@ public class GoalDao extends Dao<Goal> {
 		Nutrient.Type nutrientType = NutrientRegistry.getInstance().getType(
 				q.getString(q.getColumnIndex(COL_NUTRIENT_TYPE)));
 		Amount amount = new Amount(q.getString(q.getColumnIndex(COL_AMOUNT)));
-		Goal vo = new Goal(type, scope, nutrientType, amount);
-		vo.setId(q.getLong(q.getColumnIndex(COL_ID)));
-		return vo;
+		return new Goal(type, scope, nutrientType, amount);
 	}
 
 	@Override
@@ -89,9 +63,14 @@ public class GoalDao extends Dao<Goal> {
 			vals.put(COL_ID, id);
 		}
 		vals.put(COL_AMOUNT, vo.amount.toString());
-		vals.put(COL_NUTRIENT_TYPE,vo.nutrientType.id);
-		vals.put(COL_SCOPE,vo.scope.ordinal());
-		vals.put(COL_TYPE,vo.type.ordinal());
+		vals.put(COL_NUTRIENT_TYPE, vo.nutrientType.id);
+		vals.put(COL_SCOPE, vo.scope.ordinal());
+		vals.put(COL_TYPE, vo.type.ordinal());
 		return vals;
+	}
+
+	@Override
+	protected String getTable() {
+		return TABLE;
 	}
 }

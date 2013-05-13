@@ -1,28 +1,37 @@
-package com.primateer.daikoku.model;
+package com.primateer.daikoku.db;
 
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.primateer.daikoku.db.Dao;
+import com.primateer.daikoku.model.Day;
+import com.primateer.daikoku.model.Observable;
+import com.primateer.daikoku.model.Observer;
+import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.ValueObject;
+import com.primateer.daikoku.model.vos.Goal;
+import com.primateer.daikoku.model.vos.Goal.Scope;
+import com.primateer.daikoku.model.vos.Recipe;
 
 @SuppressWarnings("rawtypes")
-public class Data implements Observable<Class<ValueObject>> {
+public class Database implements Observable<Class<ValueObject>> {
 
-	private static Data instance;
+	private static Database instance;
 
 	/** Notifies observers when the DB has changed. */
 	private SimpleObservable<Class<ValueObject>> observable = new SimpleObservable<Class<ValueObject>>();
 	private Map<Class, Map<Long, ValueObject>> registry = new HashMap<Class, Map<Long, ValueObject>>();
 
-	public static Data getInstance() {
+	public static Database getInstance() {
 		if (instance == null) {
-			instance = new Data();
+			instance = new Database();
 		}
 		return instance;
 	}
 
-	private Data() {
+	private Database() {
 	}
 
 	private Map<Long, ValueObject> getEntries(Class voClass) {
@@ -113,5 +122,17 @@ public class Data implements Observable<Class<ValueObject>> {
 	@Override
 	public void removeObserver(Observer<Class<ValueObject>> observer) {
 		observable.removeObserver(observer);
+	}
+
+	public Collection<Goal> loadAllGoals(Scope scope) {
+		return (new GoalDao()).loadAll(scope);
+	}
+
+	public Collection<Recipe> loadFavoriteRecipes() {
+		return (new RecipeDao()).loadFavorites();
+	}
+
+	public Day loadAllMeals(Date date) {
+		return (new DayDao()).load(date);
 	}
 }

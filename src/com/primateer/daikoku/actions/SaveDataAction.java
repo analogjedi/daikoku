@@ -1,7 +1,7 @@
 package com.primateer.daikoku.actions;
 
 import com.primateer.daikoku.Application;
-import com.primateer.daikoku.model.Data;
+import com.primateer.daikoku.db.Database;
 import com.primateer.daikoku.model.ValueObject;
 
 public class SaveDataAction<T extends ValueObject> implements Action {
@@ -14,7 +14,7 @@ public class SaveDataAction<T extends ValueObject> implements Action {
 
 	@Override
 	public void run() {
-		Data.getInstance().register(item);
+		Database.getInstance().register(item);
 	}
 
 	@Override

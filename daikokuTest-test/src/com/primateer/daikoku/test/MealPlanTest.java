@@ -6,10 +6,9 @@ import java.util.List;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 
-import com.primateer.daikoku.db.DayDao;
+import com.primateer.daikoku.db.Database;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
-import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Unit;
@@ -73,7 +72,7 @@ public class MealPlanTest extends DatabaseTestCase {
 		meal3.setDue(today);
 		meal3.setState(Meal.State.SCHEDULED);
 
-		Data model = Data.getInstance();
+		Database model = Database.getInstance();
 		model.register(meal1);
 		model.register(meal2);
 		model.register(meal2); // deliberate duplicate
@@ -83,11 +82,11 @@ public class MealPlanTest extends DatabaseTestCase {
 			model.register(goal);
 		}
 
-		Day day = new DayDao().load(today);
+		Day day = Database.getInstance().loadAllMeals(today);
 		assertEquals(new Amount("86.25g"),
 				day.getNutrition(Nutrient.TYPE_PROTEIN));
 
-		List<ValueObject> goalVos = Data.getInstance().getAll(Goal.class);
+		List<ValueObject> goalVos = Database.getInstance().getAll(Goal.class);
 		assertEquals(Goal.Status.ACHIEVABLE, ((Goal) goalVos.get(0)).match(day));
 		assertEquals(Goal.Status.MET, ((Goal) goalVos.get(1)).match(day));
 		assertEquals(Goal.Status.MET, ((Goal) goalVos.get(2)).match(day));

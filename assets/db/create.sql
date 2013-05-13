@@ -1,9 +1,9 @@
 CREATE TABLE 'goal' (
-	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
 	'goal_type' INTEGER NOT NULL,
 	'scope' INTEGER NOT NULL,
 	'nutrient_type' TEXT NOT NULL,
-	'amount' TEXT NOT NULL
+	'amount' TEXT NOT NULL,
+	PRIMARY KEY ('goal_type','scope','nutrient_type')
 );
 
 CREATE TABLE 'nutrition' (

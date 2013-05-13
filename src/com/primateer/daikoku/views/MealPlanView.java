@@ -14,9 +14,8 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.actions.Action;
 import com.primateer.daikoku.actions.DeleteDataAction;
 import com.primateer.daikoku.actions.EditFormAction;
-import com.primateer.daikoku.db.MealDao;
+import com.primateer.daikoku.db.Database;
 import com.primateer.daikoku.model.Catalog;
-import com.primateer.daikoku.model.Data;
 import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.GoalRegistry;
 import com.primateer.daikoku.model.Observer;
@@ -41,11 +40,11 @@ public class MealPlanView extends LinearLayout {
 				@Override
 				public void update(DataRowListAdapter<Meal> observable) {
 					Day day = new Day(datePicker.getData());
-					day.setMeals(observable.getData());
+					day.addAll(observable.getData());
 					watcher.update(day);
 				}
 			});
-			Data.getInstance().addObserver(this);
+			Database.getInstance().addObserver(this);
 		}
 
 		@Override
@@ -95,7 +94,7 @@ public class MealPlanView extends LinearLayout {
 		catalog.setLoader(new Catalog.Loader<Meal>() {
 			@Override
 			public Collection<Meal> load(Catalog<Meal> catalog) {
-				return new MealDao().loadAll(datePicker.getData());
+				return Database.getInstance().loadAllMeals(datePicker.getData());
 			}
 		});
 		listAdapter = new MealListAdapter(catalog);
@@ -131,6 +130,6 @@ public class MealPlanView extends LinearLayout {
 	}
 
 	public void cleanUp() {
-		Data.getInstance().removeObserver(listAdapter);
+		Database.getInstance().removeObserver(listAdapter);
 	}
 }

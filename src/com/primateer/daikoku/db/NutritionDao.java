@@ -21,20 +21,7 @@ public class NutritionDao extends Dao<Nutrition> {
 	public static final String NUTRIENT_COL_TYPE = "type";
 	public static final String NUTRIENT_COL_AMOUNT = "amount";
 
-	@Override
-	public Nutrition load(long id) {
-		Nutrition vo = null;
-		Cursor q = getResolver().query(getUri(NUTRITION_TABLE), null,
-				whereId(id), null, null);
-		if (q.moveToFirst()) {
-			vo = new Nutrition();
-			vo.setId(id);
-			vo.setReferenceAmount(new Amount(q.getString(q
-					.getColumnIndex(NUTRITION_COL_AMOUNT))));
-			vo.setNutrients(loadNutrients(id));
-		}
-		q.close();
-		return vo;
+	protected NutritionDao() {
 	}
 
 	private NutrientSet loadNutrients(long id) {
@@ -54,8 +41,7 @@ public class NutritionDao extends Dao<Nutrition> {
 
 	@Override
 	public long insert(Nutrition vo) {
-		long id = vo.setId(getId(getResolver().insert(getUri(NUTRITION_TABLE),
-				toCV(vo))));
+		long id = super.insert(vo);
 		for (ContentValues vals : toCV(vo.getNutrients(), id)) {
 			getResolver().insert(getUri(NUTRIENT_TABLE), vals);
 		}
@@ -77,12 +63,6 @@ public class NutritionDao extends Dao<Nutrition> {
 	}
 
 	@Override
-	public List<Nutrition> loadAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int update(Nutrition vo) {
 		for (ContentValues vals : toCV(vo.getNutrients(), vo.getId())) {
 			getResolver().update(
@@ -93,21 +73,24 @@ public class NutritionDao extends Dao<Nutrition> {
 							new Object[] { vals.get(NUTRIENT_COL_TYPE),
 									vo.getId() }), null);
 		}
-		return getResolver().update(getUri(NUTRITION_TABLE), toCV(vo),
-				whereId(vo.getId()), null);
+		return super.update(vo);
 	}
 
 	@Override
 	public int delete(Nutrition vo) {
 		getResolver().delete(getUri(NUTRIENT_TABLE),
 				where(NUTRIENT_COL_NUTRITION, vo.getId()), null);
-		return delete(NUTRITION_TABLE, vo.getId());
+		return super.delete(vo);
 	}
 
 	@Override
 	protected Nutrition buildFrom(Cursor q) {
-		// TODO Auto-generated method stub
-		return null;
+		Nutrition vo = new Nutrition();
+		setKey(q, vo);
+		vo.setReferenceAmount(new Amount(q.getString(q
+				.getColumnIndex(NUTRITION_COL_AMOUNT))));
+		vo.setNutrients(loadNutrients(vo.getId()));
+		return vo;
 	}
 
 	@Override
@@ -119,6 +102,11 @@ public class NutritionDao extends Dao<Nutrition> {
 		}
 		vals.put(NUTRITION_COL_AMOUNT, vo.getReferenceAmount().toString());
 		return vals;
+	}
+
+	@Override
+	protected String getTable() {
+		return NUTRITION_TABLE;
 	}
 
 }

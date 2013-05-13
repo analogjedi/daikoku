@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.actions.CatalogAction;
-import com.primateer.daikoku.db.RecipeDao;
+import com.primateer.daikoku.db.Database;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Component;
@@ -234,7 +234,8 @@ public class RecipeForm extends VoForm<Recipe> {
 					@Override
 					public Collection<Recipe> load(Catalog<Recipe> catalog) {
 						ArrayList<Recipe> list = new ArrayList<Recipe>();
-						for (Recipe recipe : (new RecipeDao()).loadFavorites()) {
+						for (Recipe recipe : Database.getInstance()
+								.loadFavoriteRecipes()) {
 							list.add(recipe);
 						}
 						return list;

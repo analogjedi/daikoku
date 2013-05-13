@@ -7,10 +7,13 @@ import com.primateer.daikoku.model.vos.Meal;
 
 public class DayDao {
 
+	protected DayDao() {
+	}
+
 	public Day load(Date date) {
 		Day vo = new Day(date);
 		for (Meal meal : new MealDao().loadAll(date)) {
-			vo.addMeal(meal);
+			vo.add(meal);
 		}
 		return vo;
 	}
