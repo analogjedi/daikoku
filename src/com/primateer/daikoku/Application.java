@@ -22,6 +22,10 @@ public class Application extends android.app.Application {
 	public static final int ICON_STATE_RESERVED = R.drawable.onebit_2_02;
 	public static final int ICON_STATE_PREPARED = R.drawable.onebit_2_03;
 	public static final int ICON_STATE_CONSUMED = R.drawable.onebit_2_04;
+	public static final int ICON_CALENDAR = R.drawable.onebit_2_11;
+	public static final int ICON_LIST = R.drawable.onebit_2_20;
+	public static final int ICON_SETTINGS = R.drawable.onebit_2_21;
+	public static final int ICON_GOALS = R.drawable.onebit_3_03;
 
 	public static final int TEXTCOLOR_ERROR = Color.RED;
 	public static final int TEXTCOLOR_GREY = 0xff404040;

@@ -1,115 +1,61 @@
 package com.primateer.daikoku.activities;
 
-import android.app.Dialog;
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.dialogs.FormFragment;
-import com.primateer.daikoku.model.Catalog;
-import com.primateer.daikoku.model.vos.Product;
-import com.primateer.daikoku.views.CatalogView;
-import com.primateer.daikoku.views.forms.MealForm;
-import com.primateer.daikoku.views.forms.ProductForm;
-import com.primateer.daikoku.views.forms.RecipeForm;
 
 public class MainActivity extends FragmentActivity {
+
+	ViewGroup views;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		LinearLayout views = new LinearLayout(this);
-		views.setOrientation(LinearLayout.VERTICAL);
+		views = new LinearLayout(this);
+		((LinearLayout) views).setOrientation(LinearLayout.VERTICAL);
 		this.setContentView(views);
 
-		Button getStatsButton = new Button(this);
-		getStatsButton.setText("open product catalog");
-		getStatsButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Catalog cat = new Catalog<Product>(Product.class);
-				final CatalogView<Product> catalog = new CatalogView<Product>(
-						MainActivity.this, cat);
-				catalog.reload();
-				Dialog dialog = new Dialog(MainActivity.this);
-				dialog.setTitle("PRODUCT CATALOG");
-				ViewGroup content = (ViewGroup) catalog;
-				content.setBackgroundColor(Color.WHITE); // FIXME
-				dialog.setContentView(content);
-				dialog.show();
-			}
-		});
+		this.addActivity(MealPlanActivity.class, Application.ICON_CALENDAR,
+				R.string.title_activity_meal_plan);
+		this.addActivity(null, Application.ICON_LIST,
+				R.string.title_activity_supply);
+		this.addActivity(GoalsActivity.class, Application.ICON_GOALS,
+				R.string.title_activity_goals);
+		this.addActivity(null, Application.ICON_SETTINGS,
+				R.string.title_activity_settings);
+	}
 
-		Button openDialogButton = new Button(this);
-		openDialogButton.setText("open product form");
-		openDialogButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FormFragment frag = new FormFragment();
-				frag.setForm(new ProductForm(MainActivity.this));
-				frag.show(MainActivity.this.getSupportFragmentManager(),
-						"product");
-			}
-		});
-
-		Button openRecipeButton = new Button(this);
-		openRecipeButton.setText("open recipe form");
-		openRecipeButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FormFragment frag = new FormFragment();
-				frag.setForm(new RecipeForm(MainActivity.this));
-				frag.show(MainActivity.this.getSupportFragmentManager(),
-						"recipe");
-			}
-		});
-
-		Button mealPlanButton = new Button(this);
-		mealPlanButton.setText("start meal plan activity");
-		mealPlanButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(MainActivity.this,
-						MealPlanActivity.class));
-			}
-		});
-
-		Button openMealButton = new Button(this);
-		openMealButton.setText("open meal form");
-		openMealButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FormFragment frag = new FormFragment();
-				frag.setForm(new MealForm(MainActivity.this));
-				frag.show(MainActivity.this.getSupportFragmentManager(),
-						"recipe");
-			}
-		});
-
-		Button goalsButton = new Button(this);
-		goalsButton.setText("start goals activity");
-		goalsButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(MainActivity.this, GoalsActivity.class));
-			}
-		});
-
-		views.addView(mealPlanButton);
-		views.addView(goalsButton);
-		views.addView(getStatsButton);
-		views.addView(openDialogButton);
-		views.addView(openRecipeButton);
-		views.addView(openMealButton);
+	private void addActivity(final Class<? extends Activity> activity,
+			int icon, int label) {
+		Button button = new Button(this);
+		button.setText(getResources().getText(label));
+		button.setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+				.getDrawable(icon), null, null);
+		if (activity != null) {
+			button.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(MainActivity.this, activity));
+				}
+			});
+		} else {
+			button.setEnabled(false);
+		}
+		LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, 0, 1.0f);
+		views.addView(button, layout);
 	}
 
 	@Override
