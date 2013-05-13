@@ -1,9 +1,10 @@
 #!/bin/sh
 
 cd res/drawable-xhdpi
-for i in onebit*.png
+for i in onebit*.png ic_launcher.png
 do
-    convert -resize 24x $i ../drawable-mdpi/$i
-    convert -resize 32x $i ../drawable-hdpi/$i
+    convert -resize 37.5%  $i ../drawable-ldpi/$i
+    convert -resize 50%    $i ../drawable-mdpi/$i
+    convert -resize 75%    $i ../drawable-hdpi/$i
 done
 cd ../..
