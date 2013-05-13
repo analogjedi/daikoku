@@ -24,13 +24,14 @@ import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.vos.Goal;
+import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.views.widgets.AmountWidget;
 import com.primateer.daikoku.views.widgets.row.DataRowWidget;
 
 public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 
-	private static class GoalRowWidget extends LinearLayout implements
+	private class GoalRowWidget extends LinearLayout implements
 			DataRowWidget<Goal> {
 
 		private SimpleObservable<DataRowWidget<Goal>> observable = new SimpleObservable<DataRowWidget<Goal>>();
@@ -64,8 +65,9 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 			goalTypeView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					setGoalType(goalType == Goal.Type.MINIMUM ? Goal.Type.MAXIMUM
-							: Goal.Type.MINIMUM);
+//					setGoalType(goalType == Goal.Type.MINIMUM ? Goal.Type.MAXIMUM
+//							: Goal.Type.MINIMUM);
+					listAdapter.swapMinMax(nutrientType);
 				}
 			});
 			LinearLayout.LayoutParams goalTypeLayout = new LayoutParams(0,
@@ -75,12 +77,12 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 			amountView = new AmountWidget(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 1.0f);
-			amountView.addObserver(new Observer<Amount>() {
-				@Override
-				public void update(Amount amount) {
-					observable.notifyObservers(GoalRowWidget.this);
-				}
-			});
+//			amountView.addObserver(new Observer<Amount>() {
+//				@Override
+//				public void update(Amount amount) {
+//					observable.notifyObservers(GoalRowWidget.this);
+//				}
+//			});
 			amountLayout.gravity = Gravity.CENTER;
 
 			this.addView(deleteButton, deleteLayout);
@@ -159,9 +161,23 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 			super();
 		}
 
+		public void swapMinMax(Type nutrientType) {
+			getGoals().swapMinMax(nutrientType);
+			notifyObservers();
+		}
+
 		@Override
 		protected DataRowWidget<Goal> newWidget(Context context) {
 			return new GoalRowWidget(context);
+		}
+
+		public GoalSet getGoals() {
+			return (GoalSet) data;
+		}
+
+		public void add(Type type) {
+			Goal goal = getGoals().getFreeGoal(type, Scope.PER_DAY);
+			super.add(goal);
 		}
 	}
 
@@ -194,14 +210,17 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 				catalog.setLoader(new Catalog.Loader<Nutrient.Type>() {
 					@Override
 					public Collection<Nutrient.Type> load(Catalog<Type> catalog) {
-						return NutrientRegistry.getInstance()
-								.getAllNutrientTypes();
+						Collection<Nutrient.Type> types = NutrientRegistry
+								.getInstance().getAllNutrientTypes();
+						types.removeAll(listAdapter.getGoals()
+								.getOccupiedTypes());
+						return types;
 					}
 				});
 				catalog.addObserver(new Observer<Nutrient.Type>() {
 					@Override
 					public void update(Nutrient.Type type) {
-						GoalSetForm.this.addGoal(type);
+						listAdapter.add(type);
 					}
 				});
 				CatalogAction<Nutrient.Type> action = new CatalogAction<Nutrient.Type>(
@@ -213,13 +232,6 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 
 		this.addView(listView);
 		this.addView(addButton);
-	}
-
-	private void addGoal(Nutrient.Type type) {
-		Goal goal = new Goal(Goal.Type.MINIMUM, Goal.Scope.PER_DAY, type,
-				type.getNullAmount());
-		listAdapter.add(goal);
-		// TODO
 	}
 
 	public void cleanUp() {

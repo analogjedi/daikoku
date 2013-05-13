@@ -29,6 +29,31 @@ public class GoalSet extends ArrayList<Goal> {
 		minGoals.clear();
 		maxGoals.clear();
 	}
+	
+	public Collection<Nutrient.Type> getOccupiedTypes() {
+		Collection<Nutrient.Type> results = minGoals.keySet();
+		results.retainAll(maxGoals.keySet());
+		return results;
+	}
+	
+	public void swapMinMax(Nutrient.Type type) {
+		Goal min = minGoals.get(type);
+		Goal max = maxGoals.get(type);
+		minGoals.put(type, min);
+		maxGoals.put(type, max);
+	}
+
+	public Goal getFreeGoal(Nutrient.Type type, Goal.Scope scope) {
+		if (!minGoals.containsKey(type)) {
+			return new Goal(Goal.Type.MINIMUM, scope, type,
+					type.getNullAmount());
+		}
+		if (!maxGoals.containsKey(type)) {
+			return new Goal(Goal.Type.MAXIMUM, scope, type,
+					type.getNullAmount());
+		}
+		return null;
+	}
 
 	@Override
 	public boolean add(Goal goal) {
@@ -52,9 +77,17 @@ public class GoalSet extends ArrayList<Goal> {
 	@Override
 	public boolean remove(Object object) {
 		if (super.remove(object)) {
-			minGoals.remove(((Goal) object).nutrientType);
-			maxGoals.remove(((Goal) object).nutrientType);
-			return true;
+			Goal goal = (Goal) object;
+			switch (goal.type) {
+			case MINIMUM:
+				minGoals.remove(goal.nutrientType);
+				return true;
+			case MAXIMUM:
+				maxGoals.remove(goal.nutrientType);
+				return true;
+			default:
+				throw new RuntimeException("Unknown goal type: " + goal.type);
+			}
 		}
 		return false;
 	}
