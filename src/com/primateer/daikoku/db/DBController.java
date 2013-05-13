@@ -15,21 +15,21 @@ import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.model.vos.Recipe;
 
 @SuppressWarnings("rawtypes")
-public class Database implements Observable<Class<ValueObject>> {
+public class DBController implements Observable<Class<ValueObject>> {
 
-	private static Database instance;
+	private static DBController instance;
 
 	/** Notifies observers when the DB has changed. */
 	private SimpleObservable<Class<ValueObject>> observable = new SimpleObservable<Class<ValueObject>>();
 
-	public static Database getInstance() {
+	public static DBController getInstance() {
 		if (instance == null) {
-			instance = new Database();
+			instance = new DBController();
 		}
 		return instance;
 	}
 
-	private Database() {
+	private DBController() {
 	}
 
 	private Dao getDao(Class voClass) {

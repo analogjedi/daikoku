@@ -28,7 +28,7 @@ public class ProductDao extends Dao<Product> {
 		Product vo = new Product();
 		vo.setId(q.getLong(q.getColumnIndex(COL_ID)));
 		vo.setLabel(q.getString(q.getColumnIndex(COL_LABEL)));
-		vo.setNutrition((Nutrition) Database.getInstance().load(Nutrition.class,
+		vo.setNutrition((Nutrition) DBController.getInstance().load(Nutrition.class,
 				q.getLong(q.getColumnIndex(COL_NUTRITION))));
 		vo.setAmount(new Amount(q.getString(q.getColumnIndex(COL_AMOUNT))));
 		vo.setUnits(q.getDouble(q.getColumnIndex(COL_UNITS)));
@@ -43,7 +43,7 @@ public class ProductDao extends Dao<Product> {
 			vals.put(COL_ID, id);
 		}
 		vals.put(COL_LABEL, vo.getLabel());
-		vals.put(COL_NUTRITION, Database.getInstance().register(vo.getNutrition()));
+		vals.put(COL_NUTRITION, DBController.getInstance().register(vo.getNutrition()));
 		vals.put(COL_AMOUNT, vo.getAmount().toString());
 		vals.put(COL_UNITS, vo.getUnits());
 		return vals;

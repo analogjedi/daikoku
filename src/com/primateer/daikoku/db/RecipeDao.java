@@ -40,7 +40,7 @@ public class RecipeDao extends Dao<Recipe> {
 				ContentValues vals = new ContentValues();
 				vals.put(INGREDIENT_COL_RECIPE, id);
 				vals.put(INGREDIENT_COL_PRODUCT,
-						Database.getInstance().register(product));
+						DBController.getInstance().register(product));
 				vals.put(INGREDIENT_COL_AMOUNT, ingredients.get(product)
 						.toString());
 				list.add(vals);
@@ -54,7 +54,7 @@ public class RecipeDao extends Dao<Recipe> {
 		Cursor q = getResolver().query(getUri(INGREDIENT_TABLE), null,
 				where(INGREDIENT_COL_RECIPE, id), null, null);
 		for (q.moveToFirst(); !q.isAfterLast(); q.moveToNext()) {
-			Product product = (Product) Database.getInstance().load(Product.class,
+			Product product = (Product) DBController.getInstance().load(Product.class,
 					q.getLong(q.getColumnIndex(INGREDIENT_COL_PRODUCT)));
 			Amount amount = new Amount(q.getString(q
 					.getColumnIndex(INGREDIENT_COL_AMOUNT)));

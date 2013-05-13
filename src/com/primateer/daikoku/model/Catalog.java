@@ -3,7 +3,7 @@ package com.primateer.daikoku.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.primateer.daikoku.db.Database;
+import com.primateer.daikoku.db.DBController;
 
 public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 		Observable<T> {
@@ -22,7 +22,7 @@ public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 			@SuppressWarnings("unchecked")
 			@Override
 			public Collection<T> load(Catalog<T> cat) {
-				return (Collection<T>) Database.getInstance().loadAll(dataClass);
+				return (Collection<T>) DBController.getInstance().loadAll(dataClass);
 			}
 		});
 	}

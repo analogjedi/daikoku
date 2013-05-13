@@ -35,7 +35,7 @@ public class MealDao extends Dao<Meal> {
 	protected Meal buildFrom(Cursor q) {
 		Meal vo = new Meal();
 		setKey(q, vo);
-		Recipe recipe = (Recipe) Database.getInstance().load(Recipe.class,
+		Recipe recipe = (Recipe) DBController.getInstance().load(Recipe.class,
 				vo.getId());
 		vo.add(recipe);
 		vo.setLabel(recipe.getLabel());
@@ -47,7 +47,7 @@ public class MealDao extends Dao<Meal> {
 	@Override
 	protected ContentValues toCV(Meal vo) {
 		ContentValues vals = new ContentValues();
-		vals.put(COL_ID, Database.getInstance().register(vo, Recipe.class));
+		vals.put(COL_ID, DBController.getInstance().register(vo, Recipe.class));
 		vals.put(COL_DUE, Helper.toString(vo.getDue()));
 		vals.put(COL_STATE, vo.getState().ordinal());
 		return vals;

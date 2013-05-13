@@ -5,7 +5,7 @@ import android.content.Context;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.db.Database;
+import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.ValueObject;
 
 public class DeleteDataAction<T extends ValueObject> implements Action {
@@ -39,7 +39,7 @@ public class DeleteDataAction<T extends ValueObject> implements Action {
 	}
 
 	private void delete() {
-		Database.getInstance().delete(item);
+		DBController.getInstance().delete(item);
 	}
 
 	@Override

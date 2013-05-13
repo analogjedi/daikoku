@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.primateer.daikoku.db.Database;
+import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
@@ -39,7 +39,7 @@ public class CatalogDialogConnector<T extends ValueObject> {
 				}
 			}
 		};
-		Database.getInstance().addObserver(dbObserver);
+		DBController.getInstance().addObserver(dbObserver);
 		catalogView = new CatalogView<T>(context, catalog);
 		dialog = new Dialog(context);
 		dialog.setTitle(title);
@@ -50,7 +50,7 @@ public class CatalogDialogConnector<T extends ValueObject> {
 			@Override
 			public void update(T observable) {
 				dialog.dismiss();
-				Database.getInstance().removeObserver(dbObserver);
+				DBController.getInstance().removeObserver(dbObserver);
 				dialog = null;
 			}
 		});

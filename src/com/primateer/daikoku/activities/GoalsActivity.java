@@ -10,7 +10,7 @@ import android.widget.LinearLayout.LayoutParams;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.db.Database;
+import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.GoalSet;
 import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.views.forms.GoalSetForm;
@@ -26,7 +26,7 @@ public class GoalsActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		form = new GoalSetForm(this);
-		form.setData(new GoalSet(Database.getInstance().loadAllGoals(Scope.PER_DAY)));
+		form.setData(new GoalSet(DBController.getInstance().loadAllGoals(Scope.PER_DAY)));
 
 		LinearLayout content = new LinearLayout(this);
 		content.setOrientation(LinearLayout.VERTICAL);
@@ -47,7 +47,7 @@ public class GoalsActivity extends FragmentActivity {
 			public void onClick(View v) {
 				try {
 					form.validate();
-					Database.getInstance().registerGoalSet(form.getData());
+					DBController.getInstance().registerGoalSet(form.getData());
 				} catch (InvalidDataException e1) {
 					Helper.displayErrorMessage(
 							GoalsActivity.this,
