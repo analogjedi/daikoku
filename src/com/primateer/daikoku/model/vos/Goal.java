@@ -109,6 +109,7 @@ public class Goal extends ValueObject {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
 		result = prime * result
 				+ ((nutrientType == null) ? 0 : nutrientType.hashCode());
 		result = prime * result + ((scope == null) ? 0 : scope.hashCode());
@@ -125,6 +126,11 @@ public class Goal extends ValueObject {
 		if (getClass() != obj.getClass())
 			return false;
 		Goal other = (Goal) obj;
+		if (amount == null) {
+			if (other.amount != null)
+				return false;
+		} else if (!amount.equals(other.amount))
+			return false;
 		if (nutrientType == null) {
 			if (other.nutrientType != null)
 				return false;
@@ -135,5 +141,7 @@ public class Goal extends ValueObject {
 		if (type != other.type)
 			return false;
 		return true;
-	}	
+	}
+
+
 }

@@ -26,7 +26,8 @@ public class GoalsActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		form = new GoalSetForm(this);
-		form.setData(new GoalSet(DBController.getInstance().loadAllGoals(Scope.PER_DAY)));
+		form.setData(new GoalSet(DBController.getInstance().loadAllGoals(
+				Scope.PER_DAY)));
 
 		LinearLayout content = new LinearLayout(this);
 		content.setOrientation(LinearLayout.VERTICAL);
@@ -65,7 +66,8 @@ public class GoalsActivity extends FragmentActivity {
 				LayoutParams.WRAP_CONTENT, 0.5f));
 		buttonLayout.addView(cancelButton, new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.5f));
-		content.addView(form,new LayoutParams(LayoutParams.WRAP_CONTENT,0,1.0f));
+		content.addView(form, new LayoutParams(LayoutParams.WRAP_CONTENT, 0,
+				1.0f));
 		content.addView(new Separator(this));
 		content.addView(buttonLayout);
 
@@ -76,5 +78,19 @@ public class GoalsActivity extends FragmentActivity {
 	protected void onDestroy() {
 		form.cleanUp();
 		super.onDestroy();
+	}
+
+	@Override
+	public void onBackPressed() {
+		// prevent accidental press of back button
+		Helper.executeUponConfirmation(this,
+				getResources().getString(R.string.confirm_leave_form_title),
+				getResources().getString(R.string.confirm_leave_form_message),
+				new Runnable() {
+					@Override
+					public void run() {
+						GoalsActivity.this.finish();
+					}
+				});
 	}
 }

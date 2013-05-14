@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.primateer.daikoku.model.vos.Goal;
+import com.primateer.daikoku.model.vos.Goal.Type;
 
 public class GoalSet extends ArrayList<Goal> {
 
@@ -29,26 +30,42 @@ public class GoalSet extends ArrayList<Goal> {
 		minGoals.clear();
 		maxGoals.clear();
 	}
-	
+
 	public Collection<Nutrient.Type> getOccupiedTypes() {
 		Collection<Nutrient.Type> results = minGoals.keySet();
 		results.retainAll(maxGoals.keySet());
 		return results;
 	}
-	
+
 	public void swapMinMax(Nutrient.Type type) {
 		Goal min = minGoals.get(type);
 		Goal max = maxGoals.get(type);
-		minGoals.put(type, min);
-		maxGoals.put(type, max);
+		if (max != null) {
+			int maxPos = this.indexOf(max);
+			max = new Goal(Type.MINIMUM, max.scope, max.nutrientType,
+					max.amount);
+			this.set(maxPos, max);
+			minGoals.put(type, max);
+		} else {
+			minGoals.remove(type);
+		}
+		if (min != null) {
+			int minPos = this.indexOf(min);
+			min = new Goal(Type.MAXIMUM, min.scope, min.nutrientType,
+					min.amount);
+			this.set(minPos, min);
+			maxGoals.put(type, min);
+		} else {
+			maxGoals.remove(type);
+		}
 	}
 
 	public Goal getFreeGoal(Nutrient.Type type, Goal.Scope scope) {
-		if (!minGoals.containsKey(type)) {
+		if (minGoals.get(type) == null) {
 			return new Goal(Goal.Type.MINIMUM, scope, type,
 					type.getNullAmount());
 		}
-		if (!maxGoals.containsKey(type)) {
+		if (maxGoals.get(type) == null) {
 			return new Goal(Goal.Type.MAXIMUM, scope, type,
 					type.getNullAmount());
 		}
@@ -57,7 +74,7 @@ public class GoalSet extends ArrayList<Goal> {
 
 	@Override
 	public boolean add(Goal goal) {
-		if (super.contains(goal)) {
+		if (goal == null || super.contains(goal)) {
 			return false;
 		}
 

@@ -1,5 +1,6 @@
 package com.primateer.daikoku.ui.views.forms;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import android.content.Context;
@@ -65,8 +66,6 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 			goalTypeView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					setGoalType(goalType == Goal.Type.MINIMUM ? Goal.Type.MAXIMUM
-//							: Goal.Type.MINIMUM);
 					listAdapter.swapMinMax(nutrientType);
 				}
 			});
@@ -77,12 +76,12 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 			amountView = new AmountWidget(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 1.0f);
-//			amountView.addObserver(new Observer<Amount>() {
-//				@Override
-//				public void update(Amount amount) {
-//					observable.notifyObservers(GoalRowWidget.this);
-//				}
-//			});
+			amountView.addObserver(new Observer<Amount>() {
+				@Override
+				public void update(Amount amount) {
+					observable.notifyObservers(GoalRowWidget.this);
+				}
+			});
 			amountLayout.gravity = Gravity.CENTER;
 
 			this.addView(deleteButton, deleteLayout);
@@ -210,8 +209,9 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 				catalog.setLoader(new Catalog.Loader<Nutrient.Type>() {
 					@Override
 					public Collection<Nutrient.Type> load(Catalog<Type> catalog) {
-						Collection<Nutrient.Type> types = NutrientRegistry
-								.getInstance().getAllNutrientTypes();
+						Collection<Nutrient.Type> types = new ArrayList<Nutrient.Type>();
+						types.addAll(NutrientRegistry.getInstance()
+								.getAllNutrientTypes());
 						types.removeAll(listAdapter.getGoals()
 								.getOccupiedTypes());
 						return types;

@@ -60,6 +60,9 @@
     <string name="dialog_confirm_delete_title">Confirm Delete</string>
     <string name="dialog_confirm_delete_msg">Do you really want to delete:</string>
     
+    <string name="confirm_leave_form_title">Leave Form?</string>
+    <string name="confirm_leave_form_message">All changes will be lost.</string>
+    
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     
