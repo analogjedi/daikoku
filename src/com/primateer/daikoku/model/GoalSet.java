@@ -60,6 +60,12 @@ public class GoalSet extends ArrayList<Goal> {
 		}
 	}
 
+	@Override
+	public Goal set(int pos, Goal goal) {
+		getRegistry(goal).put(goal.nutrientType, goal);
+		return super.set(pos, goal);
+	}
+
 	public Goal getFreeGoal(Nutrient.Type type, Goal.Scope scope) {
 		if (minGoals.get(type) == null) {
 			return new Goal(Goal.Type.MINIMUM, scope, type,
@@ -72,39 +78,32 @@ public class GoalSet extends ArrayList<Goal> {
 		return null;
 	}
 
-	@Override
-	public boolean add(Goal goal) {
-		if (goal == null || super.contains(goal)) {
-			return false;
-		}
-
-		super.add(goal);
+	private Map<Nutrient.Type, Goal> getRegistry(Goal goal) {
 		switch (goal.type) {
 		case MINIMUM:
-			minGoals.put(goal.nutrientType, goal);
-			return true;
+			return minGoals;
 		case MAXIMUM:
-			maxGoals.put(goal.nutrientType, goal);
-			return true;
+			return maxGoals;
 		default:
 			throw new RuntimeException("Unknown goal type: " + goal.type);
 		}
 	}
 
 	@Override
+	public boolean add(Goal goal) {
+		if (goal == null || super.contains(goal)) {
+			return false;
+		}
+		super.add(goal);
+		getRegistry(goal).put(goal.nutrientType, goal);
+		return true;
+	}
+
+	@Override
 	public boolean remove(Object object) {
 		if (super.remove(object)) {
 			Goal goal = (Goal) object;
-			switch (goal.type) {
-			case MINIMUM:
-				minGoals.remove(goal.nutrientType);
-				return true;
-			case MAXIMUM:
-				maxGoals.remove(goal.nutrientType);
-				return true;
-			default:
-				throw new RuntimeException("Unknown goal type: " + goal.type);
-			}
+			getRegistry(goal).remove(goal.nutrientType);
 		}
 		return false;
 	}
