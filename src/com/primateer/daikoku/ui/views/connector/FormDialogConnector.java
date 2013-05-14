@@ -68,7 +68,7 @@ public class FormDialogConnector<T extends ValueObject> implements Form<T>, Obse
 		if (form == null) {
 			try {
 				Class<Form<T>> formClass = (Class<Form<T>>) Class
-						.forName("com.primateer.daikoku.views.forms."
+						.forName("com.primateer.daikoku.ui.views.forms."
 								+ type.getSimpleName() + "Form");
 				Constructor<Form<T>> constructor = formClass
 						.getConstructor(Context.class);
