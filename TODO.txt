@@ -1,12 +1,6 @@
 MISSING FEATURES
 ================
 
-Goals
-* Set daily goals
-* Set weekly goals
-* Set monthly goals
-* Set goals per meal
-
 Settings
 * Configure Nutrient Types
 * Configure Units
@@ -19,10 +13,15 @@ Units
 
 Styling
 
+Navigation
+* Edit goals by clicking on watch widget
 
 
 MISSING CODE
 ============
+
+Catalogs
+* Nutrient Type add/edit
 
 Tests
 * for persistency layer
@@ -30,10 +29,14 @@ Tests
 * user interface
 
 
-
 KNOWN BUGS
 ==========
 
+Database
+* Nutrients dont' get saved/loaded correctly
+* Multiple products of same type don't get saved in meal
+* Neu angelegtes Produkt taucht zunächst 3x in der Liste auf,
+  beim erneuten Aufruf der Liste 2x
 
 
 POSTPONED FEATURES
@@ -41,3 +44,4 @@ POSTPONED FEATURES
 
 Goals
 * goal history (apply goals for the time they were active)
+* set goals per meal, week, and month
