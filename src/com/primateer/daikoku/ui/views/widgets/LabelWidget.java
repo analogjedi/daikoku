@@ -2,6 +2,7 @@ package com.primateer.daikoku.ui.views.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.primateer.daikoku.R;
@@ -13,6 +14,8 @@ public class LabelWidget extends EditText {
 		super(context, attrs);
 		this.setHint(context.getString(R.string.label));
 		this.setSingleLine();
+		this.setInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_WORDS);
+		this.setSelectAllOnFocus(true);
 	}
 
 	public LabelWidget(Context context) {
