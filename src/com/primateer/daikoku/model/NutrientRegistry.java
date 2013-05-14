@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.primateer.daikoku.model.vos.Goal;
+import com.primateer.daikoku.model.vos.Goal.Scope;
+
 public class NutrientRegistry {
 
 	private static NutrientRegistry instance;
@@ -59,10 +62,18 @@ public class NutrientRegistry {
 	public List<Nutrient.Type> getDefaultNutrientTypes() {
 		return defaultNutrientTypes;
 	}
-	
+
 	public List<Nutrient.Type> getWatchList() {
 		// TODO make configurable
-		return getDefaultNutrientTypes();
+		List<Goal> goals = GoalRegistry.getInstance().getGoals(Scope.PER_DAY);
+		List<Nutrient.Type> types = new ArrayList<Nutrient.Type>();
+		for (Goal goal : goals) {
+			if (!types.contains(goal.nutrientType)) {
+				types.add(goal.nutrientType);
+			}
+		}
+		return types;
+		// return getDefaultNutrientTypes();
 	}
 
 	public Amount getDefaultReferenceAmount() {

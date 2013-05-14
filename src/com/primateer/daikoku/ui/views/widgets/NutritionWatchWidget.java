@@ -58,7 +58,6 @@ public class NutritionWatchWidget extends TextView {
 		}
 
 		if (goals != null && subject != null) {
-			// FIXME crashes if goal nutrients are not on watchList
 			for (Goal goal : goals) {
 				try {
 					Goal.Status match = goal.match(subject
