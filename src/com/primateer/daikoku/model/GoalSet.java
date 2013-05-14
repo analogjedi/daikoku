@@ -32,7 +32,8 @@ public class GoalSet extends ArrayList<Goal> {
 	}
 
 	public Collection<Nutrient.Type> getOccupiedTypes() {
-		Collection<Nutrient.Type> results = minGoals.keySet();
+		Collection<Nutrient.Type> results = new ArrayList<Nutrient.Type>(
+				minGoals.keySet());
 		results.retainAll(maxGoals.keySet());
 		return results;
 	}
