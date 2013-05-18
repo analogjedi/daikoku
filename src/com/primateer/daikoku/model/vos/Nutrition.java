@@ -1,7 +1,7 @@
 package com.primateer.daikoku.model.vos;
 
 import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Amount.AmountException;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.NutrientSet;
@@ -44,7 +44,7 @@ public class Nutrition extends ValueObject {
 	}
 
 	public Amount getAmount(Nutrient.Type type, Amount multiplier)
-			throws UnitConversionException {
+			throws AmountException {
 		return nutrients.get(type).amount.scale(multiplier
 				.divideBy(getReferenceAmount()));
 	}

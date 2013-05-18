@@ -101,8 +101,13 @@ public class DBController implements Observable<Class<ValueObject>> {
 		observable.removeObserver(observer);
 	}
 
-	public Collection<Goal> loadAllGoals(Scope scope) {
-		return (new GoalDao()).loadAll(scope);
+	public GoalSet loadAllGoals(Scope scope) {
+		GoalSet goals = new GoalSet();
+		Collection<Goal> data = (new GoalDao()).loadAll(scope);
+		for (Goal goal : data) {
+			goals.add(goal);
+		}
+		return goals;
 	}
 
 	public Collection<Recipe> loadFavoriteRecipes() {

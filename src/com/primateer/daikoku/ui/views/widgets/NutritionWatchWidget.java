@@ -13,11 +13,11 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.Amount.UnitConversionException;
-import com.primateer.daikoku.model.vos.Goal;
+import com.primateer.daikoku.model.Amount.AmountException;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.NutritionHolder;
+import com.primateer.daikoku.model.vos.Goal;
 
 public class NutritionWatchWidget extends TextView {
 
@@ -66,7 +66,7 @@ public class NutritionWatchWidget extends TextView {
 							.ordinal()) {
 						status.put(goal.nutrientType, match);
 					}
-				} catch (UnitConversionException e) {
+				} catch (AmountException e) {
 					Helper.logErrorStackTrace(this, e, "Unable to match goal");
 				}
 			}
@@ -81,7 +81,7 @@ public class NutritionWatchWidget extends TextView {
 						.append("'><b>").append(type.getAbbrev())
 						.append("</b> ").append(amount.toRoundString())
 						.append("</font>");
-			} catch (UnitConversionException e) {
+			} catch (AmountException e) {
 				sb.append("<font color='").append(Application.TEXTCOLOR_ERROR)
 						.append("'><b>").append(type.getAbbrev())
 						.append("</b> ")

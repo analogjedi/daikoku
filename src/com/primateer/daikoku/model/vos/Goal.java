@@ -4,6 +4,7 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Amount.AmountException;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutritionHolder;
@@ -99,7 +100,7 @@ public class Goal extends ValueObject {
 	public Status match(NutritionHolder nutrition) {
 		try {
 			return match(nutrition.getNutrition(nutrientType));
-		} catch (UnitConversionException e) {
+		} catch (AmountException e) {
 			Helper.logErrorStackTrace(this, e, "Unable to match goal:");
 			return Status.UNRATED;
 		}

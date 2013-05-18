@@ -8,11 +8,12 @@ import android.content.pm.PackageManager.NameNotFoundException;
 
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Amount.AmountException;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Day;
+import com.primateer.daikoku.model.GoalSet;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Unit;
-import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.model.vos.Meal;
@@ -23,15 +24,28 @@ import com.primateer.daikoku.testutil.DatabaseTestCase;
 
 public class MealPlanTest extends DatabaseTestCase {
 
-	public void testDay() throws UnitConversionException, NameNotFoundException {
+	private void inputGoals() {
 		List<Goal> goals = new ArrayList<Goal>();
 		goals.add(new Goal(Goal.Type.MINIMUM, Scope.PER_DAY,
-				Nutrient.TYPE_ENERGY, new Amount(1500, Unit.UNIT_KILOCALORIE)));
+				Nutrient.TYPE_ENERGY, new Amount(1700, Unit.UNIT_KILOCALORIE)));
 		goals.add(new Goal(Goal.Type.MAXIMUM, Scope.PER_DAY,
 				Nutrient.TYPE_ENERGY, new Amount(2000, Unit.UNIT_KILOCALORIE)));
 		goals.add(new Goal(Goal.Type.MINIMUM, Scope.PER_DAY,
-				Nutrient.TYPE_PROTEIN, new Amount(30, Unit.UNIT_GRAM)));
+				Nutrient.TYPE_PROTEIN, new Amount(100, Unit.UNIT_GRAM)));
+		goals.add(new Goal(Goal.Type.MAXIMUM, Scope.PER_DAY,
+				Nutrient.TYPE_CARBS, new Amount(50, Unit.UNIT_GRAM)));
+		goals.add(new Goal(Goal.Type.MINIMUM, Scope.PER_DAY, Nutrient.TYPE_FAT,
+				new Amount(60, Unit.UNIT_GRAM)));
+		goals.add(new Goal(Goal.Type.MAXIMUM, Scope.PER_DAY,
+				Nutrient.TYPE_SATURATED_FAT, new Amount(10, Unit.UNIT_GRAM)));
 
+		DBController db = DBController.getInstance();
+		for (Goal goal : goals) {
+			db.register(goal);
+		}
+	}
+
+	private void inputLentils() {
 		Date today = new Date();
 
 		Nutrition lentilsNutrition = new Nutrition();
@@ -72,23 +86,45 @@ public class MealPlanTest extends DatabaseTestCase {
 		meal3.setDue(today);
 		meal3.setState(Meal.State.SCHEDULED);
 
-		DBController model = DBController.getInstance();
-		model.register(meal1);
-		model.register(meal2);
-		model.register(meal2); // deliberate duplicate
-		model.register(meal3);
+		// TOTAL 375 g
+		// ENERGY 1260 kcal
+		// PROTEIN 86.25 g
+		// CARBS 187.5 g
+		// FAT 6.0 g
 
-		for (Goal goal : goals) {
-			model.register(goal);
+		DBController db = DBController.getInstance();
+		db.register(meal1);
+		db.register(meal2);
+		db.register(meal2); // deliberate duplicate
+		db.register(meal3);
+	}
+
+	public void testDay() throws UnitConversionException, NameNotFoundException {
+		inputLentils();
+		inputGoals();
+
+		Date today = new Date();
+		Day day = DBController.getInstance().loadAllMeals(today);
+		try {
+			assertEquals(new Amount("86.25g"),
+					day.getNutrition(Nutrient.TYPE_PROTEIN));
+		} catch (AmountException e) {
+			e.printStackTrace();
 		}
 
-		Day day = DBController.getInstance().loadAllMeals(today);
-		assertEquals(new Amount("86.25g"),
-				day.getNutrition(Nutrient.TYPE_PROTEIN));
-
-		List<ValueObject> goalVos = DBController.getInstance().loadAll(Goal.class);
-		assertEquals(Goal.Status.ACHIEVABLE, ((Goal) goalVos.get(0)).match(day));
-		assertEquals(Goal.Status.MET, ((Goal) goalVos.get(1)).match(day));
-		assertEquals(Goal.Status.MET, ((Goal) goalVos.get(2)).match(day));
+		GoalSet goals = DBController.getInstance().loadAllGoals(Scope.PER_DAY);
+		assertEquals(Goal.Status.ACHIEVABLE,
+				(goals.get(Nutrient.TYPE_ENERGY, Goal.Type.MINIMUM).match(day)));
+		assertEquals(Goal.Status.MET,
+				(goals.get(Nutrient.TYPE_ENERGY, Goal.Type.MAXIMUM).match(day)));
+		assertEquals(
+				Goal.Status.ACHIEVABLE,
+				(goals.get(Nutrient.TYPE_PROTEIN, Goal.Type.MINIMUM).match(day)));
+		assertEquals(Goal.Status.FAILED,
+				(goals.get(Nutrient.TYPE_CARBS, Goal.Type.MAXIMUM).match(day)));
+		assertEquals(Goal.Status.ACHIEVABLE,
+				(goals.get(Nutrient.TYPE_FAT, Goal.Type.MINIMUM).match(day)));
+		assertEquals(Goal.Status.UNRATED, (goals.get(
+				Nutrient.TYPE_SATURATED_FAT, Goal.Type.MAXIMUM).match(day)));
 	}
 }

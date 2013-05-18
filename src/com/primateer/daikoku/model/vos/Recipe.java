@@ -7,7 +7,8 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Amount.AmountException;
+import com.primateer.daikoku.model.Amount.UnknownAmountException;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientSet;
 import com.primateer.daikoku.model.NutritionHolder;
@@ -70,8 +71,9 @@ public class Recipe extends ValueObject implements NutritionHolder {
 
 	@Override
 	public Amount getNutrition(Nutrient.Type type)
-			throws UnitConversionException {
-		Amount total = getExtraNutrition().get(type).amount;
+			throws AmountException {
+		Amount total = type.getNullAmount();
+//		Amount total = getExtraNutrition().get(type).amount;
 		if (ingredients != null) {
 			for (Product product : ingredients.keySet()) {
 				Amount ia = ingredients.get(product);
@@ -81,8 +83,9 @@ public class Recipe extends ValueObject implements NutritionHolder {
 				total = total.add(product.getNutrition(type).scale(
 						ia.divideBy(product.getDefaultAmount())));
 			}
+			return total;
 		}
-		return total;
+		throw new UnknownAmountException("Ingredients missing");
 	}
 
 	@Override

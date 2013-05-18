@@ -4,7 +4,7 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
-import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Amount.AmountException;
 import com.primateer.daikoku.model.Nutrient.Type;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.ValueObject;
@@ -83,7 +83,7 @@ public class Product extends ValueObject {
 		return amount;
 	}
 
-	public Amount getNutrition(Type type) throws UnitConversionException {
+	public Amount getNutrition(Type type) throws AmountException {
 		return nutrition.getAmount(type, amount);
 	}
 }

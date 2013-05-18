@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.Amount.UnknownAmountException;
 
 public class NutrientSet extends ArrayList<Nutrient> {
 
@@ -61,11 +62,10 @@ public class NutrientSet extends ArrayList<Nutrient> {
 		return byType.containsKey(type);
 	}
 
-	public Nutrient get(Nutrient.Type type) {
+	public Nutrient get(Nutrient.Type type) throws UnknownAmountException {
 		Nutrient nutrient = byType.get(type);
 		if (nutrient == null) {
-			// TODO implement "minimum, open end" amounts for unknown nutrients
-			return new Nutrient(type, type.getNullAmount());
+			throw new UnknownAmountException("Unknown Amount: Type not listed");
 		}
 		return byType.get(type);
 	}

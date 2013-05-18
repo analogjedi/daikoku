@@ -5,7 +5,19 @@ import java.util.regex.Pattern;
 
 public class Amount implements Comparable<Amount> {
 
-	public class UnitConversionException extends Exception {
+	public static abstract class AmountException extends Exception {
+		public AmountException(String msg) {
+			super(msg);
+		}
+	}
+	
+	public static class UnknownAmountException extends AmountException {
+		public UnknownAmountException(String msg) {
+			super(msg);
+		}
+	}
+	
+	public static class UnitConversionException extends AmountException {
 		public UnitConversionException(String msg) {
 			super(msg);
 		}
