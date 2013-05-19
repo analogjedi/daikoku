@@ -13,12 +13,17 @@ Units
 
 Styling
 
-Navigation
+User Interface
 * Edit goals by clicking on watch widget
+* swipe screen to change date
+* Watch Row for each ingredient?
 
 
 MISSING CODE
 ============
+
+Lists
+* Maintain list item order for nutrients, ingredients, etc.
 
 Catalogs
 * Nutrient Type add/edit
@@ -33,7 +38,6 @@ KNOWN BUGS
 ==========
 
 Database
-* Nutrients dont' get saved/loaded correctly
 * Multiple products of same type don't get saved in meal
 
 
@@ -43,3 +47,4 @@ POSTPONED FEATURES
 Goals
 * goal history (apply goals for the time they were active)
 * set goals per meal, week, and month
+* meal status
