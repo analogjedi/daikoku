@@ -33,11 +33,11 @@ public class MealDao extends Dao<Meal> {
 
 	@Override
 	protected Meal buildFrom(Cursor q) {
-		Meal vo = new Meal();
-		setKey(q, vo);
+		long id = q.getLong(q.getColumnIndex(COL_ID));
 		Recipe recipe = (Recipe) DBController.getInstance().load(Recipe.class,
-				vo.getId());
-		vo.add(recipe);
+				id);
+		Meal vo = new Meal(recipe);
+		vo.setId(id);
 		vo.setLabel(recipe.getLabel());
 		vo.setDue(Helper.parseDate(q.getString(q.getColumnIndex(COL_DUE))));
 		vo.setState(Meal.State.values()[q.getInt(q.getColumnIndex(COL_STATE))]);

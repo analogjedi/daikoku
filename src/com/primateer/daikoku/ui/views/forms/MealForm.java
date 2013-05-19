@@ -109,6 +109,9 @@ public class MealForm extends RecipeForm {
 		LinearLayout dateLine = new LinearLayout(context);
 		dateLine.addView(stateWidget, stateLayout);
 		dateLine.addView(dateWidget, dateLayout);
+		
+		this.setFavable(true);
+		this.setFavorite(false);
 
 		this.addView(dateLine, 1);
 	}
@@ -125,8 +128,7 @@ public class MealForm extends RecipeForm {
 
 	@Override
 	protected Meal gatherData() throws InvalidDataException {
-		Meal data = new Meal();
-		data.add(super.gatherData());
+		Meal data = new Meal(super.gatherData());
 		data.setDue(dateWidget.getData());
 		data.setState(stateWidget.getData());
 		return data;

@@ -27,6 +27,17 @@ public class Meal extends Recipe {
 	private State state;
 
 
+	public Meal() {		
+	}
+	
+	public Meal(Recipe recipe) {
+		this.setId(recipe.getId());
+		this.setLabel(recipe.getLabel());
+		this.setFavorite(recipe.isFavorite());
+		this.setIngredients(recipe.getIngredients());
+		this.setExtraNutrition(recipe.getExtraNutrition());
+	}
+
 	public Date getDue() {
 		return due;
 	}

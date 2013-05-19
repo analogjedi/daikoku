@@ -49,6 +49,10 @@ public class Recipe extends ValueObject implements NutritionHolder {
 		}
 		return ingredients;
 	}
+	
+	public void setExtraNutrition(NutrientSet nutrition) {
+		this.extraNutrition = nutrition;
+	}
 
 	public NutrientSet getExtraNutrition() {
 		if (extraNutrition == null) {

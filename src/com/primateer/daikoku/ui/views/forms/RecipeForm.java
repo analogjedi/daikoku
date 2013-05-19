@@ -280,7 +280,8 @@ public class RecipeForm extends VoForm<Recipe> {
 				setFavorite(!favButtonState);
 			}
 		});
-		setFavorite(false);
+		setFavorite(true);
+		setFavable(false);
 
 		LinearLayout labelRow = new LinearLayout(context);
 		labelRow.addView(label, new LayoutParams(0, LayoutParams.WRAP_CONTENT,
@@ -292,8 +293,12 @@ public class RecipeForm extends VoForm<Recipe> {
 		this.addView(componentList);
 		this.addView(addRow);
 	}
+	
+	protected void setFavable(boolean isFavable) {
+		favButton.setVisibility(isFavable ? VISIBLE : GONE);
+	}
 
-	private void setFavorite(boolean isFavorite) {
+	protected void setFavorite(boolean isFavorite) {
 		this.favButtonState = isFavorite;
 		favButton.setImageResource(isFavorite ? Application.ICON_FAVORITE
 				: Application.ICON_UNFAVORITE);
