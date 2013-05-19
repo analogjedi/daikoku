@@ -53,6 +53,7 @@ public class MainActivity extends FragmentActivity {
 		} else {
 			button.setEnabled(false);
 		}
+		button.setFocusable(false);
 		LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, 0, 1.0f);
 		views.addView(button, layout);
