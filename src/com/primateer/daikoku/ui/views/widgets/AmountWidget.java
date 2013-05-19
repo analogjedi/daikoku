@@ -57,7 +57,8 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 					@Override
 					public boolean onEditorAction(TextView v, int actionId,
 							KeyEvent event) {
-						return updateValueView();
+						updateValueView();
+						return false;
 					}
 				});
 		valueView
@@ -96,18 +97,16 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 		this(context, null);
 	}
 
-	private boolean updateValueView() {
+	private void updateValueView() {
 		try {
 			Amount amount = getData();
 			value = amount.value;
-			valueView.setText(String.valueOf(value));
-			valueView.setHint(String.valueOf(value));
 			observable.notifyObservers(amount);
-			return true;
 		} catch (InvalidDataException e) {
-			valueView.setText(String.valueOf(value));
-			return false;
+			// do nothing
 		}
+		valueView.setText(String.valueOf(value));
+		valueView.setHint(String.valueOf(value));
 	}
 
 	public void selectUnit(Unit unit) {
