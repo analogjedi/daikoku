@@ -3,6 +3,7 @@ package com.primateer.daikoku.ui.views.lists;
 import java.util.List;
 
 import android.content.Context;
+import android.view.View;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Catalog;
@@ -58,6 +59,11 @@ public class CatalogListAdapter<T extends ValueObject> extends
 		super.add(item);
 	}
 
+	@Override
+	public void onClick(View v) {
+		Application.getInstance().dispatch(new DeleteDataAction<T>(getItemFromView(v),v.getContext()));
+	}
+	
 	@Override
 	public void remove(T item) {
 		Application.getInstance().dispatch(new DeleteDataAction<T>(item, null));

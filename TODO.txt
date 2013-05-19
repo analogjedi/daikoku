@@ -21,7 +21,6 @@ MISSING CODE
 ============
 
 Catalogs
-* Delete Confirmation
 * Nutrient Type add/edit
 
 Tests
