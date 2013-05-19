@@ -8,14 +8,11 @@ Settings
 
 Shopping & Supplies
 
-Units
-* Cascaded unit conversion
-
 Styling
 
 User Interface
-* Edit goals by clicking on watch widget
 * Watch Row for each ingredient?
+* Use catalog instead of dropdown list in Amount Widget
 
 
 MISSING CODE
@@ -48,6 +45,12 @@ Goals
 * set goals per meal, week, and month
 * meal status
 
+Lists
+* Change item order per drag & drop
+
+Units
+* Cascaded unit conversion
+
 User Interface
 * animate date change fling
-
+* Edit goals by clicking on watch widget
