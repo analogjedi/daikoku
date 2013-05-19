@@ -3,21 +3,19 @@ package com.primateer.daikoku.ui.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Catalog;
-import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.views.connector.FormDialogConnector;
 import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
+import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 
 public class CatalogView<T extends ValueObject> extends LinearLayout {
 
-	private ImageButton addButton;
+	private AddButton addButton;
 	private ListView itemList;
 	private CatalogListAdapter<T> listAdapter;
 
@@ -41,8 +39,7 @@ public class CatalogView<T extends ValueObject> extends LinearLayout {
 		itemList.setAdapter(listAdapter);
 
 		// add button
-		addButton = new ImageButton(context);
-		addButton.setImageResource(Application.ICON_ADD);
+		addButton = new AddButton(context);
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

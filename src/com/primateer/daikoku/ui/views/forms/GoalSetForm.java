@@ -27,6 +27,7 @@ import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.ui.actions.CatalogAction;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
+import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
@@ -182,7 +183,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 
 	private ListView listView;
 	private GoalListAdapter listAdapter;
-	private ImageButton addButton;
+	private AddButton addButton;
 
 	public GoalSetForm(Context context) {
 		this(context, null);
@@ -199,8 +200,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 		listAdapter = new GoalListAdapter();
 		listView.setAdapter(listAdapter);
 
-		addButton = new ImageButton(context);
-		addButton.setImageResource(Application.ICON_ADD);
+		addButton = new AddButton(context);
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

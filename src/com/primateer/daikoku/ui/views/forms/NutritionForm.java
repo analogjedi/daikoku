@@ -30,6 +30,7 @@ import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
+import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.ui.views.widgets.Separator;
@@ -168,15 +169,14 @@ public class NutritionForm extends VoForm<Nutrition> {
 	private AmountWidget referenceAmount;
 	private ListView nutrientList;
 	private NutrientListAdapter listAdapter;
-	private ImageButton addButton;
+	private AddButton addButton;
 	private List<Nutrient.Type> permissibleTypes;
 
 	public NutritionForm(Context context) {
 		super(context);
 
 		// add button
-		addButton = new ImageButton(context);
-		addButton.setImageResource(Application.ICON_ADD);
+		addButton = new AddButton(context);
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -6,7 +6,6 @@ import java.util.Date;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -25,6 +24,7 @@ import com.primateer.daikoku.ui.actions.DeleteDataAction;
 import com.primateer.daikoku.ui.actions.EditFormAction;
 import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
+import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.DateWidget;
 import com.primateer.daikoku.ui.views.widgets.NutritionWatchWidget;
 
@@ -64,7 +64,7 @@ public class MealPlanView extends LinearLayout {
 	private NutritionWatchWidget watcher;
 	private ListView listView;
 	private MealListAdapter listAdapter;
-	private ImageButton addButton;
+	private AddButton addButton;
 
 	public MealPlanView(Context context) {
 		this(context, null);
@@ -100,8 +100,7 @@ public class MealPlanView extends LinearLayout {
 		listAdapter = new MealListAdapter(catalog);
 		listView.setAdapter(listAdapter);
 
-		addButton = new ImageButton(context);
-		addButton.setImageResource(Application.ICON_ADD);
+		addButton = new AddButton(context);
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
