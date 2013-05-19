@@ -21,6 +21,7 @@ MISSING CODE
 ============
 
 Catalogs
+* Delete Confirmation
 * Nutrient Type add/edit
 
 Tests
@@ -35,8 +36,6 @@ KNOWN BUGS
 Database
 * Nutrients dont' get saved/loaded correctly
 * Multiple products of same type don't get saved in meal
-* Neu angelegtes Produkt taucht zunächst 3x in der Liste auf,
-  beim erneuten Aufruf der Liste 2x
 
 
 POSTPONED FEATURES

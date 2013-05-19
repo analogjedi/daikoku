@@ -49,12 +49,12 @@ public class CatalogView<T extends ValueObject> extends LinearLayout {
 				FormDialogConnector<T> connector = new FormDialogConnector<T>(
 						listAdapter.getCatalog().dataClass, CatalogView.this
 								.getContext());
-				connector.addObserver(new Observer<T>() {
-					@Override
-					public void update(T item) {
-						listAdapter.add(item);
-					}
-				});
+//				connector.addObserver(new Observer<T>() {
+//					@Override
+//					public void update(T item) {
+//						listAdapter.add(item);
+//					}
+//				});
 				connector.showDialog();
 			}
 		});
