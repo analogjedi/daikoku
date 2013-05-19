@@ -46,23 +46,35 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 				LayoutParams.WRAP_CONTENT, 0.8f);
 		valueLayout.gravity = Gravity.CENTER_VERTICAL;
 		valueView.setText(String.valueOf(value));
-		valueView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		valueView.setOnClickListener(new OnClickListener() {
 			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				return updateValueView();
+			public void onClick(View v) {
+				valueView.setText("");
 			}
 		});
-		valueView.setOnFocusChangeListener(new TextView.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				updateValueView();
-			}
-		});
+		valueView
+				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						return updateValueView();
+					}
+				});
+		valueView
+				.setOnFocusChangeListener(new TextView.OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View v, boolean hasFocus) {
+						if (hasFocus) {
+							valueView.setText("");
+						} else {
+							updateValueView();
+						}
+					}
+				});
 
 		unitView = new Spinner(context);
-		LayoutParams unitLayout = new LayoutParams(0, LayoutParams.WRAP_CONTENT,
-				1.0f);
+		LayoutParams unitLayout = new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 1.0f);
 		unitLayout.gravity = Gravity.CENTER_VERTICAL;
 		unitView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
@@ -76,19 +88,20 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 			}
 		});
 
-		this.addView(valueView,valueLayout);
-		this.addView(unitView,unitLayout);
+		this.addView(valueView, valueLayout);
+		this.addView(unitView, unitLayout);
 	}
 
 	public AmountWidget(Context context) {
 		this(context, null);
 	}
-	
+
 	private boolean updateValueView() {
 		try {
 			Amount amount = getData();
 			value = amount.value;
 			valueView.setText(String.valueOf(value));
+			valueView.setHint(String.valueOf(value));
 			observable.notifyObservers(amount);
 			return true;
 		} catch (InvalidDataException e) {
@@ -100,7 +113,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 	public void selectUnit(Unit unit) {
 		unitView.setSelection(units.indexOf(unit));
 	}
-	
+
 	public void setUnits(Unit.Type type) {
 		this.setUnits(UnitRegistry.getInstance().getUnitsByType(type));
 	}
@@ -146,6 +159,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 					"AmountWidget: Call setUnits() before setData()");
 		}
 		valueView.setText(String.valueOf(data.value));
+		updateValueView();
 		unitView.setSelection(units.indexOf(data.unit));
 	}
 
