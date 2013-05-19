@@ -23,6 +23,7 @@
     <string name="title_activity_settings">Edit Preferences</string>
     <string name="title_pick_product">Select A Product</string>
     <string name="title_pick_nutrient_type">Select A Nutrient Type</string>
+    <string name="title_pick_unit">Select Unit</string>
     <string name="title_pick_recipe">Select A Recipe</string>
     
     <string name="nutrient_type_energy">Energy</string>

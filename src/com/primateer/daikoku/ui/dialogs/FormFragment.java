@@ -58,10 +58,11 @@ public class FormFragment<T extends ValueObject> extends DialogFragment
 					form.validate();
 					Action action = new SaveDataAction<T>(form.getData());
 					Application.getInstance().dispatch(action);
-				} catch (InvalidDataException e1) {
+				} catch (InvalidDataException e) {
 					Helper.displayErrorMessage(getActivity(), getResources()
-							.getString(R.string.form_error_title), e1
+							.getString(R.string.form_error_title), e
 							.getMessage());
+					Helper.logErrorStackTrace(this, e, "Invalid Form Input");
 					return;
 				}
 				try {

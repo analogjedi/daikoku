@@ -1,5 +1,6 @@
 package com.primateer.daikoku.ui.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 
+@SuppressLint("ViewConstructor")
 public class CatalogView<T extends ValueObject> extends LinearLayout {
 
 	private AddButton addButton;

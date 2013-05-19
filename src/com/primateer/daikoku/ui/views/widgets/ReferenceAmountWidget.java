@@ -6,8 +6,9 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.NutrientRegistry;
-import com.primateer.daikoku.model.UnitRegistry;
+import com.primateer.daikoku.model.Unit;
 
 public class ReferenceAmountWidget extends AmountWidget {
 
@@ -23,7 +24,6 @@ public class ReferenceAmountWidget extends AmountWidget {
 		label.setLayoutParams(labelLayout);
 		label.setPadding(5, 0, 0, 0);
 		this.addView(label, 0);
-		this.setUnits(UnitRegistry.getInstance().getAllUnits());
 		clear();
 	}
 	
@@ -35,5 +35,11 @@ public class ReferenceAmountWidget extends AmountWidget {
 	public void clear() {
 		this.setData(NutrientRegistry.getInstance()
 				.getDefaultReferenceAmount());		
+	}
+	
+	@Override
+	public void setData(Amount amount) {
+		super.setData(amount);
+		this.setUnits(Unit.Type.UNSPECIFIED);
 	}
 }

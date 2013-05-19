@@ -18,6 +18,9 @@ User Interface
 MISSING CODE
 ============
 
+Nutrition UI
+* Product Amount should be auto-set to reference amount unit and unit type
+
 Lists
 * Maintain list item order for nutrients, ingredients, etc.
 

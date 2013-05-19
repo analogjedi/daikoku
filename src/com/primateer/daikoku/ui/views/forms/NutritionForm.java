@@ -26,8 +26,6 @@ import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.NutrientSet;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
-import com.primateer.daikoku.model.Unit;
-import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
@@ -78,9 +76,7 @@ public class NutritionForm extends VoForm<Nutrition> {
 		private void setNutrientType(Nutrient.Type type) {
 			this.label.setText(type.toString());
 			this.type = type;
-			List<Unit> units = UnitRegistry.getInstance().getUnitsByType(
-					type.defaultUnit.type);
-			this.setUnits(units);
+			this.setUnits(type.defaultUnit.type);
 			this.selectUnit(type.defaultUnit);
 			widgetObservable.notifyObservers(this);
 		}

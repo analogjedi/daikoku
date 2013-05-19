@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.primateer.daikoku.model.Unit.Type;
+
 import android.util.SparseArray;
 
 public class UnitRegistry {
@@ -69,6 +71,9 @@ public class UnitRegistry {
 	}
 
 	public List<Unit> getUnitsByType(Unit.Type unitType) {
+		if (unitType == null || unitType == Type.UNSPECIFIED) {
+			return getAllUnits();
+		}
 		List<Unit> units = byType.get(unitType.ordinal());
 		if (units == null) {
 			units = new ArrayList<Unit>();

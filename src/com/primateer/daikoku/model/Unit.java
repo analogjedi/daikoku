@@ -3,7 +3,7 @@ package com.primateer.daikoku.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Unit {
+public class Unit extends ValueObject {
 	
 	public enum Type {
 		UNSPECIFIED, COUNT, CURRENCY, ENERGY, MASS, VOLUME;

@@ -24,8 +24,7 @@ public class UnitsAmountWidget extends AmountWidget {
 		label.setLayoutParams(labelLayout);
 		label.setPadding(5, 0, 0, 0);
 		this.addView(label, 0);
-		this.setUnits(UnitRegistry.getInstance()
-				.getUnitsByType(Unit.Type.COUNT));
+		this.setUnits(Unit.Type.COUNT);
 		this.setData(new Amount(0, UnitRegistry.getInstance()
 				.getDefaultUnitByType(Unit.Type.COUNT)));
 	}

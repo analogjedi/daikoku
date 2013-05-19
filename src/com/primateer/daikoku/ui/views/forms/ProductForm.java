@@ -80,6 +80,9 @@ public class ProductForm extends VoForm<Product> {
 	protected void fillFields(Product data) throws IllegalArgumentException {
 		label.setText(data.getLabel());
 		amount.setData(data.getAmount());
+		if (data.getNutrition() != null) {
+			amount.setUnits(data.getNutrition().getReferenceAmount().unit.type);
+		}
 		units.setData(data.getUnitsAmount());
 		nutritionConnector.setData(data.getNutrition());
 	}
