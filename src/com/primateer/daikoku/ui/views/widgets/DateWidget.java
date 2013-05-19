@@ -95,7 +95,7 @@ public class DateWidget extends LinearLayout implements
 		updateDate();
 	}
 
-	private void addDays(int d) {
+	public void addDays(int d) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(currentDate);
 		c.add(Calendar.DATE, d);

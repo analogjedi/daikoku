@@ -5,6 +5,9 @@ import java.util.Date;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,6 +32,24 @@ import com.primateer.daikoku.ui.views.widgets.DateWidget;
 import com.primateer.daikoku.ui.views.widgets.NutritionWatchWidget;
 
 public class MealPlanView extends LinearLayout {
+
+	private class SwipeDetector extends SimpleOnGestureListener {
+		public static final int MIN_VELOCITY = 600;
+
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			if (Math.abs(velocityX) >= MIN_VELOCITY
+					&& Math.abs(velocityX) > Math.abs(velocityY) * 1.5) {
+				if (velocityX < 0) {
+					datePicker.addDays(-1);
+				} else {
+					datePicker.addDays(1);
+				}
+			}
+			return true;
+		}
+	}
 
 	private class MealListAdapter extends CatalogListAdapter<Meal> implements
 			Observer<Class<ValueObject>> {
@@ -94,11 +115,21 @@ public class MealPlanView extends LinearLayout {
 		catalog.setLoader(new Catalog.Loader<Meal>() {
 			@Override
 			public Collection<Meal> load(Catalog<Meal> catalog) {
-				return DBController.getInstance().loadAllMeals(datePicker.getData());
+				return DBController.getInstance().loadAllMeals(
+						datePicker.getData());
 			}
 		});
 		listAdapter = new MealListAdapter(catalog);
 		listView.setAdapter(listAdapter);
+		// fling detection on list
+		final GestureDetector detector = new GestureDetector(context,
+				new SwipeDetector());
+		listView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				return !detector.onTouchEvent(event);
+			}
+		});
 
 		addButton = new AddButton(context);
 		addButton.setOnClickListener(new OnClickListener() {
