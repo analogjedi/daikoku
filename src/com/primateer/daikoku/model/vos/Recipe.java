@@ -81,7 +81,7 @@ public class Recipe extends ValueObject implements NutritionHolder {
 					ia = product.getAmountPerUnit().scale(ia.value);
 				}
 				total = total.add(product.getNutrition(type).scale(
-						ia.divideBy(product.getDefaultAmount())));
+						ia.divideBy(product.getAmount())));
 			}
 			return total;
 		}

@@ -2,6 +2,7 @@ package com.primateer.daikoku.model.vos;
 
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.AmountException;
+import com.primateer.daikoku.model.Amount.UnknownAmountException;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.NutrientSet;
@@ -45,12 +46,16 @@ public class Nutrition extends ValueObject {
 
 	public Amount getAmount(Nutrient.Type type, Amount multiplier)
 			throws AmountException {
-		return nutrients.get(type).amount.scale(multiplier
-				.divideBy(getReferenceAmount()));
+		try {
+			return nutrients.get(type).amount.scale(multiplier
+					.divideBy(getReferenceAmount()));
+		} catch (UnknownAmountException e) {
+			return type.getNullAmount();
+		}
 	}
 
 	public void add(Nutrition other) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

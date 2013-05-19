@@ -24,6 +24,9 @@ import com.primateer.daikoku.testutil.DatabaseTestCase;
 
 public class MealPlanTest extends DatabaseTestCase {
 
+	private long onionAndOilId;
+	private long lentilsId;
+
 	private void inputGoals() {
 		List<Goal> goals = new ArrayList<Goal>();
 		goals.add(new Goal(Goal.Type.MINIMUM, Scope.PER_DAY,
@@ -45,7 +48,58 @@ public class MealPlanTest extends DatabaseTestCase {
 		}
 	}
 
+	private void inputOnionAndOil() {
+		onionAndOilId = -1;
+
+		Product onion = new Product();
+		onion.setLabel("Zwiebeln");
+		Nutrition onionNutrition = new Nutrition();
+		onionNutrition.setNutrient(new Nutrient(Nutrient.TYPE_ENERGY,
+				new Amount("28kcal")));
+		onionNutrition.setNutrient(new Nutrient(Nutrient.TYPE_PROTEIN,
+				new Amount("1.3g")));
+		onionNutrition.setNutrient(new Nutrient(Nutrient.TYPE_CARBS,
+				new Amount("4.9g")));
+		onionNutrition.setNutrient(new Nutrient(Nutrient.TYPE_FAT, new Amount(
+				"0.2g")));
+		onion.setNutrition(onionNutrition);
+		onion.setAmount(new Amount("100g"));
+		onion.setUnits(1);
+
+		Product oil = new Product();
+		oil.setLabel("Olivenöl");
+		Nutrition oilNutrition = new Nutrition();
+		oilNutrition.setReferenceAmount(new Amount("100ml"));
+		oilNutrition.setNutrient(new Nutrient(Nutrient.TYPE_ENERGY, new Amount(
+				"824kcal")));
+		oilNutrition.setNutrient(new Nutrient(Nutrient.TYPE_PROTEIN,
+				new Amount("0.1g")));
+		oilNutrition.setNutrient(new Nutrient(Nutrient.TYPE_CARBS, new Amount(
+				"0.1g")));
+		oilNutrition.setNutrient(new Nutrient(Nutrient.TYPE_FAT, new Amount(
+				"91.6g")));
+		oilNutrition.setNutrient(new Nutrient(Nutrient.TYPE_SATURATED_FAT,
+				new Amount("14.1g")));
+		oil.setNutrition(oilNutrition);
+		oil.setAmount(new Amount("500ml"));
+		oil.setUnits(50);
+
+		// ENERGY 110.4 kcal
+		// PROTEIN 1.31 g
+		// CARBS 4.91 g
+		// FAT 9.36 g
+		// SATURATED FAT 1.41g
+
+		Recipe onionAndOil = new Recipe();
+		onionAndOil.setLabel("Zwiebeln & Öl");
+		onionAndOil.add(onion, new Amount("1units"));
+		onionAndOil.add(oil, new Amount("10ml"));
+
+		onionAndOilId = DBController.getInstance().register(onionAndOil);
+	}
+
 	private void inputLentils() {
+		lentilsId = -1;
 		Date today = new Date();
 
 		Nutrition lentilsNutrition = new Nutrition();
@@ -93,10 +147,38 @@ public class MealPlanTest extends DatabaseTestCase {
 		// FAT 6.0 g
 
 		DBController db = DBController.getInstance();
+		lentilsId = db.register(lentils);
 		db.register(meal1);
 		db.register(meal2);
 		db.register(meal2); // deliberate duplicate
 		db.register(meal3);
+	}
+
+	public void testOnionOilLentils() throws AmountException {
+		inputOnionAndOil();
+		inputLentils();
+
+		DBController db = DBController.getInstance();
+		Product lentils = (Product) db.load(Product.class, lentilsId);
+		Recipe onionOil = (Recipe) db.load(Recipe.class, onionAndOilId);
+		Meal meal = new Meal();
+		meal.add(onionOil);
+		meal.add(lentils, new Amount("375g"));
+
+		// ENERGY 110.4 kcal
+		// PROTEIN 1.31 g
+		// CARBS 4.91 g
+		// FAT 9.36 g
+		// SATURATED FAT 1.41g
+		assertEquals(new Amount("1370.4kcal"),
+				meal.getNutrition(Nutrient.TYPE_ENERGY));
+		assertEquals(new Amount("87.56g"),
+				meal.getNutrition(Nutrient.TYPE_PROTEIN));
+		assertEquals(new Amount("192.41g"),
+				meal.getNutrition(Nutrient.TYPE_CARBS));
+		assertEquals(new Amount("15.36g"), meal.getNutrition(Nutrient.TYPE_FAT));
+		assertEquals(new Amount("1.41g"),
+				meal.getNutrition(Nutrient.TYPE_SATURATED_FAT));
 	}
 
 	public void testDay() throws UnitConversionException, NameNotFoundException {
@@ -124,7 +206,7 @@ public class MealPlanTest extends DatabaseTestCase {
 				(goals.get(Nutrient.TYPE_CARBS, Goal.Type.MAXIMUM).match(day)));
 		assertEquals(Goal.Status.ACHIEVABLE,
 				(goals.get(Nutrient.TYPE_FAT, Goal.Type.MINIMUM).match(day)));
-		assertEquals(Goal.Status.UNRATED, (goals.get(
-				Nutrient.TYPE_SATURATED_FAT, Goal.Type.MAXIMUM).match(day)));
+		assertEquals(Goal.Status.MET, (goals.get(Nutrient.TYPE_SATURATED_FAT,
+				Goal.Type.MAXIMUM).match(day)));
 	}
 }
