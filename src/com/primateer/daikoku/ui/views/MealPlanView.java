@@ -41,7 +41,7 @@ public class MealPlanView extends LinearLayout {
 				float velocityY) {
 			if (Math.abs(velocityX) >= MIN_VELOCITY
 					&& Math.abs(velocityX) > Math.abs(velocityY) * 1.5) {
-				if (velocityX < 0) {
+				if (velocityX > 0) {
 					datePicker.addDays(-1);
 				} else {
 					datePicker.addDays(1);
