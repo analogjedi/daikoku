@@ -36,6 +36,11 @@ Tests
 KNOWN BUGS
 ==========
 
+Meal Planner
+* Adding a recipe to an existing meal and saving it doesn't save the new products.
+* Watch Widget remains at 0 when editing new product (only with missing nutrients)?
+
+
 Database
 * Multiple products of same type don't get saved in meal
 
