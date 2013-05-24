@@ -57,6 +57,10 @@ public class Amount implements Comparable<Amount> {
 		this.value = value;
 		this.unit = unit;
 	}
+	
+	public Amount(Amount copy) {
+		this(copy.value, copy.unit);
+	}
 
 	/**
 	 * Multiply this amount by a scalar factor

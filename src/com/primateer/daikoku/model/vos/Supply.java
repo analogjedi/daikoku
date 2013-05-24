@@ -1,39 +1,38 @@
 package com.primateer.daikoku.model.vos;
 
+import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.ValueObject;
 
 public class Supply extends ValueObject {
 
-	double total;
-	double available;
-	double reserved;
-	double consumed;
+	public final Product product;
+	Amount total;
+	Amount available;
+	Amount reserved;
+	Amount consumed;
 	
-	
-	public double getTotal() {
+	public Supply(Product product, Amount total) {
+		this.product = product;
+		this.total = total;
+		this.available = new Amount(total);
+		this.reserved = new Amount(0,total.unit);
+		this.consumed = new Amount(0,total.unit);
+	}
+
+	public Amount getTotal() {
 		return total;
 	}
-	public void setTotal(double total) {
-		this.total = total;
-	}
-	public double getAvailable() {
+
+	public Amount getAvailable() {
 		return available;
 	}
-	public void setAvailable(double available) {
-		this.available = available;
-	}
-	public double getReserved() {
+
+	public Amount getReserved() {
 		return reserved;
 	}
-	public void setReserved(double reserved) {
-		this.reserved = reserved;
-	}
-	public double getConsumed() {
+
+	public Amount getConsumed() {
 		return consumed;
 	}
-	public void setConsumed(double consumed) {
-		this.consumed = consumed;
-	}
-	
 	
 }
