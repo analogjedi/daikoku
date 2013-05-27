@@ -1,6 +1,8 @@
 package com.primateer.daikoku.model.vos;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Unit;
+import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.ValueObject;
 
 public class Supply extends ValueObject {
@@ -10,13 +12,25 @@ public class Supply extends ValueObject {
 	Amount available;
 	Amount reserved;
 	Amount consumed;
-	
+	Amount cost;
+
 	public Supply(Product product, Amount total) {
+		this(product, total.unit, total.value, total.value, 0, 0, new Amount(0,
+				UnitRegistry.getInstance().getDefaultUnitByType(
+						Unit.Type.CURRENCY)));
+	}
+
+	public Supply(Product product, Unit unit, double total, double available,
+			double reserved, double consumed, Amount cost) {
 		this.product = product;
-		this.total = total;
-		this.available = new Amount(total);
-		this.reserved = new Amount(0,total.unit);
-		this.consumed = new Amount(0,total.unit);
+		if (available + reserved + consumed != total) {
+			throw new IllegalArgumentException("Supply amounts do not add up");
+		}
+		this.total = new Amount(total, unit);
+		this.available = new Amount(available, unit);
+		this.reserved = new Amount(reserved, unit);
+		this.consumed = new Amount(consumed, unit);
+		this.cost = cost;
 	}
 
 	public Amount getTotal() {
@@ -34,5 +48,8 @@ public class Supply extends ValueObject {
 	public Amount getConsumed() {
 		return consumed;
 	}
-	
+
+	public Amount getCost() {
+		return cost;
+	}
 }

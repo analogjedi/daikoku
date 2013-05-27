@@ -29,8 +29,10 @@ CREATE TABLE 'product' (
 );
 
 CREATE TABLE 'supply' (
-	'product' INTEGER NOT NULL PRIMARY KEY,
-	'total' REAL NOT NULL,
+        '_id' INTEGER PRIMARY KEY AUTOINCREMENT,
+	'product' INTEGER NOT NULL,
+	'cost' TEXT NOT NULL,
+	'unit' TEXT NOT NULL,
 	'available' REAL NOT NULL,
 	'reserved' REAL NOT NULL,
 	'consumed' REAL NOT NULL,
