@@ -30,7 +30,7 @@ public class MainActivity extends FragmentActivity {
 		this.addActivity(MealPlanActivity.class, Application.ICON_CALENDAR,
 				R.string.title_activity_meal_plan);
 		this.addActivity(null, Application.ICON_LIST,
-				R.string.title_activity_supply);
+				R.string.title_activity_shopping);
 		this.addActivity(GoalsActivity.class, Application.ICON_GOALS,
 				R.string.title_activity_goals);
 		this.addActivity(null, Application.ICON_SETTINGS,

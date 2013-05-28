@@ -17,10 +17,10 @@
     <string name="per_week">weekly</string>
     <string name="per_month">monthly</string>
 
-    <string name="title_activity_meal_plan">Schedule Meals</string>
-    <string name="title_activity_supply">Manage Supplies</string>
-    <string name="title_activity_goals">Set Goals</string>
-    <string name="title_activity_settings">Edit Preferences</string>
+    <string name="title_activity_meal_plan">Meal Plan</string>
+    <string name="title_activity_shopping">Shopping List</string>
+    <string name="title_activity_goals">Goals</string>
+    <string name="title_activity_settings">Preferences</string>
     <string name="title_pick_product">Select A Product</string>
     <string name="title_pick_nutrient_type">Select A Nutrient Type</string>
     <string name="title_pick_unit">Select Unit</string>
