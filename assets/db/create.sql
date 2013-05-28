@@ -55,7 +55,7 @@ CREATE TABLE 'recipe_ingredient' (
 );
 
 CREATE TABLE 'meal' (
-	'_id' INTEGER PRIMARY KEY,
+	'_id' INTEGER PRIMARY KEY AUTOINCREMENT,
 	'state' INTEGER NOT NULL,
 	'due' TEXT NOT NULL,
 	FOREIGN KEY ('_id') REFERENCES 'recipe'('_id')
@@ -81,5 +81,13 @@ CREATE TABLE 'offer' (
 	'price' TEXT NOT NULL,
 	PRIMARY KEY ('date','vendor','product'),
 	FOREIGN KEY ('vendor') REFERENCES 'vendor'('_id'),
+	FOREIGN KEY ('product') REFERENCES 'product'('_id')
+);
+
+CREATE TABLE 'shopping_item' (
+	'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+	'product' INTEGER NOT NULL,
+	'amount' TEXT NOT NULL,
+	'checked' INTEGER NOT NULL,
 	FOREIGN KEY ('product') REFERENCES 'product'('_id')
 );
