@@ -28,6 +28,10 @@
             android:label="@string/title_activity_meal_plan" >
         </activity>
         <activity
+            android:name="com.primateer.daikoku.ui.activities.ShoppingActivity"
+            android:label="@string/title_activity_shopping" >
+        </activity>
+        <activity
             android:name="com.primateer.daikoku.ui.activities.GoalsActivity"
             android:label="@string/title_activity_goals" >
         </activity>

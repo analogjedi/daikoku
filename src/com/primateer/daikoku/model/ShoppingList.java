@@ -1,6 +1,8 @@
 package com.primateer.daikoku.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.primateer.daikoku.model.Amount.UnitConversionException;
@@ -13,8 +15,17 @@ public class ShoppingList extends ValueObject {
 	private HashMap<Product, ShoppingItem> items = new HashMap<Product, ShoppingItem>();
 
 	public ShoppingList() {
+		this(null);
+	}
+	
+	public ShoppingList(List<ShoppingItem> list) {
 		super();
 		this.setId(0); // there is only one shopping list
+		if (list != null) {
+			for (ShoppingItem item : list) {
+				this.add(item);
+			}
+		}
 	}
 
 	public void add(ShoppingItem item) {
@@ -69,5 +80,13 @@ public class ShoppingList extends ValueObject {
 	
 	public Map<Product,ShoppingItem> getItems() {
 		return items;
+	}
+	
+	public List<ShoppingItem> getItemList() {
+		ArrayList<ShoppingItem> list = new ArrayList<ShoppingItem>();
+		for (Product product : items.keySet()) {
+			list.add(items.get(product));
+		}
+		return list;
 	}
 }
