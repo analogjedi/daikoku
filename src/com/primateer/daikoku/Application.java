@@ -28,7 +28,9 @@ public class Application extends android.app.Application {
 	public static final int ICON_GOALS = R.drawable.onebit_3_03;
 
 	public static final int TEXTCOLOR_ERROR = Color.RED;
+	public static final int TEXTCOLOR_BLACK = 0xff000000;
 	public static final int TEXTCOLOR_GREY = 0xff404040;
+	public static final int TEXTCOLOR_LIGHTGREY = 0xffb0b0b0;
 	public static final int TEXTCOLOR_GREEN = 0xff008000;
 	public static final int TEXTCOLOR_BLUE = 0xff000080;
 	public static final int TEXTCOLOR_RED = 0xff800000;

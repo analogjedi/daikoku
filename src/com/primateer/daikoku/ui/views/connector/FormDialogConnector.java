@@ -11,13 +11,12 @@ import android.widget.TextView;
 import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
-import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 
-public class FormDialogConnector<T extends ValueObject> implements Form<T>, Observer<T>,
-		Observable<T> {
+public class FormDialogConnector<T> implements
+		Form<T>, Observer<T>, Observable<T> {
 
 	private SimpleObservable<T> observable = new SimpleObservable<T>();
 	private Form<T> form;
@@ -104,7 +103,7 @@ public class FormDialogConnector<T extends ValueObject> implements Form<T>, Obse
 	@Override
 	public void setData(T data) throws IllegalArgumentException {
 		update(data);
-//		this.data = data;
+		// this.data = data;
 		if (form != null) {
 			form.setData(data);
 		}

@@ -24,7 +24,7 @@ import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Meal.State;
 import com.primateer.daikoku.ui.actions.Action;
 import com.primateer.daikoku.ui.actions.DeleteDataAction;
-import com.primateer.daikoku.ui.actions.EditFormAction;
+import com.primateer.daikoku.ui.actions.FormAction;
 import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
@@ -139,7 +139,7 @@ public class MealPlanView extends LinearLayout {
 				meal.setDue(datePicker.getData());
 				meal.setFavorite(false);
 				meal.setState(State.SCHEDULED);
-				Action action = new EditFormAction<Meal>(getContext(), meal);
+				Action action = new FormAction<Meal>(getContext(), meal);
 				Application.getInstance().dispatch(action);
 			}
 		});

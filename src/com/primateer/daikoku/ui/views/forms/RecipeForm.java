@@ -35,7 +35,6 @@ import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.ui.actions.CatalogAction;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
-import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.LabelWidget;
 import com.primateer.daikoku.ui.views.widgets.NutritionWatchWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
@@ -71,7 +70,7 @@ public class RecipeForm extends VoForm<Recipe> {
 		private Component component;
 		private ImageButton deleteButton;
 		private TextView selectView;
-		private AmountWidget amountView;
+		private AmountForm amountView;
 		private SimpleObservable<DataRowWidget<Component>> observable = new SimpleObservable<DataRowWidget<Component>>();
 
 		public ComponentRowWidget(Context context) {
@@ -112,7 +111,7 @@ public class RecipeForm extends VoForm<Recipe> {
 				}
 			});
 
-			amountView = new AmountWidget(context);
+			amountView = new AmountForm(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 0.6f);
 			amountLayout.gravity = Gravity.CENTER;

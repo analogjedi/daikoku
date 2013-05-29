@@ -23,8 +23,7 @@ import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 
-public class FormFragment<T extends ValueObject> extends DialogFragment
-		implements Observable<T> {
+public class FormFragment<T> extends DialogFragment implements Observable<T> {
 
 	private Form<T> form;
 	private SimpleObservable<T> observable = new SimpleObservable<T>();
@@ -54,10 +53,16 @@ public class FormFragment<T extends ValueObject> extends DialogFragment
 		okButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				T data;
 				try {
 					form.validate();
-					Action action = new SaveDataAction<T>(form.getData());
-					Application.getInstance().dispatch(action);
+					data = form.getData();
+					if (data instanceof ValueObject) {
+						@SuppressWarnings({ "rawtypes", "unchecked" })
+						Action action = new SaveDataAction((ValueObject) form
+								.getData());
+						Application.getInstance().dispatch(action);
+					}
 				} catch (InvalidDataException e) {
 					Helper.displayErrorMessage(getActivity(), getResources()
 							.getString(R.string.form_error_title), e
@@ -66,7 +71,10 @@ public class FormFragment<T extends ValueObject> extends DialogFragment
 					return;
 				}
 				try {
-					observable.notifyObservers(form.getData());
+					if (data == null) {
+						data = form.getData();
+					}
+					observable.notifyObservers(data);
 				} catch (InvalidDataException e) {
 					Helper.logErrorStackTrace(FormFragment.this, e,
 							"Unable to notify observers");

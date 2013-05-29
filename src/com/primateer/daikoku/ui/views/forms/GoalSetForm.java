@@ -28,7 +28,6 @@ import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.ui.actions.CatalogAction;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
-import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
@@ -40,7 +39,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 		private ImageButton deleteButton;
 		private TextView nutrientTypeView;
 		private TextView goalTypeView;
-		private AmountWidget amountView;
+		private AmountForm amountView;
 		private Goal.Type goalType;
 		private Nutrient.Type nutrientType;
 
@@ -74,7 +73,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 					LayoutParams.WRAP_CONTENT, 0.2f);
 			goalTypeLayout.gravity = Gravity.CENTER;
 
-			amountView = new AmountWidget(context);
+			amountView = new AmountForm(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 1.0f);
 			amountView.addObserver(new Observer<Amount>() {

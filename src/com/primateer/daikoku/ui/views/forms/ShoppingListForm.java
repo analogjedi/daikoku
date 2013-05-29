@@ -2,6 +2,7 @@ package com.primateer.daikoku.ui.views.forms;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ShoppingList;
@@ -22,6 +24,7 @@ import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.ShoppingItem;
 import com.primateer.daikoku.ui.actions.CatalogAction;
+import com.primateer.daikoku.ui.actions.FormAction;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
@@ -55,7 +58,7 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 
 			productView = new TextView(context);
 			LinearLayout.LayoutParams productLayout = new LayoutParams(0,
-					LayoutParams.WRAP_CONTENT, 1.2f);
+					LayoutParams.WRAP_CONTENT, 1.1f);
 			productLayout.gravity = Gravity.CENTER;
 
 			checkBox = new CheckBox(context);
@@ -65,10 +68,28 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 				public void onCheckedChanged(CompoundButton buttonView,
 						boolean isChecked) {
 					item.setChecked(isChecked);
+					if (isChecked) {
+						amountView.setPaintFlags(amountView.getPaintFlags()
+								| Paint.STRIKE_THRU_TEXT_FLAG);
+						amountView
+								.setTextColor(Application.TEXTCOLOR_LIGHTGREY);
+						productView.setPaintFlags(productView.getPaintFlags()
+								| Paint.STRIKE_THRU_TEXT_FLAG);
+						productView
+								.setTextColor(Application.TEXTCOLOR_LIGHTGREY);
+					} else {
+						amountView.setPaintFlags(amountView.getPaintFlags()
+								& ~Paint.STRIKE_THRU_TEXT_FLAG);
+						amountView.setTextColor(Application.TEXTCOLOR_BLACK);
+						productView.setPaintFlags(productView.getPaintFlags()
+								& ~Paint.STRIKE_THRU_TEXT_FLAG);
+						productView.setTextColor(Application.TEXTCOLOR_BLACK);
+
+					}
 				}
 			});
 			LinearLayout.LayoutParams checkBoxLayout = new LayoutParams(0,
-					LayoutParams.WRAP_CONTENT, 0.2f);
+					LayoutParams.WRAP_CONTENT, 0.3f);
 			checkBoxLayout.gravity = Gravity.CENTER;
 
 			this.addView(deleteButton, deleteLayout);
@@ -133,8 +154,17 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 			return new ShoppingItemRowWidget(context);
 		}
 
-		public void add(Product product) {
-			super.add(new ShoppingItem(product));
+		public void add(final Product product) {
+			FormAction<Amount> action = new FormAction<Amount>(getContext(),
+					new Amount(product.getAmount()));
+			action.addObserver(new Observer<Amount>() {
+				@Override
+				public void update(Amount amount) {
+					ShoppingListAdapter.super.add(new ShoppingItem(product,
+							amount, false));
+				}
+			});
+			Application.getInstance().dispatch(action);
 		}
 	}
 

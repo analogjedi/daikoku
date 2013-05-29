@@ -29,14 +29,13 @@ import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
-import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public class NutritionForm extends VoForm<Nutrition> {
 
-	private static class NutrientRowWidget extends AmountWidget implements
+	private static class NutrientRowWidget extends AmountForm implements
 			DataRowWidget<Nutrient> {
 
 		private SimpleObservable<DataRowWidget<Nutrient>> widgetObservable = new SimpleObservable<DataRowWidget<Nutrient>>();
@@ -162,7 +161,7 @@ public class NutritionForm extends VoForm<Nutrition> {
 		}
 	}
 
-	private AmountWidget referenceAmount;
+	private AmountForm referenceAmount;
 	private ListView nutrientList;
 	private NutrientListAdapter listAdapter;
 	private AddButton addButton;

@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.widgets;
+package com.primateer.daikoku.ui.views.forms;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,10 +26,8 @@ import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.ui.actions.CatalogAction;
-import com.primateer.daikoku.ui.views.forms.Form;
-import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 
-public class AmountWidget extends LinearLayout implements Observable<Amount>,
+public class AmountForm extends LinearLayout implements Observable<Amount>,
 		Form<Amount> {
 
 	private class UnitSelector extends Button {
@@ -54,7 +52,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 						public void update(Unit unit) {
 							setData(unit);
 							try {
-								observable.notifyObservers(AmountWidget.this
+								observable.notifyObservers(AmountForm.this
 										.getData());
 							} catch (InvalidDataException e) {
 								Helper.logErrorStackTrace(this, e,
@@ -143,7 +141,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 						+ Unit.UNIT_GRAM);
 				if (amount.value != this.value) {
 					this.value = amount.value;
-					observable.notifyObservers(AmountWidget.this.getData());
+					observable.notifyObservers(AmountForm.this.getData());
 				}
 			} catch (IllegalArgumentException e) {
 				// invalid value string; do nothing
@@ -159,7 +157,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 	private UnitSelector unitView;
 	private SimpleObservable<Amount> observable = new SimpleObservable<Amount>();
 
-	public AmountWidget(Context context, AttributeSet attrs) {
+	public AmountForm(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		this.setOrientation(LinearLayout.HORIZONTAL);
@@ -178,7 +176,7 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 		this.addView(unitView, unitLayout);
 	}
 
-	public AmountWidget(Context context) {
+	public AmountForm(Context context) {
 		this(context, null);
 	}
 
