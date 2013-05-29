@@ -1,28 +1,26 @@
 package com.primateer.daikoku.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.model.vos.ShoppingItem;
 
-public class ShoppingList {
-
-	private static ShoppingList instance;
+public class ShoppingList extends ValueObject {
 
 	private HashMap<Product, ShoppingItem> items = new HashMap<Product, ShoppingItem>();
 
-	private ShoppingList() {
+	public ShoppingList() {
+		super();
+		this.setId(0); // there is only one shopping list
 	}
 
-	public static ShoppingList getInstance() {
-		if (instance == null) {
-			instance = new ShoppingList();
-		}
-		return instance;
+	public void add(ShoppingItem item) {
+		items.put(item.product, item);
 	}
-
+	
 	public void add(Recipe recipe) {
 		for (Product product : recipe.getIngredients().keySet()) {
 			this.add(product, recipe.getIngredients().get(product));
@@ -49,7 +47,7 @@ public class ShoppingList {
 			throw new RuntimeException(e);
 		}
 	}
- 
+
 	public void setChecked(Product product, boolean checked) {
 		try {
 			items.get(product).setChecked(checked);
@@ -67,5 +65,9 @@ public class ShoppingList {
 
 	public Amount getAmount(Product product) {
 		return items.get(product).getAmount();
+	}
+	
+	public Map<Product,ShoppingItem> getItems() {
+		return items;
 	}
 }

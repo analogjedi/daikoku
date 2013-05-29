@@ -20,22 +20,29 @@ public class ShoppingTest extends DatabaseTestCase {
 		Recipe onionOil = (Recipe) db.load(Recipe.class, onionId);
 		Product lentils = (Product) db.load(Product.class, lentilsId);
 
-		ShoppingList list = ShoppingList.getInstance();
+		ShoppingList list = new ShoppingList();
 		list.add(onionOil);
 		list.add(onionOil);
 		list.add(lentils);
 		list.add(lentils, new Amount("300g"));
 		list.setChecked(lentils, true);
 
-		assertEquals(0, new Amount("0.8kg").compareTo(list.getAmount(lentils)));
-		assertTrue(list.isChecked(lentils));
-		for (Product product : onionOil.getIngredients().keySet()) {
-			if (product.getAmount().unit.type == Unit.Type.VOLUME) {
+		long listId = db.register(list);
+		list = (ShoppingList) db.load(ShoppingList.class, listId);
+
+		for (Product product : list.getItems().keySet()) {
+			if (product.getId() == lentils.getId()) {
 				assertEquals(0,
-						new Amount("20ml").compareTo(list.getAmount(product)));
+						new Amount("0.8kg").compareTo(list.getAmount(product)));
+				assertTrue(list.isChecked(product));
 			} else {
-				assertEquals(0,
-						new Amount("200g").compareTo(list.getAmount(product)));
+				if (product.getAmount().unit.type == Unit.Type.VOLUME) {
+					assertEquals(0, new Amount("20ml").compareTo(list
+							.getAmount(product)));
+				} else {
+					assertEquals(0, new Amount("200g").compareTo(list
+							.getAmount(product)));
+				}
 			}
 		}
 	}

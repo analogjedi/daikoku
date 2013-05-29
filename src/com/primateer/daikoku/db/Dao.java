@@ -92,8 +92,12 @@ public abstract class Dao<T extends ValueObject> {
 
 	protected abstract String getTable();
 
+	public int deleteAll(String where) {		
+		return getResolver().delete(getUri(getTable()), where, null);
+	}
+	
 	public int deleteAll() {
-		return getResolver().delete(getUri(getTable()), null, null);
+		return this.deleteAll(null);
 	}
 	
 	public int delete(T vo) {
