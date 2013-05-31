@@ -39,7 +39,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 		private ImageButton deleteButton;
 		private TextView nutrientTypeView;
 		private TextView goalTypeView;
-		private AmountForm amountView;
+		private AmountWidget amountView;
 		private Goal.Type goalType;
 		private Nutrient.Type nutrientType;
 
@@ -73,7 +73,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 					LayoutParams.WRAP_CONTENT, 0.2f);
 			goalTypeLayout.gravity = Gravity.CENTER;
 
-			amountView = new AmountForm(context);
+			amountView = new AmountWidget(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 1.0f);
 			amountView.addObserver(new Observer<Amount>() {

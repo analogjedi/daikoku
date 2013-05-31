@@ -9,9 +9,9 @@ import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Unit;
-import com.primateer.daikoku.ui.views.forms.AmountForm;
+import com.primateer.daikoku.ui.views.forms.AmountWidget;
 
-public class ReferenceAmountWidget extends AmountForm {
+public class ReferenceAmountWidget extends AmountWidget {
 
 	private TextView label;
 	

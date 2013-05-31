@@ -70,7 +70,7 @@ public class RecipeForm extends VoForm<Recipe> {
 		private Component component;
 		private ImageButton deleteButton;
 		private TextView selectView;
-		private AmountForm amountView;
+		private AmountWidget amountView;
 		private SimpleObservable<DataRowWidget<Component>> observable = new SimpleObservable<DataRowWidget<Component>>();
 
 		public ComponentRowWidget(Context context) {
@@ -111,7 +111,7 @@ public class RecipeForm extends VoForm<Recipe> {
 				}
 			});
 
-			amountView = new AmountForm(context);
+			amountView = new AmountWidget(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 0.6f);
 			amountLayout.gravity = Gravity.CENTER;

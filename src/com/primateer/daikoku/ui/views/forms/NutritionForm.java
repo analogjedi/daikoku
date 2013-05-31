@@ -35,7 +35,7 @@ import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public class NutritionForm extends VoForm<Nutrition> {
 
-	private static class NutrientRowWidget extends AmountForm implements
+	private static class NutrientRowWidget extends AmountWidget implements
 			DataRowWidget<Nutrient> {
 
 		private SimpleObservable<DataRowWidget<Nutrient>> widgetObservable = new SimpleObservable<DataRowWidget<Nutrient>>();
@@ -161,7 +161,7 @@ public class NutritionForm extends VoForm<Nutrition> {
 		}
 	}
 
-	private AmountForm referenceAmount;
+	private AmountWidget referenceAmount;
 	private ListView nutrientList;
 	private NutrientListAdapter listAdapter;
 	private AddButton addButton;
