@@ -99,12 +99,13 @@ public class MealPlanView extends LinearLayout {
 		this.setOrientation(VERTICAL);
 
 		datePicker = new DateWidget(context);
-		datePicker.addObserver(new Observer<Date>() {
-			@Override
-			public void update(Date date) {
-				setDate(date);
-			}
-		});
+		datePicker.addEventListener(DateWidget.DateChangedEvent.class,
+				new Event.Listener() {
+					@Override
+					public void onEvent(Event event) {
+						setDate(((DateWidget.DateChangedEvent) event).date);
+					}
+				});
 
 		watcher = new NutritionWatchWidget(context);
 		watcher.setGoals(GoalRegistry.getInstance()

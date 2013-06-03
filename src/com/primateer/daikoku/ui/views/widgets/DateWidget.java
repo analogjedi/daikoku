@@ -16,15 +16,22 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.primateer.daikoku.model.Observable;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.Event;
+import com.primateer.daikoku.model.Event.Listener;
+import com.primateer.daikoku.model.Event.SimpleDispatcher;
 import com.primateer.daikoku.ui.dialogs.DatePickerFragment;
 
 public class DateWidget extends LinearLayout implements
-		DatePickerDialog.OnDateSetListener, Observable<Date> {
+		DatePickerDialog.OnDateSetListener, Event.Dispatcher {
+	
+	public static class DateChangedEvent extends Event {
+		public final Date date;
+		public DateChangedEvent(Date date) {
+			this.date = date;
+		}
+	}
 
-	private SimpleObservable<Date> observable = new SimpleObservable<Date>();
+	private Event.SimpleDispatcher dispatcher = new SimpleDispatcher();
 	private TextView dateView;
 	private Button incrButton;
 	private Button decrButton;
@@ -83,7 +90,7 @@ public class DateWidget extends LinearLayout implements
 	private void updateDate() {
 		dateView.setText(DateFormat.getDateInstance(DateFormat.LONG).format(
 				currentDate));		
-		observable.notifyObservers(currentDate);
+		dispatcher.dispatch(new DateChangedEvent(currentDate));
 	}
 	
 	public Date getData() {
@@ -113,12 +120,13 @@ public class DateWidget extends LinearLayout implements
 	}
 
 	@Override
-	public void addObserver(Observer<Date> observer) {
-		observable.addObserver(observer);
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type, listener);
 	}
 
 	@Override
-	public void removeObserver(Observer<Date> observer) {
-		observable.removeObserver(observer);
+	public void removeEventListener(Class<? extends Event> type,
+			Listener listener) {
+		dispatcher.removeEventListener(type, listener);
 	}
 }
