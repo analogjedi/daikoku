@@ -26,7 +26,7 @@ import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.ui.actions.CatalogAction;
 
-public class AmountWidget extends LinearLayout implements Event.Dispatcher,
+public class AmountWidget extends LinearLayout implements Event.Registry,
 		Form<Amount> {
 
 	private class UnitSelector extends Button {
@@ -168,7 +168,7 @@ public class AmountWidget extends LinearLayout implements Event.Dispatcher,
 
 	private ValueField valueView;
 	private UnitSelector unitView;
-	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
+	protected Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 	public AmountWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);

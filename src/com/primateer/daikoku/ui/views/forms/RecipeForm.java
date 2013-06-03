@@ -23,9 +23,8 @@ import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Component;
 import com.primateer.daikoku.model.Event;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.GoalRegistry;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.vos.Goal;
@@ -35,6 +34,7 @@ import com.primateer.daikoku.ui.actions.CatalogAction;
 import com.primateer.daikoku.ui.actions.MultiCatalogAction;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
+import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 import com.primateer.daikoku.ui.views.widgets.LabelWidget;
 import com.primateer.daikoku.ui.views.widgets.NutritionWatchWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
@@ -67,10 +67,10 @@ public class RecipeForm extends VoForm<Recipe> {
 			DataRowWidget<Component> {
 
 		private Component component;
-		private ImageButton deleteButton;
+		private DeleteRowButton deleteButton;
 		private TextView selectView;
 		private AmountWidget amountView;
-		private SimpleObservable<DataRowWidget<Component>> observable = new SimpleObservable<DataRowWidget<Component>>();
+		private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 		public ComponentRowWidget(Context context) {
 			this(context, null);
@@ -79,9 +79,8 @@ public class RecipeForm extends VoForm<Recipe> {
 		public ComponentRowWidget(Context context, AttributeSet attrs) {
 			super(context, attrs);
 
-			deleteButton = new ImageButton(context);
+			deleteButton = new DeleteRowButton(context,dispatcher);
 			deleteButton.setImageResource(Application.ICON_REMOVE);
-			deleteButton.setBackgroundColor(Color.TRANSPARENT);
 			LinearLayout.LayoutParams deleteLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 0.08f);
 			deleteLayout.gravity = Gravity.CENTER;
@@ -123,7 +122,7 @@ public class RecipeForm extends VoForm<Recipe> {
 						public void onEvent(Event event) {
 							Amount amount = ((AmountWidget.AmountChangedEvent) event).amount;
 							component = new Component(component.product, amount);
-							observable.notifyObservers(ComponentRowWidget.this);
+							dispatcher.dispatch(new ChangedEvent());
 						}
 					});
 
@@ -160,7 +159,7 @@ public class RecipeForm extends VoForm<Recipe> {
 			}
 			amountView.setUnits(new ArrayList<Unit>(permissibleUnits));
 			amountView.setData(data.amount);
-			observable.notifyObservers(this);
+			dispatcher.dispatch(new ChangedEvent());
 		}
 
 		@Override
@@ -169,19 +168,15 @@ public class RecipeForm extends VoForm<Recipe> {
 		}
 
 		@Override
-		public void setOnDeleteRowListener(OnClickListener listener) {
-			deleteButton.setOnClickListener(listener);
+		public void addEventListener(Class<? extends Event> type,
+				Listener listener) {
+			dispatcher.addEventListener(type, listener);
 		}
 
 		@Override
-		public void addRowObserver(Observer<DataRowWidget<Component>> observer) {
-			observable.addObserver(observer);
-		}
-
-		@Override
-		public void removeRowObserver(
-				Observer<DataRowWidget<Component>> observer) {
-			observable.removeObserver(observer);
+		public void removeEventListener(Class<? extends Event> type,
+				Listener listener) {
+			dispatcher.removeEventListener(type, listener);
 		}
 
 	}

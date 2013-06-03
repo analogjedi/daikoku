@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,17 +16,17 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.GoalSet;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Nutrient.Type;
 import com.primateer.daikoku.model.NutrientRegistry;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.ui.actions.CatalogAction;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
+import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
@@ -35,8 +34,8 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 	private class GoalRowWidget extends LinearLayout implements
 			DataRowWidget<Goal> {
 
-		private SimpleObservable<DataRowWidget<Goal>> observable = new SimpleObservable<DataRowWidget<Goal>>();
-		private ImageButton deleteButton;
+		private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
+		private DeleteRowButton deleteButton;
 		private TextView nutrientTypeView;
 		private TextView goalTypeView;
 		private AmountWidget amountView;
@@ -50,7 +49,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 		public GoalRowWidget(Context context, AttributeSet attrs) {
 			super(context, attrs);
 
-			deleteButton = new ImageButton(context);
+			deleteButton = new DeleteRowButton(context, dispatcher);
 			deleteButton.setImageResource(Application.ICON_REMOVE);
 			deleteButton.setBackgroundColor(Color.TRANSPARENT);
 			LinearLayout.LayoutParams deleteLayout = new LayoutParams(0,
@@ -80,7 +79,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 					new Event.Listener() {
 						@Override
 						public void onEvent(Event event) {
-							observable.notifyObservers(GoalRowWidget.this);
+							dispatcher.dispatch(new ChangedEvent());
 						}
 					});
 			amountLayout.gravity = Gravity.CENTER;
@@ -118,7 +117,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 				goalTypeView.setText(R.string.abbrev_maximum);
 				goalTypeView.setTextColor(Goal.Status.FAILED.color);
 			}
-			observable.notifyObservers(this);
+			dispatcher.dispatch(new ChangedEvent());
 		}
 
 		private void setNutrientType(Nutrient.Type type) {
@@ -141,18 +140,15 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 		}
 
 		@Override
-		public void setOnDeleteRowListener(OnClickListener listener) {
-			deleteButton.setOnClickListener(listener);
+		public void addEventListener(Class<? extends Event> type,
+				Listener listener) {
+			dispatcher.addEventListener(type, listener);
 		}
 
 		@Override
-		public void addRowObserver(Observer<DataRowWidget<Goal>> observer) {
-			observable.addObserver(observer);
-		}
-
-		@Override
-		public void removeRowObserver(Observer<DataRowWidget<Goal>> observer) {
-			observable.removeObserver(observer);
+		public void removeEventListener(Class<? extends Event> type,
+				Listener listener) {
+			dispatcher.removeEventListener(type, listener);
 		}
 	}
 

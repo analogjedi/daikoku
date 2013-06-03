@@ -22,7 +22,7 @@ import com.primateer.daikoku.model.Event.SimpleDispatcher;
 import com.primateer.daikoku.ui.dialogs.DatePickerFragment;
 
 public class DateWidget extends LinearLayout implements
-		DatePickerDialog.OnDateSetListener, Event.Dispatcher {
+		DatePickerDialog.OnDateSetListener, Event.Registry {
 	
 	public static class DateChangedEvent extends Event {
 		public final Date date;

@@ -14,7 +14,7 @@ import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.model.vos.Recipe;
 
 @SuppressWarnings("rawtypes")
-public class DBController implements Event.Dispatcher {
+public class DBController implements Event.Registry {
 	
 	public static class DBChangedEvent extends Event {
 		public final Class<? extends ValueObject> type;

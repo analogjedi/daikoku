@@ -70,7 +70,7 @@ public class MealPlanView extends LinearLayout {
 		}
 
 		@Override
-		public void onClick(View v) {
+		public void onDelete(View v) {
 			Action action = new DeleteDataAction<Meal>(getItemFromView(v),
 					getContext());
 			Application.getInstance().dispatch(action);

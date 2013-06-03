@@ -1,7 +1,6 @@
 package com.primateer.daikoku.ui.views.forms;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,9 +17,8 @@ import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Observer;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.ShoppingList;
-import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.model.vos.ShoppingItem;
@@ -30,6 +27,7 @@ import com.primateer.daikoku.ui.actions.MultiCatalogAction;
 import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
+import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public class ShoppingListForm extends VoForm<ShoppingList> {
@@ -37,8 +35,8 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 	private class ShoppingItemRowWidget extends LinearLayout implements
 			DataRowWidget<ShoppingItem> {
 
-		private SimpleObservable<DataRowWidget<ShoppingItem>> observable = new SimpleObservable<DataRowWidget<ShoppingItem>>();
-		private ImageButton deleteButton;
+		private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
+		private DeleteRowButton deleteButton;
 		private TextView amountView;
 		private TextView productView;
 		private CheckBox checkBox;
@@ -47,9 +45,8 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 		public ShoppingItemRowWidget(Context context, AttributeSet attrs) {
 			super(context, attrs);
 
-			deleteButton = new ImageButton(context);
+			deleteButton = new DeleteRowButton(context, dispatcher);
 			deleteButton.setImageResource(Application.ICON_REMOVE);
-			deleteButton.setBackgroundColor(Color.TRANSPARENT);
 			LinearLayout.LayoutParams deleteLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 0.2f);
 			deleteLayout.gravity = Gravity.CENTER;
@@ -134,20 +131,15 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 		}
 
 		@Override
-		public void setOnDeleteRowListener(OnClickListener listener) {
-			deleteButton.setOnClickListener(listener);
+		public void addEventListener(Class<? extends Event> type,
+				Listener listener) {
+			dispatcher.addEventListener(type, listener);
 		}
 
 		@Override
-		public void addRowObserver(
-				Observer<DataRowWidget<ShoppingItem>> observer) {
-			observable.addObserver(observer);
-		}
-
-		@Override
-		public void removeRowObserver(
-				Observer<DataRowWidget<ShoppingItem>> observer) {
-			observable.removeObserver(observer);
+		public void removeEventListener(Class<? extends Event> type,
+				Listener listener) {
+			dispatcher.removeEventListener(type, listener);
 		}
 	}
 

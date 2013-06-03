@@ -7,7 +7,7 @@ import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.ui.views.connector.FormDialogConnector;
 
-public class FormAction<T> implements Action, Event.Dispatcher {
+public class FormAction<T> implements Action, Event.Registry {
 
 	private T data;
 	private Context context;

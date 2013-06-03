@@ -15,7 +15,7 @@ import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 
 public class FormDialogConnector<T> implements Form<T>, Event.Listener,
-		Event.Dispatcher {
+		Event.Registry {
 
 	public static class DataChangedEvent<T> extends Event {
 		public final T data;

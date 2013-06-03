@@ -7,7 +7,7 @@ import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Event.Listener;
 
 public class Catalog<T extends ValueObject> extends ArrayList<T> implements
-		Event.Dispatcher {
+		Event.Registry {
 	
 	public static class SelectionEvent<T extends ValueObject> extends Event {
 		public final T selection;

@@ -11,13 +11,16 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.views.connector.FormDialogConnector;
+import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 
 public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 		implements DataRowWidget<T> {
+
+	public static class SelectedEvent extends Event {
+	}
 
 	private T bufferedData;
 	private ImageButton deleteButton;
@@ -25,7 +28,7 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 	private TextView selectView;
 	private FormDialogConnector<T> formConnector;
 
-	private SimpleObservable<DataRowWidget<T>> observable = new SimpleObservable<DataRowWidget<T>>();
+	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 	public CatalogRowWidget(Context context) {
 		this(context, null);
@@ -34,9 +37,7 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 	public CatalogRowWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		deleteButton = new ImageButton(context);
-		deleteButton.setImageResource(Application.ICON_DELETE);
-		deleteButton.setBackgroundColor(Color.TRANSPARENT);
+		deleteButton = new DeleteRowButton(context, dispatcher);
 		LinearLayout.LayoutParams deleteLayout = new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.25f);
 		deleteLayout.gravity = Gravity.CENTER;
@@ -54,6 +55,12 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 				LayoutParams.MATCH_PARENT, 1.5f);
 		selectLayout.gravity = Gravity.CENTER_VERTICAL;
 		selectView.setPadding(5, 0, 0, 0);
+		selectView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dispatcher.dispatch(new SelectedEvent());
+			}
+		});
 
 		this.setOrientation(LinearLayout.HORIZONTAL);
 		this.addView(deleteButton, deleteLayout);
@@ -86,21 +93,6 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 	}
 
 	@Override
-	public void setOnDeleteRowListener(OnClickListener listener) {
-		deleteButton.setOnClickListener(listener);
-	}
-
-	@Override
-	public void addRowObserver(Observer<DataRowWidget<T>> observer) {
-		observable.addObserver(observer);
-	}
-
-	@Override
-	public void removeRowObserver(Observer<DataRowWidget<T>> observer) {
-		observable.removeObserver(observer);
-	}
-
-	@Override
 	public void storeRowPosition(int pos) {
 		this.setTag(pos);
 	}
@@ -115,12 +107,14 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 		return this;
 	}
 
-	public void setSelectionObserver(final Observer<T> selectionObserver) {
-		selectView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				selectionObserver.update(bufferedData);
-			}
-		});
+	@Override
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type, listener);
+	}
+
+	@Override
+	public void removeEventListener(Class<? extends Event> type,
+			Listener listener) {
+		dispatcher.removeEventListener(type, listener);
 	}
 }

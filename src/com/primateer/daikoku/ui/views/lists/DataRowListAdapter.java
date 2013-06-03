@@ -11,13 +11,12 @@ import android.widget.ListAdapter;
 
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public abstract class DataRowListAdapter<T> implements ListAdapter,
-		View.OnClickListener, Event.Dispatcher {
+		Event.Registry {
 
 	public static class ListChangedEvent extends Event {
 	}
@@ -91,27 +90,34 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			DataRowWidget<T> widget = newWidget(parent.getContext());
+			final DataRowWidget<T> widget = newWidget(parent.getContext());
 			widget.setRowData(data.get(position));
-			widget.setOnDeleteRowListener(DataRowListAdapter.this);
-			widget.storeRowPosition(position);
-			widget.addRowObserver(new Observer<DataRowWidget<T>>() {
-				@Override
-				public void update(DataRowWidget<T> observable) {
-					int index = observable.restoreRowPosition();
-					try {
-						T item = observable.getRowData();
-						if (!data.get(index).equals(item)) {
-							data.set(index, item);
-							DataRowListAdapter.this.dispatcher
-									.dispatch(new ListChangedEvent());
+			widget.addEventListener(DataRowWidget.DeleteRequestEvent.class,
+					new Listener() {
+						@Override
+						public void onEvent(Event event) {
+							DataRowListAdapter.this.onDelete(widget.getView());
 						}
-					} catch (InvalidDataException e) {
-						Helper.logErrorStackTrace(this, e,
-								"Unable to bind widget to list adapter");
-					}
-				}
-			});
+					});
+			widget.storeRowPosition(position);
+			widget.addEventListener(DataRowWidget.ChangedEvent.class,
+					new Event.Listener() {
+						@Override
+						public void onEvent(Event event) {
+							int index = widget.restoreRowPosition();
+							try {
+								T item = widget.getRowData();
+								if (!data.get(index).equals(item)) {
+									data.set(index, item);
+									DataRowListAdapter.this.dispatcher
+											.dispatch(new ListChangedEvent());
+								}
+							} catch (InvalidDataException e) {
+								Helper.logErrorStackTrace(this, e,
+										"Unable to bind widget to list adapter");
+							}
+						}
+					});
 			return widget.getView();
 		} else {
 			return convertView;
@@ -149,8 +155,7 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 				.get(((DataRowWidget<T>) v.getParent()).restoreRowPosition());
 	}
 
-	@Override
-	public void onClick(View v) {
+	public void onDelete(View v) {
 		this.remove(getItemFromView(v));
 	}
 

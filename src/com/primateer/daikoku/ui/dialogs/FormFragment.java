@@ -22,7 +22,7 @@ import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 
-public class FormFragment<T> extends DialogFragment implements Event.Dispatcher {
+public class FormFragment<T> extends DialogFragment implements Event.Registry {
 	
 	public static class AcceptEvent<T> extends Event {
 		public final T data;

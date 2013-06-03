@@ -7,12 +7,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -24,11 +22,10 @@ import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.NutrientSet;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
+import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 import com.primateer.daikoku.ui.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
@@ -38,17 +35,15 @@ public class NutritionForm extends VoForm<Nutrition> {
 	private static class NutrientRowWidget extends AmountWidget implements
 			DataRowWidget<Nutrient> {
 
-		private SimpleObservable<DataRowWidget<Nutrient>> widgetObservable = new SimpleObservable<DataRowWidget<Nutrient>>();
 		private TextView label;
-		private ImageButton delButton;
+		private DeleteRowButton delButton;
 		private Nutrient.Type type;
 
 		public NutrientRowWidget(Context context, AttributeSet attrs) {
 			super(context, attrs);
 
-			delButton = new ImageButton(context);
+			delButton = new DeleteRowButton(context, dispatcher);
 			delButton.setImageResource(Application.ICON_REMOVE);
-			delButton.setBackgroundColor(Color.TRANSPARENT);
 			LinearLayout.LayoutParams deleteLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 0.35f);
 			deleteLayout.gravity = Gravity.CENTER;
@@ -64,8 +59,7 @@ public class NutritionForm extends VoForm<Nutrition> {
 					new Event.Listener() {
 						@Override
 						public void onEvent(Event event) {
-							widgetObservable
-									.notifyObservers(NutrientRowWidget.this);
+							dispatcher.dispatch(new ChangedEvent());
 						}
 					});
 		}
@@ -79,7 +73,7 @@ public class NutritionForm extends VoForm<Nutrition> {
 			this.type = type;
 			this.setUnits(type.defaultUnit.type);
 			this.selectUnit(type.defaultUnit);
-			widgetObservable.notifyObservers(this);
+			dispatcher.dispatch(new ChangedEvent());
 		}
 
 		@Override
@@ -102,21 +96,6 @@ public class NutritionForm extends VoForm<Nutrition> {
 		public Nutrient getRowData() throws InvalidDataException {
 			return new Nutrient(type, getData());
 
-		}
-
-		@Override
-		public void setOnDeleteRowListener(OnClickListener listener) {
-			delButton.setOnClickListener(listener);
-		}
-
-		@Override
-		public void addRowObserver(Observer<DataRowWidget<Nutrient>> observer) {
-			widgetObservable.addObserver(observer);
-		}
-
-		@Override
-		public void removeRowObserver(Observer<DataRowWidget<Nutrient>> observer) {
-			widgetObservable.removeObserver(observer);
 		}
 	}
 

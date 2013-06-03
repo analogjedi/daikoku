@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Catalog;
-import com.primateer.daikoku.model.Observer;
+import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.actions.DeleteDataAction;
 import com.primateer.daikoku.ui.actions.SaveDataAction;
@@ -33,14 +33,15 @@ public class CatalogListAdapter<T extends ValueObject> extends
 
 	@Override
 	protected DataRowWidget<T> newWidget(Context context) {
-		CatalogRowWidget<T> widget = new CatalogRowWidget<T>(context);
+		final CatalogRowWidget<T> widget = new CatalogRowWidget<T>(context);
 		widget.setDataClass(((Catalog<T>) data).dataClass);
-		widget.setSelectionObserver(new Observer<T>() {
-			@Override
-			public void update(T item) {
-				((Catalog<T>) data).select(item);
-			}
-		});
+		widget.addEventListener(CatalogRowWidget.SelectedEvent.class,
+				new Event.Listener() {
+					@Override
+					public void onEvent(Event event) {
+						((Catalog<T>) data).select(widget.getRowData());
+					}
+				});
 		return widget;
 	}
 
@@ -60,10 +61,11 @@ public class CatalogListAdapter<T extends ValueObject> extends
 	}
 
 	@Override
-	public void onClick(View v) {
-		Application.getInstance().dispatch(new DeleteDataAction<T>(getItemFromView(v),v.getContext()));
+	public void onDelete(View v) {
+		Application.getInstance().dispatch(
+				new DeleteDataAction<T>(getItemFromView(v), v.getContext()));
 	}
-	
+
 	@Override
 	public void remove(T item) {
 		Application.getInstance().dispatch(new DeleteDataAction<T>(item, null));
