@@ -12,14 +12,11 @@ public abstract class Event {
 	}
 
 	public interface Dispatcher {
-		void addListener(Class<? extends Event> type, Listener listener);
-
-		void removeListener(Class<? extends Event> type, Listener listener);
-
-		void dispatch(Event event);
+		void addEventListener(Class<? extends Event> type, Listener listener);
+		void removeEventListener(Class<? extends Event> type, Listener listener);
 	}
 
-	public class SimpleDispatcher implements Dispatcher {
+	public static class SimpleDispatcher implements Dispatcher {
 
 		private Map<Class<? extends Event>, List<Listener>> listeners = new HashMap<Class<? extends Event>, List<Listener>>();
 
@@ -33,17 +30,16 @@ public abstract class Event {
 		}
 
 		@Override
-		public void addListener(Class<? extends Event> type, Listener listener) {
+		public void addEventListener(Class<? extends Event> type, Listener listener) {
 			getListeners(type).add(listener);
 		}
 
 		@Override
-		public void removeListener(Class<? extends Event> type,
+		public void removeEventListener(Class<? extends Event> type,
 				Listener listener) {
 			getListeners(type).remove(listener);
 		}
 
-		@Override
 		public void dispatch(Event event) {
 			for (Listener listener : listeners.get(event.getType())) {
 				listener.onEvent(event);

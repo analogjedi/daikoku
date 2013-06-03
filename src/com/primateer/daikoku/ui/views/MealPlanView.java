@@ -16,9 +16,9 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Day;
+import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.GoalRegistry;
 import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Meal.State;
@@ -52,7 +52,7 @@ public class MealPlanView extends LinearLayout {
 	}
 
 	private class MealListAdapter extends CatalogListAdapter<Meal> implements
-			Observer<Class<ValueObject>> {
+			Event.Listener {
 
 		public MealListAdapter(Catalog<Meal> catalog) {
 			super(catalog);
@@ -65,7 +65,8 @@ public class MealPlanView extends LinearLayout {
 					watcher.update(day);
 				}
 			});
-			DBController.getInstance().addObserver(this);
+			DBController.getInstance().addEventListener(
+					DBController.DBChangedEvent.class, this);
 		}
 
 		@Override
@@ -76,8 +77,10 @@ public class MealPlanView extends LinearLayout {
 		}
 
 		@Override
-		public void update(Class<ValueObject> observable) {
-			super.reload();
+		public void onEvent(Event event) {
+			if (event instanceof DBController.DBChangedEvent) {
+				super.reload();
+			}
 		}
 	}
 
@@ -160,6 +163,7 @@ public class MealPlanView extends LinearLayout {
 	}
 
 	public void cleanUp() {
-		DBController.getInstance().removeObserver(listAdapter);
+		DBController.getInstance().removeEventListener(
+				DBController.DBChangedEvent.class, listAdapter);
 	}
 }

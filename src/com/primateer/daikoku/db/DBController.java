@@ -5,22 +5,27 @@ import java.util.Date;
 import java.util.List;
 
 import com.primateer.daikoku.model.Day;
+import com.primateer.daikoku.model.Event;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.GoalSet;
-import com.primateer.daikoku.model.Observable;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.model.vos.Recipe;
 
 @SuppressWarnings("rawtypes")
-public class DBController implements Observable<Class<ValueObject>> {
+public class DBController implements Event.Dispatcher {
+	
+	public static class DBChangedEvent extends Event {
+		public final Class<? extends ValueObject> type;
+		public DBChangedEvent(Class<? extends ValueObject> type) {
+			this.type = type;
+		}
+	}
 
 	private static DBController instance;
-
-	/** Notifies observers when the DB has changed. */
-	private SimpleObservable<Class<ValueObject>> observable = new SimpleObservable<Class<ValueObject>>();
+	
+	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 	public static DBController getInstance() {
 		if (instance == null) {
@@ -70,7 +75,7 @@ public class DBController implements Observable<Class<ValueObject>> {
 		} else {
 			getDao(voClass).update(vo);
 		}
-		observable.notifyObservers((Class<ValueObject>) voClass);
+		dispatcher.dispatch(new DBChangedEvent(voClass));
 		return id;
 	}
 
@@ -88,20 +93,10 @@ public class DBController implements Observable<Class<ValueObject>> {
 			return false;
 		}
 		if (getDao(vo.getClass()).delete(vo) > 0) {
-			observable.notifyObservers((Class<ValueObject>) vo.getClass());
+			dispatcher.dispatch(new DBChangedEvent(vo.getClass()));
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void addObserver(Observer<Class<ValueObject>> observer) {
-		observable.addObserver(observer);
-	}
-
-	@Override
-	public void removeObserver(Observer<Class<ValueObject>> observer) {
-		observable.removeObserver(observer);
 	}
 
 	public GoalSet loadAllGoals(Scope scope) {
@@ -129,5 +124,15 @@ public class DBController implements Observable<Class<ValueObject>> {
 		for (Goal goal : data) {
 			register(goal);
 		}
+	}
+
+	@Override
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type, listener);
+	}
+
+	@Override
+	public void removeEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.removeEventListener(type, listener);
 	}
 }
