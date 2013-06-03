@@ -7,12 +7,14 @@ Settings
 * Configure Default Nutrient Selection
 
 Shopping & Supplies
+* add single day
+* add multiple days
+* add from meal, product, or recipe form
 
 Styling
 
 User Interface
 * Watch Row for each ingredient?
-* Use catalog instead of dropdown list in Amount Widget
 
 
 MISSING CODE
@@ -21,8 +23,9 @@ MISSING CODE
 Nutrition UI
 * Product Amount should be auto-set to reference amount unit and unit type
 
-Lists
+Lists Order
 * Maintain list item order for nutrients, ingredients, etc.
+* sort by last used
 
 Catalogs
 * Nutrient Type add/edit
@@ -36,10 +39,11 @@ Tests
 KNOWN BUGS
 ==========
 
-Meal Planner
-* Adding a recipe to an existing meal and saving it doesn't save the new products.
-* Watch Widget remains at 0 when editing new product (only with missing nutrients)?
+Meal editor
+* crash on save (null pointer in MultipleCatalogDialogConnector)
 
+Meal Planner
+* Watch Widget remains at 0 when editing new product (only with missing nutrients)?
 
 Database
 * Multiple products of same type don't get saved in meal
