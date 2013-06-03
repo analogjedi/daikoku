@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.forms;
+package com.primateer.daikoku.ui.views.widgets;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +25,8 @@ import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.ui.actions.CatalogAction;
+import com.primateer.daikoku.ui.views.forms.Form;
+import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 
 public class AmountWidget extends LinearLayout implements Event.Registry,
 		Form<Amount> {
@@ -177,13 +179,13 @@ public class AmountWidget extends LinearLayout implements Event.Registry,
 
 		valueView = new ValueField(context);
 		LayoutParams valueLayout = new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 0.8f);
+				LayoutParams.WRAP_CONTENT, 0.6f);
 		valueLayout.gravity = Gravity.CENTER_VERTICAL;
 
 		unitView = new UnitSelector(context);
 		LayoutParams unitLayout = new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 1.0f);
-		unitLayout.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL; // FIXME
+				LayoutParams.WRAP_CONTENT, 0.4f);
+		unitLayout.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
 
 		this.addView(valueView, valueLayout);
 		this.addView(unitView, unitLayout);

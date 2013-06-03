@@ -25,6 +25,7 @@ import com.primateer.daikoku.model.NutrientSet;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
+import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 import com.primateer.daikoku.ui.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.ui.views.widgets.Separator;

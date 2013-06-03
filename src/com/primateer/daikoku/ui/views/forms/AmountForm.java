@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 
 public class AmountForm extends LinearLayout implements Form<Amount> {
 	

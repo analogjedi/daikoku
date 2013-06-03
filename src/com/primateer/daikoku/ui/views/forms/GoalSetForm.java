@@ -26,6 +26,7 @@ import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.ui.actions.CatalogAction;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
+import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
