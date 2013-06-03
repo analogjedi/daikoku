@@ -54,10 +54,12 @@ public class DBController implements Observable<Class<ValueObject>> {
 		return getDao(voClass).load(id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<ValueObject> loadAll(Class voClass) {
 		return getDao(voClass).loadAll();
 	}
 
+	@SuppressWarnings("unchecked")
 	public long register(ValueObject vo, Class<? extends ValueObject> voClass) {
 		if (vo == null) {
 			return -1;
@@ -76,6 +78,7 @@ public class DBController implements Observable<Class<ValueObject>> {
 		return register(vo, vo.getClass());
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean delete(ValueObject vo) {
 		if (vo == null) {
 			return false;
