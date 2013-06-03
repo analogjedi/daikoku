@@ -151,8 +151,7 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 
 	@SuppressWarnings("unchecked")
 	protected T getItemFromView(View v) {
-		return data
-				.get(((DataRowWidget<T>) v.getParent()).restoreRowPosition());
+		return data.get(((DataRowWidget<T>)v).restoreRowPosition());
 	}
 
 	public void onDelete(View v) {

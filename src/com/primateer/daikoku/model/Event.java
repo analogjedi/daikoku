@@ -46,7 +46,7 @@ public abstract class Event {
 
 		@Override
 		public void dispatch(Event event) {
-			for (Listener listener : listeners.get(event.getType())) {
+			for (Listener listener : getListeners(event.getType())) {
 				listener.onEvent(event);
 			}
 		}
