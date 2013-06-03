@@ -18,6 +18,7 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
+import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ShoppingList;
 import com.primateer.daikoku.model.SimpleObservable;
@@ -200,24 +201,30 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 
 				Catalog<Product> productCatalog = new Catalog<Product>(
 						Product.class);
-				productCatalog.addObserver(new Observer<Product>() {
-					@Override
-					public void update(Product product) {
-						listAdapter.add(product);
-					}
-				});
+				productCatalog.addEventListener(Catalog.SelectionEvent.class,
+						new Event.Listener() {
+							@Override
+							public void onEvent(Event event) {
+								@SuppressWarnings("unchecked")
+								Product product = ((Catalog.SelectionEvent<Product>) event).selection;
+								listAdapter.add(product);
+							}
+						});
 				productCatalog.setTitle(getResources().getString(
 						R.string.product));
 				action.add(productCatalog);
 
 				Catalog<Recipe> recipeCatalog = new Catalog<Recipe>(
 						Recipe.class);
-				recipeCatalog.addObserver(new Observer<Recipe>() {
-					@Override
-					public void update(Recipe recipe) {
-						listAdapter.add(recipe);
-					}
-				});
+				recipeCatalog.addEventListener(Catalog.SelectionEvent.class,
+						new Event.Listener() {
+							@Override
+							public void onEvent(Event event) {
+								@SuppressWarnings("unchecked")
+								Recipe recipe = ((Catalog.SelectionEvent<Recipe>) event).selection;
+								listAdapter.add(recipe);
+							}
+						});
 				recipeCatalog.setTitle(getResources()
 						.getString(R.string.recipe));
 				action.add(recipeCatalog);

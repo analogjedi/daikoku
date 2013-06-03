@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.views.CatalogView;
 
@@ -49,15 +48,16 @@ public class CatalogDialogConnector<T extends ValueObject> {
 		ViewGroup content = (ViewGroup) catalogView;
 		content.setBackgroundColor(Color.WHITE); // FIXME
 		dialog.setContentView(content);
-		catalog.addObserver(new Observer<T>() {
-			@Override
-			public void update(T observable) {
-				dialog.dismiss();
-				DBController.getInstance().removeEventListener(
-						DBController.DBChangedEvent.class, dbListener);
-				dialog = null;
-			}
-		});
+		catalog.addEventListener(Catalog.SelectionEvent.class,
+				new Event.Listener() {
+					@Override
+					public void onEvent(Event event) {
+						dialog.dismiss();
+						DBController.getInstance().removeEventListener(
+								DBController.DBChangedEvent.class, dbListener);
+						dialog = null;
+					}
+				});
 	}
 
 	public void showDialog() {

@@ -17,6 +17,7 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
+import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.GoalSet;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Nutrient.Type;
@@ -216,12 +217,15 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 						return types;
 					}
 				});
-				catalog.addObserver(new Observer<Nutrient.Type>() {
-					@Override
-					public void update(Nutrient.Type type) {
-						listAdapter.add(type);
-					}
-				});
+				catalog.addEventListener(Catalog.SelectionEvent.class,
+						new Event.Listener() {
+							@SuppressWarnings("unchecked")
+							@Override
+							public void onEvent(Event event) {
+								Catalog.SelectionEvent<Nutrient.Type> ev = (Catalog.SelectionEvent<Nutrient.Type>) event;
+								listAdapter.add(ev.selection);
+							}
+						});
 				CatalogAction<Nutrient.Type> action = new CatalogAction<Nutrient.Type>(
 						getContext(), catalog, getResources().getString(
 								R.string.title_pick_nutrient_type));

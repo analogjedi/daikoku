@@ -4,15 +4,30 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.primateer.daikoku.db.DBController;
+import com.primateer.daikoku.model.Event.Listener;
 
 public class Catalog<T extends ValueObject> extends ArrayList<T> implements
-		Observable<T> {
+		Event.Dispatcher {
+	
+	public static class SelectionEvent<T extends ValueObject> extends Event {
+		public final T selection;
+		public SelectionEvent(T selection) {
+			this.selection = selection;
+		}
+	}
+	
+	public static class TitleChangedEvent extends Event {
+		public final String title;
+		public TitleChangedEvent(String title) {
+			this.title = title;
+		}
+	}
 
 	public interface Loader<T extends ValueObject> {
 		public Collection<T> load(Catalog<T> catalog);
 	}
 
-	private SimpleObservable<T> selectionObservable = new SimpleObservable<T>();
+	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 	public final Class<T> dataClass;
 	private Loader<T> loader;
 	private String title;
@@ -34,7 +49,7 @@ public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 	}
 
 	public void select(T item) {
-		selectionObservable.notifyObservers(item);
+		dispatcher.dispatch(new SelectionEvent<T>(item));
 	}
 
 	public void reload() {
@@ -44,21 +59,23 @@ public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 		}
 	}
 
-	@Override
-	public void addObserver(Observer<T> observer) {
-		selectionObservable.addObserver(observer);
-	}
-
-	@Override
-	public void removeObserver(Observer<T> observer) {
-		selectionObservable.removeObserver(observer);
-	}
-
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
+		dispatcher.dispatch(new TitleChangedEvent(title));
+	}
+
+	@Override
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type,listener);
+	}
+
+	@Override
+	public void removeEventListener(Class<? extends Event> type,
+			Listener listener) {
+		dispatcher.removeEventListener(type,listener);
 	}
 }

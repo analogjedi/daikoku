@@ -20,6 +20,7 @@ import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Catalog.Loader;
+import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Observable;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
@@ -47,19 +48,23 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 							return units;
 						}
 					});
-					catalog.addObserver(new Observer<Unit>() {
-						@Override
-						public void update(Unit unit) {
-							setData(unit);
-							try {
-								observable.notifyObservers(AmountWidget.this
-										.getData());
-							} catch (InvalidDataException e) {
-								Helper.logErrorStackTrace(this, e,
-										"Unable to update UnitSelector");
-							}
-						}
-					});
+					catalog.addEventListener(Catalog.SelectionEvent.class,
+							new Event.Listener() {
+								@SuppressWarnings("unchecked")
+								@Override
+								public void onEvent(Event event) {
+									Catalog.SelectionEvent<Unit> ev = (Catalog.SelectionEvent<Unit>) event;
+									setData(ev.selection);
+									try {
+										observable
+												.notifyObservers(AmountWidget.this
+														.getData());
+									} catch (InvalidDataException e) {
+										Helper.logErrorStackTrace(this, e,
+												"Unable to update UnitSelector");
+									}
+								}
+							});
 					CatalogAction<Unit> action = new CatalogAction<Unit>(
 							getContext(), catalog, getResources().getString(
 									R.string.title_pick_unit));

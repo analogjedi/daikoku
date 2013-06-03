@@ -15,8 +15,6 @@ import android.widget.LinearLayout;
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.views.CatalogView;
 
 public class MultiCatalogDialogConnector {
@@ -55,13 +53,14 @@ public class MultiCatalogDialogConnector {
 			};
 			DBController.getInstance().addEventListener(
 					DBController.DBChangedEvent.class, dbListener);
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			CatalogView view = new CatalogView(context, catalog);
 			view.setVisibility(firstView ? View.VISIBLE : View.GONE);
 			firstView = false;
 			views.put(catalog, view);
-			catalog.addObserver(new Observer() {
+			catalog.addEventListener(Catalog.SelectionEvent.class, new Event.Listener() {
 				@Override
-				public void update(Object observable) {
+				public void onEvent(Event event) {
 					dialog.dismiss();
 					DBController.getInstance().removeEventListener(
 							DBController.DBChangedEvent.class, dbListener);
