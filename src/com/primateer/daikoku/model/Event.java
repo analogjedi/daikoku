@@ -10,6 +10,19 @@ public abstract class Event {
 	public interface Listener {
 		void onEvent(Event event);
 	}
+	
+	public static class Pipe implements Listener {
+		private Dispatcher dispatcher;
+		
+		public Pipe(Dispatcher dispatcher) {
+			this.dispatcher = dispatcher;
+		}
+		
+		@Override
+		public void onEvent(Event event) {
+			dispatcher.dispatch(event);
+		}
+	}
 
 	public interface Registry {
 		void addEventListener(Class<? extends Event> type, Listener listener);

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Event.Listener;
+import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.connector.FormDialogConnector;
 
 public class FormAction<T> implements Action, Event.Registry {
@@ -24,14 +25,8 @@ public class FormAction<T> implements Action, Event.Registry {
 		final FormDialogConnector<T> formConnector = new FormDialogConnector<T>(
 				(Class<T>) data.getClass(), context);
 		formConnector.setData(data);
-		formConnector.addEventListener(
-				FormDialogConnector.DataChangedEvent.class,
-				new Event.Listener() {
-					@Override
-					public void onEvent(Event event) {
-						dispatcher.dispatch(event);
-					}
-				});
+		formConnector.addEventListener(FormFragment.AcceptEvent.class,
+				new Event.Pipe(dispatcher));
 		formConnector.showDialog();
 	}
 
