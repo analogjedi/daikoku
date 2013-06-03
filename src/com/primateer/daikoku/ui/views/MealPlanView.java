@@ -18,7 +18,6 @@ import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Day;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.GoalRegistry;
-import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Meal.State;
@@ -57,14 +56,15 @@ public class MealPlanView extends LinearLayout {
 		public MealListAdapter(Catalog<Meal> catalog) {
 			super(catalog);
 
-			this.addObserver(new Observer<DataRowListAdapter<Meal>>() {
-				@Override
-				public void update(DataRowListAdapter<Meal> observable) {
-					Day day = new Day(datePicker.getData());
-					day.addAll(observable.getData());
-					watcher.update(day);
-				}
-			});
+			this.addEventListener(DataRowListAdapter.ListChangedEvent.class,
+					new Event.Listener() {
+						@Override
+						public void onEvent(Event event) {
+							Day day = new Day(datePicker.getData());
+							day.addAll(listAdapter.getData());
+							watcher.update(day);
+						}
+					});
 			DBController.getInstance().addEventListener(
 					DBController.DBChangedEvent.class, this);
 		}

@@ -10,20 +10,22 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
 import com.primateer.daikoku.Helper;
-import com.primateer.daikoku.model.Observable;
+import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public abstract class DataRowListAdapter<T> implements ListAdapter,
-		View.OnClickListener, Observable<DataRowListAdapter<T>> {
-	
+		View.OnClickListener, Event.Dispatcher {
+
+	public static class ListChangedEvent extends Event {
+	}
 
 	protected List<T> data = new ArrayList<T>();
 	private List<DataSetObserver> observers = new ArrayList<DataSetObserver>();
 	// for data change notifications without rebuilding the corresponding list
-	private SimpleObservable<DataRowListAdapter<T>> observable = new SimpleObservable<DataRowListAdapter<T>>();
+	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 	public void add(T item) {
 		data.add(item);
@@ -38,7 +40,7 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 	public List<T> getData() {
 		return data;
 	}
-	
+
 	public void setData(List<T> data) {
 		this.data = data;
 		notifyObservers();
@@ -53,7 +55,7 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 		for (DataSetObserver observer : observers) {
 			observer.onChanged();
 		}
-		observable.notifyObservers(this);
+		dispatcher.dispatch(new ListChangedEvent());
 	}
 
 	@Override
@@ -101,8 +103,8 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 						T item = observable.getRowData();
 						if (!data.get(index).equals(item)) {
 							data.set(index, item);
-							DataRowListAdapter.this.observable
-									.notifyObservers(DataRowListAdapter.this);
+							DataRowListAdapter.this.dispatcher
+									.dispatch(new ListChangedEvent());
 						}
 					} catch (InvalidDataException e) {
 						Helper.logErrorStackTrace(this, e,
@@ -162,12 +164,13 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 	protected abstract DataRowWidget<T> newWidget(Context context);
 
 	@Override
-	public void addObserver(Observer<DataRowListAdapter<T>> observer) {
-		observable.addObserver(observer);
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type, listener);
 	}
 
 	@Override
-	public void removeObserver(Observer<DataRowListAdapter<T>> observer) {
-		observable.removeObserver(observer);
+	public void removeEventListener(Class<? extends Event> type,
+			Listener listener) {
+		dispatcher.removeEventListener(type, listener);
 	}
 }

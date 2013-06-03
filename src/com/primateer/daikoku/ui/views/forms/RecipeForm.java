@@ -195,12 +195,13 @@ public class RecipeForm extends VoForm<Recipe> {
 		componentList.setScrollContainer(false);
 		componentList.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		listAdapter = new ComponentListAdapter();
-		listAdapter.addObserver(new Observer<DataRowListAdapter<Component>>() {
-			@Override
-			public void update(DataRowListAdapter<Component> observable) {
-				updateWatcher();
-			}
-		});
+		listAdapter.addEventListener(DataRowListAdapter.ListChangedEvent.class,
+				new Event.Listener() {
+					@Override
+					public void onEvent(Event event) {
+						updateWatcher();
+					}
+				});
 		componentList.setAdapter(listAdapter);
 
 		addButton = new AddButton(context);
