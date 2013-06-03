@@ -25,6 +25,7 @@
     <string name="title_pick_nutrient_type">Select A Nutrient Type</string>
     <string name="title_pick_unit">Select Unit</string>
     <string name="title_pick_recipe">Select A Recipe</string>
+    <string name="title_pick_for_shopping">Select Shopping Items</string>
     
     <string name="nutrient_type_energy">Energy</string>
     <string name="nutrient_type_protein">Protein</string>

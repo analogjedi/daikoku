@@ -22,9 +22,10 @@ import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.ShoppingList;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.vos.Product;
+import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.model.vos.ShoppingItem;
-import com.primateer.daikoku.ui.actions.CatalogAction;
 import com.primateer.daikoku.ui.actions.FormAction;
+import com.primateer.daikoku.ui.actions.MultiCatalogAction;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
@@ -166,6 +167,13 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 			});
 			Application.getInstance().dispatch(action);
 		}
+
+		public void add(Recipe recipe) {
+			for (Product product : recipe.getIngredients().keySet()) {
+				ShoppingListAdapter.super.add(new ShoppingItem(product, recipe
+						.getIngredients().get(product), false));
+			}
+		}
 	}
 
 	private ListView listView;
@@ -186,16 +194,34 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Catalog<Product> catalog = new Catalog<Product>(Product.class);
-				catalog.addObserver(new Observer<Product>() {
+				MultiCatalogAction action = new MultiCatalogAction(
+						getContext(), getResources().getString(
+								R.string.title_pick_for_shopping));
+
+				Catalog<Product> productCatalog = new Catalog<Product>(
+						Product.class);
+				productCatalog.addObserver(new Observer<Product>() {
 					@Override
 					public void update(Product product) {
 						listAdapter.add(product);
 					}
 				});
-				CatalogAction<Product> action = new CatalogAction<Product>(
-						getContext(), catalog, getResources().getString(
-								R.string.title_pick_product));
+				productCatalog.setTitle(getResources().getString(
+						R.string.product));
+				action.add(productCatalog);
+
+				Catalog<Recipe> recipeCatalog = new Catalog<Recipe>(
+						Recipe.class);
+				recipeCatalog.addObserver(new Observer<Recipe>() {
+					@Override
+					public void update(Recipe recipe) {
+						listAdapter.add(recipe);
+					}
+				});
+				recipeCatalog.setTitle(getResources()
+						.getString(R.string.recipe));
+				action.add(recipeCatalog);
+
 				Application.getInstance().dispatch(action);
 			}
 		});

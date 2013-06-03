@@ -15,6 +15,7 @@ public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 	private SimpleObservable<T> selectionObservable = new SimpleObservable<T>();
 	public final Class<T> dataClass;
 	private Loader<T> loader;
+	private String title;
 
 	public Catalog(final Class<T> dataClass) {
 		this.dataClass = dataClass;
@@ -25,6 +26,7 @@ public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 				return (Collection<T>) DBController.getInstance().loadAll(dataClass);
 			}
 		});
+		this.title = dataClass.getSimpleName();
 	}
 
 	public void setLoader(Loader<T> loader) {
@@ -50,5 +52,13 @@ public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 	@Override
 	public void removeObserver(Observer<T> observer) {
 		selectionObservable.removeObserver(observer);
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }
