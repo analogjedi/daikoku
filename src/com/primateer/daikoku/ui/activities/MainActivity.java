@@ -33,8 +33,8 @@ public class MainActivity extends FragmentActivity {
 				R.string.title_activity_shopping);
 		this.addActivity(GoalsActivity.class, Application.ICON_GOALS,
 				R.string.title_activity_goals);
-		this.addActivity(null, Application.ICON_SETTINGS,
-				R.string.title_activity_settings);
+//		this.addActivity(null, Application.ICON_SETTINGS,
+//				R.string.title_activity_settings);
 	}
 
 	private void addActivity(final Class<? extends Activity> activity,
