@@ -60,7 +60,16 @@ public class NutrientRegistry {
 	}
 
 	public List<Nutrient.Type> getDefaultNutrientTypes() {
-		return defaultNutrientTypes;
+		GoalSet goals = GoalRegistry.getInstance().getGoals(Scope.PER_DAY);
+		if (goals.size() > 0) {
+			List<Nutrient.Type> list = new ArrayList<Nutrient.Type>();
+			for (Goal goal : goals) {
+				list.add(goal.nutrientType);
+			}
+			return list;
+		} else {
+			return defaultNutrientTypes;
+		}
 	}
 
 	public List<Nutrient.Type> getWatchList() {
