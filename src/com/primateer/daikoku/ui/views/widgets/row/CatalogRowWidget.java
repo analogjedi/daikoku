@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.model.ValueObject;
@@ -62,13 +63,16 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 
 	public void setDataClass(Class<T> dataClass) { // TODO make this private
 		formConnector = new FormDialogConnector<T>(dataClass, editButton);
-		formConnector.addObserver(new Observer<T>() {
-			@Override
-			public void update(T data) {
-				bufferedData = data;
-				selectView.setText(data.toString());
-			}
-		});
+		formConnector.addEventListener(
+				FormDialogConnector.DataChangedEvent.class,
+				new Event.Listener() {
+					@SuppressWarnings("unchecked")
+					@Override
+					public void onEvent(Event event) {
+						bufferedData = ((FormDialogConnector.DataChangedEvent<T>) event).data;
+						selectView.setText(bufferedData.toString());
+					}
+				});
 	}
 
 	@Override

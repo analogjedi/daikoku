@@ -8,17 +8,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.primateer.daikoku.model.Observable;
+import com.primateer.daikoku.model.Event;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
 import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 
-public class FormDialogConnector<T> implements
-		Form<T>, Observer<T>, Observable<T> {
+public class FormDialogConnector<T> implements Form<T>, Observer<T>,
+		Event.Dispatcher {
+	
+	public static class DataChangedEvent<T> extends Event {
+		public final T data;
+		public DataChangedEvent(T data) {
+			this.data = data;
+		}
+	}
 
-	private SimpleObservable<T> observable = new SimpleObservable<T>();
+	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 	private Form<T> form;
 	private FormFragment<T> fragment;
 	private boolean viewUsed = false;
@@ -131,16 +138,17 @@ public class FormDialogConnector<T> implements
 	@Override
 	public void update(T data) {
 		this.data = data;
-		observable.notifyObservers(data);
+		dispatcher.dispatch(new DataChangedEvent<T>(data));
 	}
 
 	@Override
-	public void addObserver(Observer<T> observer) {
-		observable.addObserver(observer);
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type, listener);
 	}
 
 	@Override
-	public void removeObserver(Observer<T> observer) {
-		observable.removeObserver(observer);
+	public void removeEventListener(Class<? extends Event> type,
+			Listener listener) {
+		dispatcher.removeEventListener(type, listener);
 	}
 }
