@@ -4,16 +4,14 @@ import android.content.Context;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Observable;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.ui.views.connector.FormDialogConnector;
 
-public class FormAction<T> implements Action, Observable<T> {
+public class FormAction<T> implements Action, Event.Dispatcher {
 
 	private T data;
 	private Context context;
-	private SimpleObservable<T> observable = new SimpleObservable<T>();
+	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 	public FormAction(Context context, T data) {
 		this.context = context;
@@ -31,8 +29,7 @@ public class FormAction<T> implements Action, Observable<T> {
 				new Event.Listener() {
 					@Override
 					public void onEvent(Event event) {
-						observable
-								.notifyObservers(((FormDialogConnector.DataChangedEvent<T>) event).data);
+						dispatcher.dispatch(event);
 					}
 				});
 		formConnector.showDialog();
@@ -49,12 +46,13 @@ public class FormAction<T> implements Action, Observable<T> {
 	}
 
 	@Override
-	public void addObserver(Observer<T> observer) {
-		observable.addObserver(observer);
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type, listener);
 	}
 
 	@Override
-	public void removeObserver(Observer<T> observer) {
-		observable.removeObserver(observer);
+	public void removeEventListener(Class<? extends Event> type,
+			Listener listener) {
+		dispatcher.removeEventListener(type, listener);
 	}
 }

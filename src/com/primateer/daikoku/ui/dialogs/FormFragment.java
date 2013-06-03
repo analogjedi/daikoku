@@ -24,9 +24,9 @@ import com.primateer.daikoku.ui.views.widgets.Separator;
 
 public class FormFragment<T> extends DialogFragment implements Event.Dispatcher {
 	
-	public static class OKEvent<T> extends Event {
+	public static class AcceptEvent<T> extends Event {
 		public final T data;
-		public OKEvent(T data) {
+		public AcceptEvent(T data) {
 			this.data = data;
 		}
 	}
@@ -84,7 +84,7 @@ public class FormFragment<T> extends DialogFragment implements Event.Dispatcher 
 					if (data == null) {
 						data = form.getData();
 					}
-					dispatcher.dispatch(new OKEvent<T>(data));
+					dispatcher.dispatch(new AcceptEvent<T>(data));
 				} catch (InvalidDataException e) {
 					Helper.logErrorStackTrace(FormFragment.this, e,
 							"Unable to notify observers");

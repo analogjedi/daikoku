@@ -57,7 +57,7 @@ public class FormDialogConnector<T> implements Form<T>, Event.Listener,
 		form.setData(data);
 		fragment = new FormFragment<T>();
 		fragment.setForm(form);
-		fragment.addEventListener(FormFragment.OKEvent.class,
+		fragment.addEventListener(FormFragment.AcceptEvent.class,
 				FormDialogConnector.this);
 		fragment.show(
 				((FragmentActivity) this.context).getSupportFragmentManager(),
@@ -68,7 +68,7 @@ public class FormDialogConnector<T> implements Form<T>, Event.Listener,
 	@SuppressWarnings("unchecked")
 	private Form<T> getForm(Class<T> type, Context context) {
 		if (viewUsed) {
-			fragment.removeEventListener(FormFragment.OKEvent.class, this);
+			fragment.removeEventListener(FormFragment.AcceptEvent.class, this);
 			form = null;
 			viewUsed = false;
 		}
@@ -150,7 +150,8 @@ public class FormDialogConnector<T> implements Form<T>, Event.Listener,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onEvent(Event event) {
-		update(((FormFragment.OKEvent<T>) event).data);
+		update(((FormFragment.AcceptEvent<T>) event).data);
+		dispatcher.dispatch(event);
 	}
 
 	private void update(T data) {

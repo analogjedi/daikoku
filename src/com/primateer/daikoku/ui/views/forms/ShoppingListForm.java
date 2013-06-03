@@ -27,6 +27,7 @@ import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.model.vos.ShoppingItem;
 import com.primateer.daikoku.ui.actions.FormAction;
 import com.primateer.daikoku.ui.actions.MultiCatalogAction;
+import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
@@ -159,13 +160,16 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 		public void add(final Product product) {
 			FormAction<Amount> action = new FormAction<Amount>(getContext(),
 					new Amount(product.getAmount()));
-			action.addObserver(new Observer<Amount>() {
-				@Override
-				public void update(Amount amount) {
-					ShoppingListAdapter.super.add(new ShoppingItem(product,
-							amount, false));
-				}
-			});
+			action.addEventListener(FormFragment.AcceptEvent.class,
+					new Event.Listener() {
+						@Override
+						public void onEvent(Event event) {
+							@SuppressWarnings("unchecked")
+							Amount amount = ((FormFragment.AcceptEvent<Amount>) event).data;
+							ShoppingListAdapter.super.add(new ShoppingItem(
+									product, amount, false));
+						}
+					});
 			Application.getInstance().dispatch(action);
 		}
 
