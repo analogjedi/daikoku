@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.GoalSet;
@@ -77,12 +76,13 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 			amountView = new AmountWidget(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 1.0f);
-			amountView.addObserver(new Observer<Amount>() {
-				@Override
-				public void update(Amount amount) {
-					observable.notifyObservers(GoalRowWidget.this);
-				}
-			});
+			amountView.addEventListener(AmountWidget.AmountChangedEvent.class,
+					new Event.Listener() {
+						@Override
+						public void onEvent(Event event) {
+							observable.notifyObservers(GoalRowWidget.this);
+						}
+					});
 			amountLayout.gravity = Gravity.CENTER;
 
 			this.addView(deleteButton, deleteLayout);

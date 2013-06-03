@@ -117,13 +117,15 @@ public class RecipeForm extends VoForm<Recipe> {
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 0.6f);
 			amountLayout.gravity = Gravity.CENTER;
-			amountView.addObserver(new Observer<Amount>() {
-				@Override
-				public void update(Amount amount) {
-					component = new Component(component.product, amount);
-					observable.notifyObservers(ComponentRowWidget.this);
-				}
-			});
+			amountView.addEventListener(AmountWidget.AmountChangedEvent.class,
+					new Event.Listener() {
+						@Override
+						public void onEvent(Event event) {
+							Amount amount = ((AmountWidget.AmountChangedEvent) event).amount;
+							component = new Component(component.product, amount);
+							observable.notifyObservers(ComponentRowWidget.this);
+						}
+					});
 
 			this.addView(deleteButton, deleteLayout);
 			this.addView(selectView, selectLayout);

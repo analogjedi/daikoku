@@ -21,14 +21,12 @@ import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Catalog.Loader;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Observable;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.ui.actions.CatalogAction;
 
-public class AmountWidget extends LinearLayout implements Observable<Amount>,
+public class AmountWidget extends LinearLayout implements Event.Dispatcher,
 		Form<Amount> {
 
 	private class UnitSelector extends Button {
@@ -56,9 +54,10 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 									Catalog.SelectionEvent<Unit> ev = (Catalog.SelectionEvent<Unit>) event;
 									setData(ev.selection);
 									try {
-										observable
-												.notifyObservers(AmountWidget.this
-														.getData());
+										dispatcher
+												.dispatch(new AmountChangedEvent(
+														AmountWidget.this
+																.getData()));
 									} catch (InvalidDataException e) {
 										Helper.logErrorStackTrace(this, e,
 												"Unable to update UnitSelector");
@@ -146,7 +145,8 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 						+ Unit.UNIT_GRAM);
 				if (amount.value != this.value) {
 					this.value = amount.value;
-					observable.notifyObservers(AmountWidget.this.getData());
+					dispatcher.dispatch(new AmountChangedEvent(
+							AmountWidget.this.getData()));
 				}
 			} catch (IllegalArgumentException e) {
 				// invalid value string; do nothing
@@ -158,9 +158,17 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 		}
 	}
 
+	public static class AmountChangedEvent extends Event {
+		public final Amount amount;
+
+		public AmountChangedEvent(Amount amount) {
+			this.amount = amount;
+		}
+	}
+
 	private ValueField valueView;
 	private UnitSelector unitView;
-	private SimpleObservable<Amount> observable = new SimpleObservable<Amount>();
+	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 	public AmountWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -195,16 +203,6 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 
 	public void setUnits(List<Unit> units) {
 		unitView.setUnits(units);
-	}
-
-	@Override
-	public void addObserver(Observer<Amount> observer) {
-		observable.addObserver(observer);
-	}
-
-	@Override
-	public void removeObserver(Observer<Amount> observer) {
-		observable.removeObserver(observer);
 	}
 
 	@Override
@@ -243,6 +241,17 @@ public class AmountWidget extends LinearLayout implements Observable<Amount>,
 	@Override
 	public String getTitle() {
 		return getResources().getString(R.string.amount);
+	}
+
+	@Override
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type, listener);
+	}
+
+	@Override
+	public void removeEventListener(Class<? extends Event> type,
+			Listener listener) {
+		dispatcher.addEventListener(type, listener);
 	}
 
 }

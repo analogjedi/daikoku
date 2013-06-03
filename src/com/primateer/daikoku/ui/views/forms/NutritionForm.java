@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Amount;
+import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.NutrientSet;
@@ -60,12 +60,14 @@ public class NutritionForm extends VoForm<Nutrition> {
 			this.addView(delButton, 0, deleteLayout);
 			this.addView(label, 1);
 
-			this.addObserver(new Observer<Amount>() {
-				@Override
-				public void update(Amount observable) {
-					widgetObservable.notifyObservers(NutrientRowWidget.this);
-				}
-			});
+			this.addEventListener(AmountChangedEvent.class,
+					new Event.Listener() {
+						@Override
+						public void onEvent(Event event) {
+							widgetObservable
+									.notifyObservers(NutrientRowWidget.this);
+						}
+					});
 		}
 
 		public NutrientRowWidget(Context context) {
