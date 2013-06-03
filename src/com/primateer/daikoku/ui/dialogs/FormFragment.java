@@ -13,9 +13,8 @@ import android.widget.LinearLayout.LayoutParams;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Observable;
-import com.primateer.daikoku.model.Observer;
-import com.primateer.daikoku.model.SimpleObservable;
+import com.primateer.daikoku.model.Event;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.actions.Action;
 import com.primateer.daikoku.ui.actions.SaveDataAction;
@@ -23,10 +22,20 @@ import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 
-public class FormFragment<T> extends DialogFragment implements Observable<T> {
+public class FormFragment<T> extends DialogFragment implements Event.Dispatcher {
+	
+	public static class OKEvent<T> extends Event {
+		public final T data;
+		public OKEvent(T data) {
+			this.data = data;
+		}
+	}
+	
+	public static class CancelEvent extends Event {
+	}
 
 	private Form<T> form;
-	private SimpleObservable<T> observable = new SimpleObservable<T>();
+	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 	public void setForm(Form<T> form) {
 		this.form = form;
@@ -44,6 +53,7 @@ public class FormFragment<T> extends DialogFragment implements Observable<T> {
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				dispatcher.dispatch(new CancelEvent());
 				dialog.dismiss();
 			}
 		});
@@ -74,7 +84,7 @@ public class FormFragment<T> extends DialogFragment implements Observable<T> {
 					if (data == null) {
 						data = form.getData();
 					}
-					observable.notifyObservers(data);
+					dispatcher.dispatch(new OKEvent<T>(data));
 				} catch (InvalidDataException e) {
 					Helper.logErrorStackTrace(FormFragment.this, e,
 							"Unable to notify observers");
@@ -97,12 +107,13 @@ public class FormFragment<T> extends DialogFragment implements Observable<T> {
 	}
 
 	@Override
-	public void addObserver(Observer<T> observer) {
-		observable.addObserver(observer);
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type, listener);
 	}
 
 	@Override
-	public void removeObserver(Observer<T> observer) {
-		observable.removeObserver(observer);
+	public void removeEventListener(Class<? extends Event> type,
+			Listener listener) {
+		dispatcher.removeEventListener(type, listener);
 	}
 }

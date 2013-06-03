@@ -10,16 +10,16 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Event.Listener;
-import com.primateer.daikoku.model.Observer;
 import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 
-public class FormDialogConnector<T> implements Form<T>, Observer<T>,
+public class FormDialogConnector<T> implements Form<T>, Event.Listener,
 		Event.Dispatcher {
-	
+
 	public static class DataChangedEvent<T> extends Event {
 		public final T data;
+
 		public DataChangedEvent(T data) {
 			this.data = data;
 		}
@@ -57,7 +57,8 @@ public class FormDialogConnector<T> implements Form<T>, Observer<T>,
 		form.setData(data);
 		fragment = new FormFragment<T>();
 		fragment.setForm(form);
-		fragment.addObserver(FormDialogConnector.this);
+		fragment.addEventListener(FormFragment.OKEvent.class,
+				FormDialogConnector.this);
 		fragment.show(
 				((FragmentActivity) this.context).getSupportFragmentManager(),
 				null);
@@ -67,7 +68,7 @@ public class FormDialogConnector<T> implements Form<T>, Observer<T>,
 	@SuppressWarnings("unchecked")
 	private Form<T> getForm(Class<T> type, Context context) {
 		if (viewUsed) {
-			fragment.removeObserver(this);
+			fragment.removeEventListener(FormFragment.OKEvent.class, this);
 			form = null;
 			viewUsed = false;
 		}
@@ -136,12 +137,6 @@ public class FormDialogConnector<T> implements Form<T>, Observer<T>,
 	}
 
 	@Override
-	public void update(T data) {
-		this.data = data;
-		dispatcher.dispatch(new DataChangedEvent<T>(data));
-	}
-
-	@Override
 	public void addEventListener(Class<? extends Event> type, Listener listener) {
 		dispatcher.addEventListener(type, listener);
 	}
@@ -150,5 +145,16 @@ public class FormDialogConnector<T> implements Form<T>, Observer<T>,
 	public void removeEventListener(Class<? extends Event> type,
 			Listener listener) {
 		dispatcher.removeEventListener(type, listener);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onEvent(Event event) {
+		update(((FormFragment.OKEvent<T>) event).data);
+	}
+
+	private void update(T data) {
+		this.data = data;
+		dispatcher.dispatch(new DataChangedEvent<T>(data));
 	}
 }
