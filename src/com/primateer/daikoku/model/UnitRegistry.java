@@ -30,8 +30,10 @@ public class UnitRegistry {
 		this.setDefaultUnit(Unit.UNIT_UNITS);
 
 		this.register(Unit.UNIT_EURO);
-		this.register(Unit.UNIT_DOLLAR);
-		// TODO more currencies
+		this.register(Unit.UNIT_USD);
+		this.register(Unit.UNIT_JPY);
+		this.register(Unit.UNIT_GBP);
+		this.register(Unit.UNIT_CHF);
 		this.setDefaultUnit(Unit.UNIT_EURO);
 
 		this.register(Unit.UNIT_KILOGRAM);
@@ -39,15 +41,28 @@ public class UnitRegistry {
 		this.register(Unit.UNIT_MILLIGRAM);
 		this.register(Unit.UNIT_MICROGRAM);
 		this.register(Unit.UNIT_POUND);
+		this.register(Unit.UNIT_STONE);
+		this.register(Unit.UNIT_OUNCE);
+		this.register(Unit.UNIT_DRAM);
+		this.register(Unit.UNIT_GRAIN);
 		this.setDefaultUnit(Unit.UNIT_GRAM);
 
 		this.register(Unit.UNIT_KILOCALORIE);
-		// TODO kilojoule
+		this.register(Unit.UNIT_KILOJOULE);
 		this.setDefaultUnit(Unit.UNIT_KILOCALORIE);
 
+		this.register(Unit.UNIT_CENTILITER);
 		this.register(Unit.UNIT_MILLILITER);
-		// TODO different volumes
+		this.register(Unit.UNIT_US_GALLON);
+		this.register(Unit.UNIT_US_QUART);
+		this.register(Unit.UNIT_US_CUP);
+		this.register(Unit.UNIT_US_FLUID_OUNCE);
 		this.setDefaultUnit(Unit.UNIT_MILLILITER);
+
+		this.register(Unit.UNIT_CENTIMETER);
+		this.register(Unit.UNIT_FOOT);
+		this.register(Unit.UNIT_INCH);
+		this.setDefaultUnit(Unit.UNIT_CENTIMETER);
 	}
 
 	/**
