@@ -12,18 +12,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final int DB_VERSION = 1;
 
 	public DatabaseHelper(Context context) {
-		super(context,DB_NAME,null,DB_VERSION);
+		super(context, DB_NAME, null, DB_VERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		System.out.println("Creating database.");
+		loadSQL(db, "db/create.sql");
+		// loadSQL("db/populate.sql");
+	}
+
+	public void loadSQL(SQLiteDatabase db, String file) {
 		try {
-			// load instructions
-			String batch = Helper.loadAsset("db/create.sql")
-					+ Helper.loadAsset("db/populate.sql");
 			// spoon feed Android one instruction at a time
-			String[] instructions = batch.split(";");
+			String[] instructions = Helper.loadAsset(file).split(";");
 			for (int i = 0; i < instructions.length; i++) {
 				String instruction = instructions[i].trim();
 				// discard empty instructions

@@ -14,7 +14,7 @@ public class DatabaseProvider extends ContentProvider {
 
 	private SQLiteOpenHelper dbHelper;
 
-	private SQLiteDatabase getDB(boolean writable) {
+	public SQLiteDatabase getDB(boolean writable) {
 		if (dbHelper == null) {
 			dbHelper = new DatabaseHelper(getContext());
 		}
@@ -23,6 +23,10 @@ public class DatabaseProvider extends ContentProvider {
 		} else {
 			return dbHelper.getReadableDatabase();
 		}
+	}
+	
+	public SQLiteOpenHelper getHelper() {
+		return dbHelper;
 	}
 
 	private String getTable(Uri uri) {
