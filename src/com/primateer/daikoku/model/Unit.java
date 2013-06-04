@@ -12,9 +12,10 @@ public class Unit extends ValueObject {
 	public static final Unit UNIT_UNITS = new Unit("units",Type.COUNT);
 	public static final Unit UNIT_EURO = new Unit("€",Type.CURRENCY);
 	public static final Unit UNIT_DOLLAR = new Unit("$",Type.CURRENCY);
+	public static final Unit UNIT_KILOGRAM = new Unit("kg", Type.MASS);
 	public static final Unit UNIT_GRAM = new Unit("g", Type.MASS);
 	public static final Unit UNIT_MILLIGRAM = new Unit("mg", Type.MASS);
-	public static final Unit UNIT_KILOGRAM = new Unit("kg", Type.MASS);
+	public static final Unit UNIT_MICROGRAM = new Unit("µg", Type.MASS);
 	public static final Unit UNIT_POUND = new Unit("lb", Type.MASS);
 	public static final Unit UNIT_KILOCALORIE = new Unit("kcal", Type.ENERGY);
 	public static final Unit UNIT_MILLILITER = new Unit("ml", Type.VOLUME);

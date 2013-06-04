@@ -33,9 +33,10 @@ public class UnitRegistry {
 		this.register(Unit.UNIT_DOLLAR);
 		this.setDefaultUnit(Unit.UNIT_EURO);
 
+		this.register(Unit.UNIT_KILOGRAM);
 		this.register(Unit.UNIT_GRAM);
 		this.register(Unit.UNIT_MILLIGRAM);
-		this.register(Unit.UNIT_KILOGRAM);
+		this.register(Unit.UNIT_MICROGRAM);
 		this.register(Unit.UNIT_POUND);
 		this.setDefaultUnit(Unit.UNIT_GRAM);
 

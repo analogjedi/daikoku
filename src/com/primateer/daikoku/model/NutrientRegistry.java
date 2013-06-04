@@ -36,8 +36,36 @@ public class NutrientRegistry {
 		register(Nutrient.TYPE_CHOLESTEROL);
 		register(Nutrient.TYPE_SODIUM);
 		register(Nutrient.TYPE_SATURATED_FAT);
+		register(Nutrient.TYPE_OMEGA3);
+		register(Nutrient.TYPE_OMEGA6);
 		register(Nutrient.TYPE_FIBER);
+		register(Nutrient.TYPE_POTASSIUM);
 		register(Nutrient.TYPE_SUGAR);
+		register(Nutrient.TYPE_VITAMIN_A);
+		register(Nutrient.TYPE_VITAMIN_B1);
+		register(Nutrient.TYPE_VITAMIN_B2);
+		register(Nutrient.TYPE_VITAMIN_B3);
+		register(Nutrient.TYPE_VITAMIN_B5);
+		register(Nutrient.TYPE_VITAMIN_B6);
+		register(Nutrient.TYPE_VITAMIN_B7);
+		register(Nutrient.TYPE_VITAMIN_B9);
+		register(Nutrient.TYPE_VITAMIN_B12);
+		register(Nutrient.TYPE_VITAMIN_C);
+		register(Nutrient.TYPE_VITAMIN_D);
+		register(Nutrient.TYPE_VITAMIN_E);
+		register(Nutrient.TYPE_VITAMIN_K);
+		register(Nutrient.TYPE_CALCIUM);
+		register(Nutrient.TYPE_IRON);
+		register(Nutrient.TYPE_PHOSPHOR);
+		register(Nutrient.TYPE_MAGNESIUM);
+		register(Nutrient.TYPE_ZINC);
+		register(Nutrient.TYPE_IODINE);
+		register(Nutrient.TYPE_SELENIUM);
+		register(Nutrient.TYPE_COPPER);
+		register(Nutrient.TYPE_MANGANESE);
+		register(Nutrient.TYPE_CHROMIUM);
+		register(Nutrient.TYPE_MOLYBDENUM);
+		register(Nutrient.TYPE_CHLORIDE);
 
 		defaultReferenceAmount = new Amount(100, Unit.UNIT_GRAM); // TODO
 	}

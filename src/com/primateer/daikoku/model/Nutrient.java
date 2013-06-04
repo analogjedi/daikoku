@@ -86,14 +86,71 @@ public class Nutrient {
 			R.string.nutrient_type_fat, Unit.UNIT_GRAM);
 	public static final Type TYPE_SATURATED_FAT = new BuiltInType("Fs",
 			R.string.nutrient_type_saturated_fat, Unit.UNIT_GRAM);
+	public static final Type TYPE_OMEGA3 = new BuiltInType("Fo3",
+			R.string.nutrient_type_omega3, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_OMEGA6 = new BuiltInType("Fo6",
+			R.string.nutrient_type_omega6, Unit.UNIT_GRAM);
 	public static final Type TYPE_CHOLESTEROL = new BuiltInType("CH",
 			R.string.nutrient_type_cholesterol, Unit.UNIT_MILLIGRAM);
 	public static final Type TYPE_SODIUM = new BuiltInType("S",
 			R.string.nutrient_type_sodium, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_POTASSIUM = new BuiltInType("PO",
+			R.string.nutrient_type_potassium, Unit.UNIT_MILLIGRAM);
 	public static final Type TYPE_FIBER = new BuiltInType("Cf",
 			R.string.nutrient_type_fiber, Unit.UNIT_GRAM);
 	public static final Type TYPE_SUGAR = new BuiltInType("Cs",
 			R.string.nutrient_type_sugar, Unit.UNIT_GRAM);
+	public static final Type TYPE_VITAMIN_A = new BuiltInType("VA",
+			R.string.nutrient_type_vitamin_a, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_VITAMIN_B1 = new BuiltInType("VB1",
+			R.string.nutrient_type_vitamin_b1, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_VITAMIN_B2 = new BuiltInType("VB2",
+			R.string.nutrient_type_vitamin_b2, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_VITAMIN_B3 = new BuiltInType("VB3",
+			R.string.nutrient_type_vitamin_b3, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_VITAMIN_B5 = new BuiltInType("VB5",
+			R.string.nutrient_type_vitamin_b5, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_VITAMIN_B6 = new BuiltInType("VB6",
+			R.string.nutrient_type_vitamin_b6, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_VITAMIN_B7 = new BuiltInType("VB7",
+			R.string.nutrient_type_vitamin_b7, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_VITAMIN_B9 = new BuiltInType("VB9",
+			R.string.nutrient_type_vitamin_b9, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_VITAMIN_B12 = new BuiltInType("VB12",
+			R.string.nutrient_type_vitamin_b12, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_VITAMIN_C = new BuiltInType("VC",
+			R.string.nutrient_type_vitamin_c, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_VITAMIN_D = new BuiltInType("VD",
+			R.string.nutrient_type_vitamin_d, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_VITAMIN_E = new BuiltInType("VE",
+			R.string.nutrient_type_vitamin_e, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_VITAMIN_K = new BuiltInType("VK",
+			R.string.nutrient_type_vitamin_k, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_CALCIUM = new BuiltInType("CA",
+			R.string.nutrient_type_calcium, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_IRON = new BuiltInType("FE",
+			R.string.nutrient_type_iron, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_PHOSPHOR = new BuiltInType("PH",
+			R.string.nutrient_type_phosphor, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_MAGNESIUM = new BuiltInType("MG",
+			R.string.nutrient_type_magnesium, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_ZINC = new BuiltInType("ZN",
+			R.string.nutrient_type_zinc, Unit.UNIT_MILLIGRAM);
+	public static final Type TYPE_IODINE = new BuiltInType("I",
+			R.string.nutrient_type_iodine, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_SELENIUM = new BuiltInType("SE",
+			R.string.nutrient_type_selenium, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_COPPER = new BuiltInType("CU",
+			R.string.nutrient_type_copper, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_MANGANESE = new BuiltInType("MN",
+			R.string.nutrient_type_manganese, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_CHROMIUM = new BuiltInType("CR",
+			R.string.nutrient_type_chromium, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_MOLYBDENUM = new BuiltInType("MO",
+			R.string.nutrient_type_molybdenum, Unit.UNIT_MICROGRAM);
+	public static final Type TYPE_CHLORIDE = new BuiltInType("CL",
+			R.string.nutrient_type_chloride, Unit.UNIT_MILLIGRAM);
+	
 
 	public final Nutrient.Type type;
 	public final Amount amount;
