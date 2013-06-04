@@ -40,28 +40,26 @@ public class CatalogView<T extends ValueObject> extends LinearLayout {
 		listAdapter = new CatalogListAdapter<T>(catalog);
 		itemList.setAdapter(listAdapter);
 
-		// add button
-		addButton = new AddButton(context);
-		addButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FormDialogConnector<T> connector = new FormDialogConnector<T>(
-						listAdapter.getCatalog().dataClass, CatalogView.this
-								.getContext());
-//				connector.addObserver(new Observer<T>() {
-//					@Override
-//					public void update(T item) {
-//						listAdapter.add(item);
-//					}
-//				});
-				connector.showDialog();
-			}
-		});
+		if (catalog.isEditable()) {
+			// add button
+			addButton = new AddButton(context);
+			addButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					FormDialogConnector<T> connector = new FormDialogConnector<T>(
+							listAdapter.getCatalog().dataClass,
+							CatalogView.this.getContext());
+					connector.showDialog();
+				}
+			});
+		}
 
 		// composition
 		this.addView(itemList);
 		this.addView(new Separator(context));
-		this.addView(addButton);
+		if (catalog.isEditable()) {
+			this.addView(addButton);
+		}
 	}
 
 	public void add(T item) {

@@ -37,6 +37,8 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 	public CatalogRowWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
+		this.setMinimumHeight(30);
+
 		deleteButton = new DeleteRowButton(context, dispatcher);
 		LinearLayout.LayoutParams deleteLayout = new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.25f);
@@ -66,6 +68,11 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 		this.addView(deleteButton, deleteLayout);
 		this.addView(editButton, editLayout);
 		this.addView(selectView, selectLayout);
+	}
+
+	public void setEditable(boolean editable) {
+		deleteButton.setVisibility(editable ? View.VISIBLE : View.GONE);
+		editButton.setVisibility(editable ? View.VISIBLE : View.GONE);
 	}
 
 	public void setDataClass(Class<T> dataClass) { // TODO make this private

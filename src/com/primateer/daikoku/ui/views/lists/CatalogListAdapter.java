@@ -34,6 +34,7 @@ public class CatalogListAdapter<T extends ValueObject> extends
 	@Override
 	protected DataRowWidget<T> newWidget(Context context) {
 		final CatalogRowWidget<T> widget = new CatalogRowWidget<T>(context);
+		widget.setEditable(((Catalog<T>) data).isEditable());
 		widget.setDataClass(((Catalog<T>) data).dataClass);
 		widget.addEventListener(CatalogRowWidget.SelectedEvent.class,
 				new Event.Listener() {

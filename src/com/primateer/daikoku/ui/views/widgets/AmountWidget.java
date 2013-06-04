@@ -42,6 +42,7 @@ public class AmountWidget extends LinearLayout implements Event.Registry,
 				@Override
 				public void onClick(View v) {
 					Catalog<Unit> catalog = new Catalog<Unit>(Unit.class);
+					catalog.setEditable(false);
 					catalog.setLoader(new Loader<Unit>() {
 						@Override
 						public Collection<Unit> load(Catalog<Unit> catalog) {

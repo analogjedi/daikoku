@@ -31,6 +31,7 @@ public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 	public final Class<T> dataClass;
 	private Loader<T> loader;
 	private String title;
+	private boolean editable = true;
 
 	public Catalog(final Class<T> dataClass) {
 		this.dataClass = dataClass;
@@ -77,5 +78,13 @@ public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 	public void removeEventListener(Class<? extends Event> type,
 			Listener listener) {
 		dispatcher.removeEventListener(type,listener);
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 }
