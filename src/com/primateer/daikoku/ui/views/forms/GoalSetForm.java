@@ -203,6 +203,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 			public void onClick(View v) {
 				Catalog<Nutrient.Type> catalog = new Catalog<Nutrient.Type>(
 						Nutrient.Type.class);
+				catalog.setEditable(false);
 				catalog.setLoader(new Catalog.Loader<Nutrient.Type>() {
 					@Override
 					public Collection<Nutrient.Type> load(Catalog<Type> catalog) {
