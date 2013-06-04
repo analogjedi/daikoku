@@ -60,9 +60,6 @@ Goals
 Lists
 * Change item order per drag & drop
 
-Units
-* Cascaded unit conversion
-
 User Interface
 * animate date change fling
 * Edit goals by clicking on watch widget

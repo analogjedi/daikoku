@@ -43,6 +43,12 @@ public class AmountTest extends TestCase {
 		assertEquals(Unit.UNIT_KILOGRAM,
 				onepound.convert(Unit.UNIT_KILOGRAM).unit);
 	}
+	
+	public void testConvert2() throws UnitConversionException {
+		Amount ug = new Amount("3333333333.33µg");
+		Amount kg = new Amount("3.33333333333kg");
+		assertEquals(ug.value,kg.convert(ug.unit).value);
+	}
 
 	public void testAdd() throws UnitConversionException {
 		Amount onepound = new Amount("1lb");

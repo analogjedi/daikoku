@@ -28,9 +28,10 @@ public class UnitRegistry {
 	private UnitRegistry() {
 		this.register(Unit.UNIT_UNITS);
 		this.setDefaultUnit(Unit.UNIT_UNITS);
-		
+
 		this.register(Unit.UNIT_EURO);
 		this.register(Unit.UNIT_DOLLAR);
+		// TODO more currencies
 		this.setDefaultUnit(Unit.UNIT_EURO);
 
 		this.register(Unit.UNIT_KILOGRAM);
@@ -41,9 +42,11 @@ public class UnitRegistry {
 		this.setDefaultUnit(Unit.UNIT_GRAM);
 
 		this.register(Unit.UNIT_KILOCALORIE);
+		// TODO kilojoule
 		this.setDefaultUnit(Unit.UNIT_KILOCALORIE);
 
 		this.register(Unit.UNIT_MILLILITER);
+		// TODO different volumes
 		this.setDefaultUnit(Unit.UNIT_MILLILITER);
 	}
 
