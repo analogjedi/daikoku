@@ -50,14 +50,6 @@ CREATE TABLE 'meal' (
 	FOREIGN KEY ('_id') REFERENCES 'recipe'('_id')
 );
 
-CREATE TABLE 'recipe_nutrient' (
-	'recipe' INTEGER NOT NULL,
-	'type' TEXT NOT NULL,
-	'amount' TEXT NOT NULL,
-	PRIMARY KEY ('recipe','type'),
-	FOREIGN KEY ('recipe') REFERENCES 'recipe'('_id')
-);
-
 CREATE TABLE 'shopping_item' (
 	'id' INTEGER PRIMARY KEY AUTOINCREMENT,
 	'product' INTEGER NOT NULL,
