@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
@@ -28,6 +27,7 @@ import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
+import com.primateer.daikoku.ui.views.widgets.ListWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
@@ -178,7 +178,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 		}
 	}
 
-	private ListView listView;
+	private ListWidget listView;
 	private GoalListAdapter listAdapter;
 	private AddButton addButton;
 
@@ -190,10 +190,7 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 		super(context, attrs);
 		this.setOrientation(VERTICAL);
 
-		listView = new ListView(context);
-		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0,
-				1.0f));
-		listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		listView = new ListWidget(context);
 		listAdapter = new GoalListAdapter();
 		listView.setAdapter(listAdapter);
 

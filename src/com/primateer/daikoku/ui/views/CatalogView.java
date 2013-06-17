@@ -5,20 +5,20 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.views.connector.FormDialogConnector;
 import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
+import com.primateer.daikoku.ui.views.widgets.ListWidget;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 
 @SuppressLint("ViewConstructor")
 public class CatalogView<T extends ValueObject> extends LinearLayout {
 
 	private AddButton addButton;
-	private ListView itemList;
+	private ListWidget itemList;
 	private CatalogListAdapter<T> listAdapter;
 
 	public CatalogView(Context context, Catalog<T> catalog) {
@@ -32,11 +32,7 @@ public class CatalogView<T extends ValueObject> extends LinearLayout {
 				LayoutParams.MATCH_PARENT));
 
 		// item list
-		itemList = new ListView(context);
-		itemList.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0,
-				1.0f));
-		itemList.setScrollContainer(false);
-		itemList.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		itemList = new ListWidget(context);
 		listAdapter = new CatalogListAdapter<T>(catalog);
 		itemList.setAdapter(listAdapter);
 

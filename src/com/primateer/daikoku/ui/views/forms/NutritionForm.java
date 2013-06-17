@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
@@ -27,6 +26,7 @@ import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
+import com.primateer.daikoku.ui.views.widgets.ListWidget;
 import com.primateer.daikoku.ui.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
@@ -144,7 +144,7 @@ public class NutritionForm extends VoForm<Nutrition> {
 	}
 
 	private AmountWidget referenceAmount;
-	private ListView nutrientList;
+	private ListWidget nutrientList;
 	private NutrientListAdapter listAdapter;
 	private AddButton addButton;
 	private List<Nutrient.Type> permissibleTypes;
@@ -165,11 +165,7 @@ public class NutritionForm extends VoForm<Nutrition> {
 		referenceAmount = new ReferenceAmountWidget(context);
 
 		// nutrient list
-		nutrientList = new ListView(context);
-		nutrientList.setLayoutParams(new LayoutParams(
-				LayoutParams.MATCH_PARENT, 0, 1.0f));
-		nutrientList.setScrollContainer(false);
-		nutrientList.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		nutrientList = new ListWidget(context);
 		listAdapter = new NutrientListAdapter();
 		listAdapter.registerDataSetObserver(new ButtonManager());
 		nutrientList.setAdapter(listAdapter);

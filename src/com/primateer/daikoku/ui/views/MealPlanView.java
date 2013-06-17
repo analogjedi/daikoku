@@ -10,7 +10,6 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.db.DBController;
@@ -28,6 +27,7 @@ import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.DateWidget;
+import com.primateer.daikoku.ui.views.widgets.ListWidget;
 import com.primateer.daikoku.ui.views.widgets.NutritionWatchWidget;
 
 public class MealPlanView extends LinearLayout {
@@ -86,7 +86,7 @@ public class MealPlanView extends LinearLayout {
 
 	private DateWidget datePicker;
 	private NutritionWatchWidget watcher;
-	private ListView listView;
+	private ListWidget listView;
 	private MealListAdapter listAdapter;
 	private AddButton addButton;
 
@@ -111,10 +111,7 @@ public class MealPlanView extends LinearLayout {
 		watcher.setGoals(GoalRegistry.getInstance()
 				.getGoals(Goal.Scope.PER_DAY));
 
-		listView = new ListView(context);
-		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0,
-				1.0f));
-		listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		listView = new ListWidget(context);
 		Catalog<Meal> catalog = new Catalog<Meal>(Meal.class);
 		catalog.setLoader(new Catalog.Loader<Meal>() {
 			@Override
@@ -126,6 +123,7 @@ public class MealPlanView extends LinearLayout {
 		listAdapter = new MealListAdapter(catalog);
 		listView.setAdapter(listAdapter);
 		// fling detection on list
+		// FIXME doesn't work on non-empty list
 		final GestureDetector detector = new GestureDetector(context,
 				new SwipeDetector());
 		listView.setOnTouchListener(new View.OnTouchListener() {

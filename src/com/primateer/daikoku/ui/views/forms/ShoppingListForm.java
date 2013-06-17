@@ -9,7 +9,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
@@ -28,6 +27,7 @@ import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
+import com.primateer.daikoku.ui.views.widgets.ListWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public class ShoppingListForm extends VoForm<ShoppingList> {
@@ -173,17 +173,14 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 		}
 	}
 
-	private ListView listView;
+	private ListWidget listView;
 	private ShoppingListAdapter listAdapter;
 	private AddButton addButton;
 
 	public ShoppingListForm(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		listView = new ListView(context);
-		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0,
-				1.0f));
-		listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		listView = new ListWidget(context);
 		listAdapter = new ShoppingListAdapter();
 		listView.setAdapter(listAdapter);
 

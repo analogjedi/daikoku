@@ -14,7 +14,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
@@ -37,13 +36,14 @@ import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 import com.primateer.daikoku.ui.views.widgets.LabelWidget;
+import com.primateer.daikoku.ui.views.widgets.ListWidget;
 import com.primateer.daikoku.ui.views.widgets.NutritionWatchWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
 public class RecipeForm extends VoForm<Recipe> {
 
 	private LabelWidget label;
-	private ListView componentList;
+	private ListWidget componentList;
 	private ComponentListAdapter listAdapter;
 	private AddButton addButton;
 	private ImageButton favButton;
@@ -187,11 +187,7 @@ public class RecipeForm extends VoForm<Recipe> {
 
 		label = new LabelWidget(context);
 
-		componentList = new ListView(context);
-		componentList.setLayoutParams(new LayoutParams(
-				LayoutParams.MATCH_PARENT, 0, 1.0f));
-		componentList.setScrollContainer(false);
-		componentList.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		componentList = new ListWidget(context);
 		listAdapter = new ComponentListAdapter();
 		listAdapter.addEventListener(DataRowListAdapter.ListChangedEvent.class,
 				new Event.Listener() {
