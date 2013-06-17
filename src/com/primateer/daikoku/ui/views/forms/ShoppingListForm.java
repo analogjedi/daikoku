@@ -226,8 +226,10 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 			}
 		});
 
-		this.addView(listView);
-		this.addView(addButton);
+		this.addView(listView, new LayoutParams(LayoutParams.MATCH_PARENT, 0,
+				1.0f));
+		this.addView(addButton, new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
 	}
 
 	public ShoppingListForm(Context context) {
