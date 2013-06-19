@@ -12,7 +12,7 @@ public abstract class VoForm<T extends ValueObject> extends LinearLayout impleme
 
 	private static final int PADDING_LEFT = 50;
 	
-	private long dataId = -1;
+	private long dataId = new ValueObject().getId();
 
 	public VoForm(Context context, AttributeSet attrs) {
 		super(context, attrs);

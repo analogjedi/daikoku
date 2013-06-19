@@ -54,8 +54,34 @@ public class Nutrition extends ValueObject {
 		}
 	}
 
-	public void add(Nutrition other) {
-		// TODO Auto-generated method stub
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((nutrients == null) ? 0 : nutrients.hashCode());
+		result = prime * result
+				+ ((referenceAmount == null) ? 0 : referenceAmount.hashCode());
+		return result;
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (getClass() != obj.getClass())
+			return false;
+		Nutrition other = (Nutrition) obj;
+		if (nutrients == null) {
+			if (other.nutrients != null)
+				return false;
+		} else if (!nutrients.equals(other.nutrients))
+			return false;
+		if (referenceAmount == null) {
+			if (other.referenceAmount != null)
+				return false;
+		} else if (!referenceAmount.equals(other.referenceAmount))
+			return false;
+		return true;
 	}
 }

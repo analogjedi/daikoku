@@ -8,6 +8,7 @@ import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Amount.AmountException;
+import com.primateer.daikoku.model.Amount.UnitConversionException;
 import com.primateer.daikoku.model.Amount.UnknownAmountException;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientSet;
@@ -23,6 +24,14 @@ public class Recipe extends ValueObject implements NutritionHolder {
 	private NutrientSet extraNutrition;
 
 	public Recipe add(Product product, Amount amount) {
+		if (getIngredients().containsKey(product)) {
+			try {
+				amount = amount.add(getIngredients().get(product));
+			} catch (UnitConversionException e) {
+				// FIXME this should be handled in a proper manner
+				throw new RuntimeException(e);
+			}
+		}
 		getIngredients().put(product, amount);
 		return this;
 	}

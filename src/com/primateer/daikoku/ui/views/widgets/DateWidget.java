@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.Event.SimpleDispatcher;
@@ -103,10 +104,11 @@ public class DateWidget extends LinearLayout implements
 	}
 
 	public void addDays(int d) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(currentDate);
-		c.add(Calendar.DATE, d);
-		currentDate = c.getTime();
+//		Calendar c = Calendar.getInstance();
+//		c.setTime(currentDate);
+//		c.add(Calendar.DATE, d);
+//		currentDate = c.getTime();
+		currentDate = Helper.addDays(currentDate, d);
 		updateDate();
 	}
 

@@ -86,9 +86,10 @@ public class TestDataFactory {
 	}
 	
 	public static long inputLentils() {
-		long lentilsId = -1;
-		Date today = new Date();
-
+		return inputLentils(new Date());
+	}
+	
+	public static long inputLentils(Date day) {
 		Nutrition lentilsNutrition = new Nutrition();
 		lentilsNutrition.setNutrient(new Nutrient(Nutrient.TYPE_ENERGY,
 				new Amount("336kcal")));
@@ -112,19 +113,19 @@ public class TestDataFactory {
 		Meal meal1 = new Meal();
 		meal1.setLabel("1st meal");
 		meal1.add(recipeLentils);
-		meal1.setDue(today);
+		meal1.setDue(day);
 		meal1.setState(Meal.State.CONSUMED);
 
 		Meal meal2 = new Meal();
 		meal2.setLabel("2nd meal");
 		meal2.add(recipeLentils);
-		meal2.setDue(today);
+		meal2.setDue(day);
 		meal2.setState(Meal.State.CONSUMED);
 
 		Meal meal3 = new Meal();
 		meal3.setLabel("3rd meal");
 		meal3.add(recipeLentils);
-		meal3.setDue(today);
+		meal3.setDue(day);
 		meal3.setState(Meal.State.SCHEDULED);
 
 		// TOTAL 375 g
@@ -134,7 +135,7 @@ public class TestDataFactory {
 		// FAT 6.0 g
 
 		DBController db = DBController.getInstance();
-		lentilsId = db.register(lentils);
+		long lentilsId = db.register(lentils);
 		db.register(meal1);
 		db.register(meal2);
 		db.register(meal2); // deliberate duplicate

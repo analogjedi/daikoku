@@ -1,11 +1,15 @@
 package com.primateer.daikoku.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Amount.UnitConversionException;
+import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.model.vos.ShoppingItem;
@@ -17,7 +21,7 @@ public class ShoppingList extends ValueObject {
 	public ShoppingList() {
 		this(null);
 	}
-	
+
 	public ShoppingList(List<ShoppingItem> list) {
 		super();
 		this.setId(0); // there is only one shopping list
@@ -31,10 +35,25 @@ public class ShoppingList extends ValueObject {
 	public void add(ShoppingItem item) {
 		items.put(item.product, item);
 	}
-	
+
 	public void add(Recipe recipe) {
 		for (Product product : recipe.getIngredients().keySet()) {
 			this.add(product, recipe.getIngredients().get(product));
+		}
+	}
+
+	public void add(Date start, Date end) {
+		Date threshold = Helper.addDays(end, 1);
+		for (Date current = start; !Helper.isSameDay(current, threshold); current = Helper
+				.addDays(current, 1)) {
+			this.add(current);
+		}
+	}
+
+	public void add(Date day) {
+		List<Meal> meals = DBController.getInstance().loadAllMeals(day);
+		for (Meal meal : meals) {
+			this.add(meal);
 		}
 	}
 
@@ -77,11 +96,11 @@ public class ShoppingList extends ValueObject {
 	public Amount getAmount(Product product) {
 		return items.get(product).getAmount();
 	}
-	
-	public Map<Product,ShoppingItem> getItems() {
+
+	public Map<Product, ShoppingItem> getItems() {
 		return items;
 	}
-	
+
 	public List<ShoppingItem> getItemList() {
 		ArrayList<ShoppingItem> list = new ArrayList<ShoppingItem>();
 		for (Product product : items.keySet()) {

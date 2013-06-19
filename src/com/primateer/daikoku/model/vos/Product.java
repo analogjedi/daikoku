@@ -86,4 +86,46 @@ public class Product extends ValueObject {
 	public Amount getNutrition(Type type) throws AmountException {
 		return nutrition.getAmount(type, amount);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result
+				+ ((nutrition == null) ? 0 : nutrition.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(units);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		if (amount == null) {
+			if (other.amount != null)
+				return false;
+		} else if (!amount.equals(other.amount))
+			return false;
+		if (label == null) {
+			if (other.label != null)
+				return false;
+		} else if (!label.equals(other.label))
+			return false;
+		if (nutrition == null) {
+			if (other.nutrition != null)
+				return false;
+		} else if (!nutrition.equals(other.nutrition))
+			return false;
+		if (Double.doubleToLongBits(units) != Double
+				.doubleToLongBits(other.units))
+			return false;
+		return true;
+	}	
 }
