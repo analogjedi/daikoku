@@ -144,9 +144,21 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 	}
 
 	private class ShoppingListAdapter extends DataRowListAdapter<ShoppingItem> {
+		
+		ShoppingList list = new ShoppingList();
+		
 		@Override
 		protected DataRowWidget<ShoppingItem> newWidget(Context context) {
 			return new ShoppingItemRowWidget(context);
+		}
+		
+		public void setList(ShoppingList list) {
+			this.list = list;
+			this.setData(list.getItemList());
+		}
+		
+		public ShoppingList getList() {
+			return list;
 		}
 
 		public void add(final Product product) {
@@ -158,18 +170,17 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 						public void onEvent(Event event) {
 							@SuppressWarnings("unchecked")
 							Amount amount = ((FormFragment.AcceptEvent<Amount>) event).data;
-							ShoppingListAdapter.super.add(new ShoppingItem(
-									product, amount, false));
+
+							list.add(product, amount);
+							setList(list);
 						}
 					});
 			Application.getInstance().dispatch(action);
 		}
 
 		public void add(Recipe recipe) {
-			for (Product product : recipe.getIngredients().keySet()) {
-				ShoppingListAdapter.super.add(new ShoppingItem(product, recipe
-						.getIngredients().get(product), false));
-			}
+			list.add(recipe);
+			setList(list);
 		}
 	}
 
@@ -253,13 +264,13 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 
 	@Override
 	protected ShoppingList gatherData() throws InvalidDataException {
-		return new ShoppingList(listAdapter.getData());
+		return listAdapter.getList();
 	}
 
 	@Override
 	protected void fillFields(ShoppingList data)
 			throws IllegalArgumentException {
-		listAdapter.setData(data.getItemList());
+		listAdapter.setList(data);
 	}
 
 }
