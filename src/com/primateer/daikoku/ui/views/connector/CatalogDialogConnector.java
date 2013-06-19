@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.ui.views.CatalogView;
+import com.primateer.daikoku.ui.dialogs.CatalogView;
+import com.primateer.daikoku.ui.dialogs.DialogView;
 
 public class CatalogDialogConnector<T extends ValueObject> {
 
@@ -31,33 +31,19 @@ public class CatalogDialogConnector<T extends ValueObject> {
 
 	public CatalogDialogConnector(final Catalog<T> catalog, Context context,
 			String title) {
-		final Event.Listener dbListener = new Event.Listener() {
-			@Override
-			public void onEvent(Event event) {
-				DBController.DBChangedEvent e = (DBController.DBChangedEvent) event;
-				if (e.type.equals(catalog.dataClass)) {
-					catalogView.reload();
-				}
-			}
-		};
-		DBController.getInstance().addEventListener(
-				DBController.DBChangedEvent.class, dbListener);
 		catalogView = new CatalogView<T>(context, catalog);
+		catalogView.addEventListener(DialogView.DismissedEvent.class,
+				new Event.Listener() {
+					@Override
+					public void onEvent(Event event) {
+						dialog.dismiss();
+					}
+				});
 		dialog = new Dialog(context);
 		dialog.setTitle(title);
 		ViewGroup content = (ViewGroup) catalogView;
 		content.setBackgroundColor(Color.WHITE); // FIXME
 		dialog.setContentView(content);
-		catalog.addEventListener(Catalog.SelectionEvent.class,
-				new Event.Listener() {
-					@Override
-					public void onEvent(Event event) {
-						dialog.dismiss();
-						DBController.getInstance().removeEventListener(
-								DBController.DBChangedEvent.class, dbListener);
-						dialog = null;
-					}
-				});
 	}
 
 	public void showDialog() {

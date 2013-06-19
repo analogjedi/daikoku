@@ -8,45 +8,42 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.ui.dialogs.CatalogView;
+import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.ui.dialogs.DialogView;
 import com.primateer.daikoku.ui.views.TabLayout;
 
-public class MultiCatalogDialogConnector {
+public class TabDialogConnector {
 
 	private Dialog dialog;
 
-	public MultiCatalogDialogConnector(List<Catalog<?>> catalogs,
-			View launcher, String title) {
-		this(catalogs, launcher.getContext(), title);
+	public TabDialogConnector(List<DialogView> pages, View launcher,
+			String title) {
+		this(pages, launcher.getContext(), title);
 		launcher.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MultiCatalogDialogConnector.this.showDialog();
+				TabDialogConnector.this.showDialog();
 			}
 		});
 	}
 
-	public MultiCatalogDialogConnector(final List<Catalog<?>> catalogs,
-			Context context, String title) {
-
+	public TabDialogConnector(final List<DialogView> pages, Context context,
+			String title) {
 		dialog = new Dialog(context);
 		dialog.setTitle(title);
 
 		TabLayout content = new TabLayout(context);
-		for (final Catalog<?> catalog : catalogs) {
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			CatalogView<?> view = new CatalogView(context, catalog);
-			view.addEventListener(DialogView.DismissedEvent.class,
-					new Event.Listener() {
+		for (DialogView page : pages) {
+			content.addPage(page.getTitle(), page.getView());
+			page.addEventListener(DialogView.DismissedEvent.class,
+					new Listener() {
 						@Override
 						public void onEvent(Event event) {
 							dialog.dismiss();
+							dialog = null;
 						}
 					});
-			content.addPage(catalog.getTitle(), view);
 		}
 
 		content.setBackgroundColor(Color.WHITE); // FIXME

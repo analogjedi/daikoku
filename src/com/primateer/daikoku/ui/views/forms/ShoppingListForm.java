@@ -1,5 +1,7 @@
 package com.primateer.daikoku.ui.views.forms;
 
+import java.util.Date;
+
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -22,7 +24,9 @@ import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.model.vos.ShoppingItem;
 import com.primateer.daikoku.ui.actions.FormAction;
-import com.primateer.daikoku.ui.actions.MultiCatalogAction;
+import com.primateer.daikoku.ui.actions.TabDialogAction;
+import com.primateer.daikoku.ui.dialogs.CatalogView;
+import com.primateer.daikoku.ui.dialogs.DateSpanView;
 import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
@@ -144,19 +148,19 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 	}
 
 	private class ShoppingListAdapter extends DataRowListAdapter<ShoppingItem> {
-		
+
 		ShoppingList list = new ShoppingList();
-		
+
 		@Override
 		protected DataRowWidget<ShoppingItem> newWidget(Context context) {
 			return new ShoppingItemRowWidget(context);
 		}
-		
+
 		public void setList(ShoppingList list) {
 			this.list = list;
 			this.setData(list.getItemList());
 		}
-		
+
 		public ShoppingList getList() {
 			return list;
 		}
@@ -176,6 +180,11 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 						}
 					});
 			Application.getInstance().dispatch(action);
+		}
+		
+		public void add(Date start, Date end) {
+			list.add(start,end);
+			setList(list);
 		}
 
 		public void add(Recipe recipe) {
@@ -199,8 +208,11 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MultiCatalogAction action = new MultiCatalogAction(
-						getContext(), getResources().getString(
+				// MultiCatalogAction action = new MultiCatalogAction(
+				// getContext(), getResources().getString(
+				// R.string.title_pick_for_shopping));
+				TabDialogAction action = new TabDialogAction(getContext(),
+						getResources().getString(
 								R.string.title_pick_for_shopping));
 
 				Catalog<Product> productCatalog = new Catalog<Product>(
@@ -216,7 +228,8 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 						});
 				productCatalog.setTitle(getResources().getString(
 						R.string.product));
-				action.add(productCatalog);
+				action.add(new CatalogView<Product>(getContext(),
+						productCatalog));
 
 				Catalog<Recipe> recipeCatalog = new Catalog<Recipe>(
 						Recipe.class);
@@ -231,7 +244,18 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 						});
 				recipeCatalog.setTitle(getResources()
 						.getString(R.string.recipe));
-				action.add(recipeCatalog);
+				action.add(new CatalogView<Recipe>(getContext(), recipeCatalog));
+
+				DateSpanView dateSpan = new DateSpanView(getContext());
+				dateSpan.addEventListener(DateSpanView.DatesPickedEvent.class,
+						new Listener() {
+							@Override
+							public void onEvent(Event event) {
+								DateSpanView.DatesPickedEvent dpe = (DateSpanView.DatesPickedEvent) event;
+								listAdapter.add(dpe.start,dpe.end);
+							}
+						});
+				action.add(dateSpan);
 
 				Application.getInstance().dispatch(action);
 			}
