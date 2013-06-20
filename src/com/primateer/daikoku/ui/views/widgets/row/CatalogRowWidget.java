@@ -13,7 +13,8 @@ import com.primateer.daikoku.Application;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.ui.views.connector.FormDialogConnector;
+import com.primateer.daikoku.ui.dialogs.FormFragment;
+import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 
 public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
@@ -26,7 +27,7 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 	private ImageButton deleteButton;
 	private ImageButton editButton;
 	private TextView selectView;
-	private FormDialogConnector<T> formConnector;
+	private Form<T> dataForm;
 
 	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
@@ -76,14 +77,16 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 	}
 
 	public void setDataClass(Class<T> dataClass) { // TODO make this private
-		formConnector = new FormDialogConnector<T>(dataClass, editButton);
-		formConnector.addEventListener(
-				FormDialogConnector.DataChangedEvent.class,
+		FormFragment<T> fragment = new FormFragment<T>();
+		fragment.setupForm(getContext(), dataClass);
+		fragment.connectLauncher(editButton);
+		dataForm = fragment.getForm();
+		dataForm.addEventListener(Form.DataChangedEvent.class,
 				new Event.Listener() {
 					@SuppressWarnings("unchecked")
 					@Override
 					public void onEvent(Event event) {
-						bufferedData = ((FormDialogConnector.DataChangedEvent<T>) event).data;
+						bufferedData = ((Form.DataChangedEvent<T>) event).data;
 						selectView.setText(bufferedData.toString());
 					}
 				});
@@ -91,7 +94,7 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 
 	@Override
 	public void setRowData(T data) {
-		formConnector.setData(data);
+		dataForm.setData(data);
 	}
 
 	@Override

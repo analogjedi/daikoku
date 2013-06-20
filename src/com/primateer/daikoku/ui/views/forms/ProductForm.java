@@ -6,16 +6,16 @@ import android.widget.Button;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
-import com.primateer.daikoku.ui.views.connector.FormDialogConnector;
+import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.widgets.LabelWidget;
 import com.primateer.daikoku.ui.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.ui.views.widgets.UnitsAmountWidget;
 
-public class ProductForm extends VoForm<Product> {
+public class ProductForm extends Form<Product> {
 
 	private LabelWidget label;
 	private ReferenceAmountWidget amount;
-	FormDialogConnector<Nutrition> nutritionConnector;
+	Form<Nutrition> nutritionForm;
 	private UnitsAmountWidget units;
 
 	public ProductForm(final Context context) {
@@ -29,8 +29,9 @@ public class ProductForm extends VoForm<Product> {
 		units = new UnitsAmountWidget(context);
 
 		Button nutritionButton = new Button(context);
-		nutritionConnector = new FormDialogConnector<Nutrition>(
-				Nutrition.class, nutritionButton);
+		FormFragment<Nutrition> fragment = new FormFragment<Nutrition>();
+		fragment.show(getContext());
+		nutritionForm = fragment.getForm();
 
 		this.addView(label);
 		this.addView(amount);
@@ -43,13 +44,13 @@ public class ProductForm extends VoForm<Product> {
 	public void validate()
 			throws com.primateer.daikoku.ui.views.forms.InvalidDataException {
 		label.validate();
-		if (nutritionConnector.getData() == null) {
+		if (nutritionForm.getData() == null) {
 			throw new InvalidDataException(getResources().getString(
 					R.string.form_error_product_nutrition_is_null));
 		}
 		amount.validate();
 		units.validate();
-		nutritionConnector.validate();
+		nutritionForm.validate();
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class ProductForm extends VoForm<Product> {
 		data.setLabel(label.getText().toString());
 		data.setAmount(amount.getData());
 		data.setUnits(units.getData());
-		data.setNutrition(nutritionConnector.getData());
+		data.setNutrition(nutritionForm.getData());
 		return data;
 	}
 
@@ -68,7 +69,7 @@ public class ProductForm extends VoForm<Product> {
 		amount.clear();
 		label.clear();
 		units.clear();
-		nutritionConnector.clear();
+		nutritionForm.clear();
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class ProductForm extends VoForm<Product> {
 			amount.setUnits(data.getNutrition().getReferenceAmount().unit.type);
 		}
 		units.setData(data.getUnitsAmount());
-		nutritionConnector.setData(data.getNutrition());
+		nutritionForm.setData(data.getNutrition());
 	}
 
 }

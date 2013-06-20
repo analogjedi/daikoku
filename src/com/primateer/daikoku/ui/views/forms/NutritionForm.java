@@ -31,7 +31,7 @@ import com.primateer.daikoku.ui.views.widgets.ReferenceAmountWidget;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
-public class NutritionForm extends VoForm<Nutrition> {
+public class NutritionForm extends Form<Nutrition> {
 
 	private static class NutrientRowWidget extends AmountWidget implements
 			DataRowWidget<Nutrient> {

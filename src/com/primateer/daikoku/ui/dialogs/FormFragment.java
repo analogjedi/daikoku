@@ -1,14 +1,20 @@
 package com.primateer.daikoku.ui.dialogs;
 
+import java.lang.reflect.Constructor;
+
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
@@ -37,8 +43,37 @@ public class FormFragment<T> extends DialogFragment implements Event.Registry {
 	private Form<T> form;
 	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
-	public void setForm(Form<T> form) {
-		this.form = form;
+	public Form<T> getForm() {
+		return form;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void setupForm(Context context, T data) {
+		this.setupForm(context, (Class<T>)data.getClass());
+		form.setData(data);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void setupForm(Context context, Class<T> dataClass) {
+		try {
+			Class<Form<T>> formClass = (Class<Form<T>>) Class
+					.forName("com.primateer.daikoku.ui.views.forms."
+							+ dataClass.getSimpleName() + "Form");
+			Constructor<Form<T>> constructor = formClass
+					.getConstructor(Context.class);
+			form = (Form<T>) constructor.newInstance(context);
+		} catch (Exception e) {
+			// anything that goes wrong here should be reflection related
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void show(Context context) {
+		if (form != null) {
+			FormFragment.this.show(
+					((FragmentActivity) context).getSupportFragmentManager(),
+					null);
+		}
 	}
 
 	@Override
@@ -113,5 +148,17 @@ public class FormFragment<T> extends DialogFragment implements Event.Registry {
 	public void removeEventListener(Class<? extends Event> type,
 			Listener listener) {
 		dispatcher.removeEventListener(type, listener);
+	}
+
+	public void connectLauncher(View launcher) {
+		if (launcher instanceof TextView) {
+			((TextView) launcher).setText(form.getTitle());
+		}
+		launcher.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FormFragment.this.show(v.getContext());
+			}
+		});
 	}
 }

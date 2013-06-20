@@ -30,7 +30,7 @@ import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 import com.primateer.daikoku.ui.views.widgets.ListWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
-public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
+public class GoalSetForm extends Form<GoalSet> {
 
 	private class GoalRowWidget extends LinearLayout implements
 			DataRowWidget<Goal> {
@@ -232,30 +232,9 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 		this.addView(addButton);
 	}
 
-	public void cleanUp() {
-	}
-
-	@Override
-	public View getView() {
-		return this;
-	}
-
 	@Override
 	public void validate() throws InvalidDataException {
 		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public GoalSet getData() throws InvalidDataException {
-		return (GoalSet) listAdapter.getData();
-	}
-
-	@Override
-	public void setData(GoalSet data) throws IllegalArgumentException {
-		if (data == null) {
-			data = new GoalSet();
-		}
-		listAdapter.setData(data);
 	}
 
 	@Override
@@ -266,5 +245,18 @@ public class GoalSetForm extends LinearLayout implements Form<GoalSet> {
 	@Override
 	public String getTitle() {
 		return getResources().getString(R.string.title_activity_goals);
+	}
+
+	@Override
+	protected GoalSet gatherData() throws InvalidDataException {
+		return (GoalSet) listAdapter.getData();
+	}
+
+	@Override
+	protected void fillFields(GoalSet data) throws IllegalArgumentException {
+		if (data == null) {
+			data = new GoalSet();
+		}
+		listAdapter.setData(data);
 	}
 }

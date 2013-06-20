@@ -2,13 +2,11 @@ package com.primateer.daikoku.ui.views.forms;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
 
-public class AmountForm extends LinearLayout implements Form<Amount> {
+public class AmountForm extends Form<Amount> {
 	
 	AmountWidget widget;
 
@@ -24,23 +22,8 @@ public class AmountForm extends LinearLayout implements Form<Amount> {
 	}
 
 	@Override
-	public View getView() {
-		return this;
-	}
-
-	@Override
 	public void validate() throws InvalidDataException {
 		widget.validate();
-	}
-
-	@Override
-	public Amount getData() throws InvalidDataException {
-		return widget.getData();
-	}
-
-	@Override
-	public void setData(Amount data) throws IllegalArgumentException {
-		widget.setData(data);
 	}
 
 	@Override
@@ -51,5 +34,15 @@ public class AmountForm extends LinearLayout implements Form<Amount> {
 	@Override
 	public String getTitle() {
 		return widget.getTitle();
+	}
+
+	@Override
+	protected Amount gatherData() throws InvalidDataException {
+		return widget.getData();
+	}
+
+	@Override
+	protected void fillFields(Amount data) throws IllegalArgumentException {
+		widget.setData(data);
 	}
 }

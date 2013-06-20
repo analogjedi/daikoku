@@ -21,15 +21,13 @@ import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Catalog.Loader;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.ui.actions.CatalogAction;
 import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 
-public class AmountWidget extends LinearLayout implements Event.Registry,
-		Form<Amount> {
+public class AmountWidget extends Form<Amount> {
 
 	private class UnitSelector extends Button {
 		private Unit unit;
@@ -171,7 +169,6 @@ public class AmountWidget extends LinearLayout implements Event.Registry,
 
 	private ValueField valueView;
 	private UnitSelector unitView;
-	protected Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 	public AmountWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -214,28 +211,6 @@ public class AmountWidget extends LinearLayout implements Event.Registry,
 	}
 
 	@Override
-	public Amount getData() throws InvalidDataException {
-		try {
-			return new Amount(valueView.getData()
-					+ unitView.getData().toString());
-		} catch (Exception e) {
-			throw new InvalidDataException(e.getMessage());
-		}
-	}
-
-	@Override
-	public void setData(Amount data) throws IllegalArgumentException {
-		valueView.setData(data.value);
-		unitView.setData(data.unit);
-		unitView.setType(data.unit.type);
-	}
-
-	@Override
-	public View getView() {
-		return this;
-	}
-
-	@Override
 	public void clear() {
 		this.setData(new Amount(0, UnitRegistry.getInstance()
 				.getDefaultUnitByType(Unit.Type.UNSPECIFIED)));
@@ -247,14 +222,19 @@ public class AmountWidget extends LinearLayout implements Event.Registry,
 	}
 
 	@Override
-	public void addEventListener(Class<? extends Event> type, Listener listener) {
-		dispatcher.addEventListener(type, listener);
+	protected Amount gatherData() throws InvalidDataException {
+		try {
+			return new Amount(valueView.getData()
+					+ unitView.getData().toString());
+		} catch (Exception e) {
+			throw new InvalidDataException(e.getMessage());
+		}
 	}
 
 	@Override
-	public void removeEventListener(Class<? extends Event> type,
-			Listener listener) {
-		dispatcher.addEventListener(type, listener);
+	protected void fillFields(Amount data) throws IllegalArgumentException {
+		valueView.setData(data.value);
+		unitView.setData(data.unit);
+		unitView.setType(data.unit.type);
 	}
-
 }

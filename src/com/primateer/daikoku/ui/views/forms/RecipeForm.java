@@ -41,7 +41,7 @@ import com.primateer.daikoku.ui.views.widgets.ListWidget;
 import com.primateer.daikoku.ui.views.widgets.NutritionWatchWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
-public class RecipeForm extends VoForm<Recipe> {
+public class RecipeForm extends Form<Recipe> {
 
 	private LabelWidget label;
 	private ListWidget componentList;

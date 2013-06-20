@@ -38,8 +38,8 @@ public class ReferenceAmountWidget extends AmountWidget {
 	}
 	
 	@Override
-	public void setData(Amount amount) {
-		super.setData(amount);
+	public void fillFields(Amount amount) {
+		super.fillFields(amount);
 		this.setUnits(Unit.Type.UNSPECIFIED);
 	}
 }

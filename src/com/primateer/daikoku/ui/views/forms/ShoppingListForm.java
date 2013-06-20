@@ -23,7 +23,6 @@ import com.primateer.daikoku.model.ShoppingList;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.model.vos.ShoppingItem;
-import com.primateer.daikoku.ui.actions.FormAction;
 import com.primateer.daikoku.ui.actions.TabDialogAction;
 import com.primateer.daikoku.ui.dialogs.CatalogView;
 import com.primateer.daikoku.ui.dialogs.DateSpanView;
@@ -34,7 +33,7 @@ import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
 import com.primateer.daikoku.ui.views.widgets.ListWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
-public class ShoppingListForm extends VoForm<ShoppingList> {
+public class ShoppingListForm extends Form<ShoppingList> {
 
 	private class ShoppingItemRowWidget extends LinearLayout implements
 			DataRowWidget<ShoppingItem> {
@@ -166,9 +165,9 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 		}
 
 		public void add(final Product product) {
-			FormAction<Amount> action = new FormAction<Amount>(getContext(),
-					new Amount(product.getAmount()));
-			action.addEventListener(FormFragment.AcceptEvent.class,
+			FormFragment<Amount> fragment = new FormFragment<Amount>();
+			fragment.setupForm(getContext(), new Amount(product.getAmount()));
+			fragment.addEventListener(FormFragment.AcceptEvent.class,
 					new Event.Listener() {
 						@Override
 						public void onEvent(Event event) {
@@ -179,11 +178,11 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 							setList(list);
 						}
 					});
-			Application.getInstance().dispatch(action);
+			fragment.show(getContext());
 		}
-		
+
 		public void add(Date start, Date end) {
-			list.add(start,end);
+			list.add(start, end);
 			setList(list);
 		}
 
@@ -252,7 +251,7 @@ public class ShoppingListForm extends VoForm<ShoppingList> {
 							@Override
 							public void onEvent(Event event) {
 								DateSpanView.DatesPickedEvent dpe = (DateSpanView.DatesPickedEvent) event;
-								listAdapter.add(dpe.start,dpe.end);
+								listAdapter.add(dpe.start, dpe.end);
 							}
 						});
 				action.add(dateSpan);

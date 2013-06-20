@@ -11,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Catalog;
@@ -21,8 +20,7 @@ import com.primateer.daikoku.model.GoalRegistry;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Meal.State;
-import com.primateer.daikoku.ui.actions.Action;
-import com.primateer.daikoku.ui.actions.FormAction;
+import com.primateer.daikoku.ui.dialogs.FormFragment;
 import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
@@ -139,8 +137,10 @@ public class MealPlanView extends LinearLayout {
 				meal.setDue(datePicker.getData());
 				meal.setFavorite(false);
 				meal.setState(State.SCHEDULED);
-				Action action = new FormAction<Meal>(getContext(), meal);
-				Application.getInstance().dispatch(action);
+				
+				FormFragment<Meal> fragment = new FormFragment<Meal>();
+				fragment.setupForm(getContext(), meal);
+				fragment.show(getContext());
 			}
 		});
 

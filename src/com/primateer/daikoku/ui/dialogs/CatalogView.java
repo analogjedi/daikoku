@@ -11,7 +11,6 @@ import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.ui.views.connector.FormDialogConnector;
 import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.ListWidget;
@@ -51,10 +50,10 @@ public class CatalogView<T extends ValueObject> extends LinearLayout implements
 			addButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					FormDialogConnector<T> connector = new FormDialogConnector<T>(
-							listAdapter.getCatalog().dataClass,
-							CatalogView.this.getContext());
-					connector.showDialog();
+					FormFragment<T> fragment = new FormFragment<T>();
+					fragment.setupForm(getContext(),
+							listAdapter.getCatalog().dataClass);
+					fragment.show(getContext());
 				}
 			});
 		}

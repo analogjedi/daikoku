@@ -75,12 +75,6 @@ public class GoalsActivity extends FragmentActivity {
 	}
 
 	@Override
-	protected void onDestroy() {
-		form.cleanUp();
-		super.onDestroy();
-	}
-
-	@Override
 	public void onBackPressed() {
 		// prevent accidental press of back button
 		Helper.executeUponConfirmation(this,
