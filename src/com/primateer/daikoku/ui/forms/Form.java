@@ -10,16 +10,22 @@ import com.primateer.daikoku.Event;
 import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
 
-public abstract class Form<T> extends LinearLayout implements
-		Event.Registry {
+public abstract class Form<T> extends LinearLayout implements Event.Registry {
+
+	public static class InvalidDataException extends Exception {
+		public InvalidDataException(String msg) {
+			super(msg);
+		}
+	}
 
 	public static class DataChangedEvent<T> extends Event {
 		public final T data;
+
 		public DataChangedEvent(T data) {
 			this.data = data;
 		}
 	}
-	
+
 	private static final int PADDING_LEFT = 50;
 
 	private long dataId = new ValueObject().getId();

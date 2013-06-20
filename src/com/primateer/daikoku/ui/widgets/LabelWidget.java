@@ -6,7 +6,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.ui.forms.InvalidDataException;
+import com.primateer.daikoku.ui.forms.Form;
 
 public class LabelWidget extends EditText {
 
@@ -19,16 +19,16 @@ public class LabelWidget extends EditText {
 	}
 
 	public LabelWidget(Context context) {
-		this(context,null);
+		this(context, null);
 	}
-	
-	public void validate() throws InvalidDataException {
+
+	public void validate() throws Form.InvalidDataException {
 		if (this.isEmpty()) {
-			throw new InvalidDataException(getResources().getString(
+			throw new Form.InvalidDataException(getResources().getString(
 					R.string.form_error_label_empty));
 		}
 	}
-	
+
 	public boolean isEmpty() {
 		return this.getText().length() < 1;
 	}

@@ -18,13 +18,12 @@ import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Event;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.forms.Form;
-import com.primateer.daikoku.ui.forms.InvalidDataException;
 import com.primateer.daikoku.ui.widgets.Separator;
 
 public class FormFragment<T> extends DialogFragment implements Event.Registry {
@@ -106,7 +105,7 @@ public class FormFragment<T> extends DialogFragment implements Event.Registry {
 						DBController.getInstance().register(
 								(ValueObject) form.getData());
 					}
-				} catch (InvalidDataException e) {
+				} catch (Form.InvalidDataException e) {
 					Helper.displayErrorMessage(getActivity(), getResources()
 							.getString(R.string.form_error_title), e
 							.getMessage());
@@ -118,7 +117,7 @@ public class FormFragment<T> extends DialogFragment implements Event.Registry {
 						data = form.getData();
 					}
 					dispatcher.dispatch(new AcceptEvent<T>(data));
-				} catch (InvalidDataException e) {
+				} catch (Form.InvalidDataException e) {
 					Helper.logErrorStackTrace(FormFragment.this, e,
 							"Unable to notify observers");
 				}

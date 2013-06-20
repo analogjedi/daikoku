@@ -13,8 +13,8 @@ import com.primateer.daikoku.R;
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.GoalSet;
 import com.primateer.daikoku.model.vos.Goal.Scope;
+import com.primateer.daikoku.ui.forms.Form.InvalidDataException;
 import com.primateer.daikoku.ui.forms.GoalSetForm;
-import com.primateer.daikoku.ui.forms.InvalidDataException;
 import com.primateer.daikoku.ui.widgets.Separator;
 
 public class GoalsActivity extends FragmentActivity {

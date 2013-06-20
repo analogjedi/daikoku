@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
 import com.primateer.daikoku.Event;
-import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.Event.Listener;
-import com.primateer.daikoku.ui.forms.InvalidDataException;
+import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.ui.forms.Form;
 
 public abstract class DataRowListAdapter<T> implements ListAdapter,
 		Event.Registry {
@@ -111,7 +111,7 @@ public abstract class DataRowListAdapter<T> implements ListAdapter,
 									DataRowListAdapter.this.dispatcher
 											.dispatch(new ListChangedEvent());
 								}
-							} catch (InvalidDataException e) {
+							} catch (Form.InvalidDataException e) {
 								Helper.logErrorStackTrace(this, e,
 										"Unable to bind widget to list adapter");
 							}

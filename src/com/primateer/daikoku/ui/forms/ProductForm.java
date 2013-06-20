@@ -40,7 +40,7 @@ public class ProductForm extends Form<Product> {
 
 	@Override
 	public void validate()
-			throws com.primateer.daikoku.ui.forms.InvalidDataException {
+			throws Form.InvalidDataException {
 		label.validate();
 		if (nutritionForm.getData() == null) {
 			throw new InvalidDataException(getResources().getString(

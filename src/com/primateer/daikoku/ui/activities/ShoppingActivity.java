@@ -13,7 +13,7 @@ import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.ShoppingList;
-import com.primateer.daikoku.ui.forms.InvalidDataException;
+import com.primateer.daikoku.ui.forms.Form.InvalidDataException;
 import com.primateer.daikoku.ui.forms.ShoppingListForm;
 import com.primateer.daikoku.ui.widgets.Separator;
 
