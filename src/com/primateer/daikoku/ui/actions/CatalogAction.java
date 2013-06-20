@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.ui.views.connector.CatalogDialogConnector;
+import com.primateer.daikoku.ui.dialogs.CatalogView;
+import com.primateer.daikoku.ui.views.connector.DialogConnector;
 
 public class CatalogAction<T extends ValueObject> implements Action {
 
@@ -20,8 +21,8 @@ public class CatalogAction<T extends ValueObject> implements Action {
 
 	@Override
 	public void run() {
-		CatalogDialogConnector<T> connector = new CatalogDialogConnector<T>(
-				catalog, context, title);
+		DialogConnector connector = new DialogConnector(
+				new CatalogView<T>(context, catalog), context, title);
 		connector.showDialog();
 	}
 

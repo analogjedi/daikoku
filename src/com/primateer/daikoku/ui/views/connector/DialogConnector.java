@@ -7,32 +7,25 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.ui.dialogs.CatalogView;
 import com.primateer.daikoku.ui.dialogs.DialogView;
 
-public class CatalogDialogConnector<T extends ValueObject> {
+public class DialogConnector {
 
-	private CatalogView<T> catalogView;
 	private Dialog dialog;
 
-	public CatalogDialogConnector(Catalog<T> catalog, View launcher,
-			String title) {
-		this(catalog, launcher.getContext(), title);
+	public DialogConnector(DialogView view, View launcher, String title) {
+		this(view, launcher.getContext(), title);
 		launcher.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CatalogDialogConnector.this.showDialog();
+				DialogConnector.this.showDialog();
 			}
 		});
 	}
 
-	public CatalogDialogConnector(final Catalog<T> catalog, Context context,
-			String title) {
-		catalogView = new CatalogView<T>(context, catalog);
-		catalogView.addEventListener(DialogView.DismissedEvent.class,
+	public DialogConnector(DialogView view, Context context, String title) {
+		view.addEventListener(DialogView.DismissedEvent.class,
 				new Event.Listener() {
 					@Override
 					public void onEvent(Event event) {
@@ -41,16 +34,12 @@ public class CatalogDialogConnector<T extends ValueObject> {
 				});
 		dialog = new Dialog(context);
 		dialog.setTitle(title);
-		ViewGroup content = (ViewGroup) catalogView;
+		ViewGroup content = (ViewGroup) view;
 		content.setBackgroundColor(Color.WHITE); // FIXME
 		dialog.setContentView(content);
 	}
 
 	public void showDialog() {
 		dialog.show();
-	}
-
-	public CatalogView<T> getCatalog() {
-		return catalogView;
 	}
 }
