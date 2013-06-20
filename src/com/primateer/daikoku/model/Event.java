@@ -11,6 +11,9 @@ public abstract class Event {
 		void onEvent(Event event);
 	}
 	
+	/**
+	 * Patches events through
+	 */
 	public static class Pipe implements Listener {
 		private Dispatcher dispatcher;
 		

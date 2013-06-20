@@ -9,13 +9,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class TabLayout extends LinearLayout {
+import com.primateer.daikoku.model.Event;
+import com.primateer.daikoku.model.Event.Listener;
+import com.primateer.daikoku.ui.dialogs.DialogView;
+
+public class TabLayout extends LinearLayout implements DialogView {
 
 	private HashMap<String, View> tabs = new HashMap<String, View>();
 	private HashMap<String, View> pages = new HashMap<String, View>();
 
 	private LinearLayout tabLine;
 	private String currentPage = null;
+	private String title = null;
+
+	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 	public TabLayout(Context context) {
 		this(context, null);
@@ -45,25 +52,27 @@ public class TabLayout extends LinearLayout {
 		currentPage = selectedID;
 	}
 
-	public void addPage(final String title, View page) {
-		pages.put(title, page);
-		page.setVisibility(View.GONE);
-		this.addView(page, new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT));
+	public void add(final DialogView page) {
+		pages.put(page.getTitle(), page.getView());
+		page.getView().setVisibility(View.GONE);
+		page.addEventListener(DialogView.DismissedEvent.class, new Event.Pipe(
+				dispatcher));
+		this.addView(page.getView(), new LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 		Button tab = new Button(getContext());
 		tab.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				selectPage(title);
+				selectPage(page.getTitle());
 			}
 		});
-		tab.setText(title);
-		tabs.put(title, tab);
+		tab.setText(page.getTitle());
+		tabs.put(page.getTitle(), tab);
 		tabLine.addView(tab, new LayoutParams(0, LayoutParams.MATCH_PARENT,
 				1.0f));
 
-		selectPage(currentPage == null ? title : currentPage);
+		selectPage(currentPage == null ? page.getTitle() : currentPage);
 	}
 
 	public void removePage(String title) {
@@ -83,5 +92,30 @@ public class TabLayout extends LinearLayout {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void addEventListener(Class<? extends Event> type, Listener listener) {
+		dispatcher.addEventListener(type, listener);
+	}
+
+	@Override
+	public void removeEventListener(Class<? extends Event> type,
+			Listener listener) {
+		dispatcher.removeEventListener(type, listener);
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	@Override
+	public String getTitle() {
+		return title == null ? currentPage : title;
+	}
+
+	@Override
+	public View getView() {
+		return this;
 	}
 }

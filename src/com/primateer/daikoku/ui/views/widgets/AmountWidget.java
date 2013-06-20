@@ -23,7 +23,7 @@ import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.ui.dialogs.CatalogView;
-import com.primateer.daikoku.ui.views.connector.DialogConnector;
+import com.primateer.daikoku.ui.dialogs.DialogConnector;
 import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 
@@ -65,11 +65,11 @@ public class AmountWidget extends Form<Amount> {
 									}
 								}
 							});
-					DialogConnector connector = new DialogConnector(
-							new CatalogView<Unit>(getContext(), catalog),
-							getContext(), getResources().getString(
-									R.string.title_pick_unit));
-					connector.showDialog();
+					catalog.setTitle(getResources().getString(
+							R.string.title_pick_unit));
+
+					new DialogConnector(new CatalogView<Unit>(getContext(),
+							catalog), getContext()).showDialog();
 				}
 			});
 		}

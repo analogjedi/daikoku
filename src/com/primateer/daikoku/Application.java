@@ -3,8 +3,6 @@ package com.primateer.daikoku;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.primateer.daikoku.ui.actions.Action;
-
 public class Application extends android.app.Application {
 
 	public static final int ICON_ADD = R.drawable.onebit_1_31;
@@ -58,15 +56,4 @@ public class Application extends android.app.Application {
 		super.onCreate();
 		instance = this;
 	}
-
-	public void dispatch(Action action) {
-		// TODO multithreading
-		if (!action.isReady()) {
-			throw new RuntimeException("Action "
-					+ action.getClass().getSimpleName()
-					+ " is not ready to be dispatched.");
-		}
-		action.run();
-	}
-
 }

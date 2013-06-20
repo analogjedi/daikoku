@@ -29,9 +29,9 @@ import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
-import com.primateer.daikoku.ui.actions.TabDialogAction;
 import com.primateer.daikoku.ui.dialogs.CatalogView;
-import com.primateer.daikoku.ui.views.connector.DialogConnector;
+import com.primateer.daikoku.ui.dialogs.DialogConnector;
+import com.primateer.daikoku.ui.views.TabLayout;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
@@ -81,7 +81,7 @@ public class RecipeForm extends Form<Recipe> {
 		public ComponentRowWidget(Context context, AttributeSet attrs) {
 			super(context, attrs);
 
-			deleteButton = new DeleteRowButton(context,dispatcher);
+			deleteButton = new DeleteRowButton(context, dispatcher);
 			deleteButton.setImageResource(Application.ICON_REMOVE);
 			LinearLayout.LayoutParams deleteLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 0.08f);
@@ -107,11 +107,10 @@ public class RecipeForm extends Form<Recipe> {
 											((Catalog.SelectionEvent<Product>) event).selection));
 								}
 							});
-					DialogConnector connector = new DialogConnector(
-							new CatalogView<Product>(getContext(), catalog),
-							getContext(), getResources().getString(
-									R.string.title_pick_product));
-					connector.showDialog();
+					catalog.setTitle(getResources().getString(
+							R.string.title_pick_product));
+					new DialogConnector(new CatalogView<Product>(getContext(),
+							catalog), getContext()).showDialog();
 				}
 			});
 
@@ -204,9 +203,9 @@ public class RecipeForm extends Form<Recipe> {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				TabDialogAction action = new TabDialogAction(
-						getContext(), getResources().getString(
-								R.string.title_pick_ingredients));
+				TabLayout tabs = new TabLayout(getContext());
+				tabs.setTitle(getResources().getString(
+						R.string.title_pick_ingredients));
 
 				Catalog<Product> productCatalog = new Catalog<Product>(
 						Product.class);
@@ -224,7 +223,7 @@ public class RecipeForm extends Form<Recipe> {
 						});
 				productCatalog.setTitle(getResources().getString(
 						R.string.product));
-				action.add(new CatalogView<Product>(getContext(),productCatalog));
+				tabs.add(new CatalogView<Product>(getContext(), productCatalog));
 
 				Catalog<Recipe> recipeCatalog = new Catalog<Recipe>(
 						Recipe.class);
@@ -247,9 +246,9 @@ public class RecipeForm extends Form<Recipe> {
 						});
 				recipeCatalog.setTitle(getResources()
 						.getString(R.string.recipe));
-				action.add(new CatalogView<Recipe>(getContext(),recipeCatalog));
+				tabs.add(new CatalogView<Recipe>(getContext(), recipeCatalog));
 
-				Application.getInstance().dispatch(action);
+				new DialogConnector(tabs, getContext()).showDialog();
 			}
 		});
 

@@ -23,10 +23,11 @@ import com.primateer.daikoku.model.ShoppingList;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.model.vos.ShoppingItem;
-import com.primateer.daikoku.ui.actions.TabDialogAction;
 import com.primateer.daikoku.ui.dialogs.CatalogView;
 import com.primateer.daikoku.ui.dialogs.DateSpanView;
+import com.primateer.daikoku.ui.dialogs.DialogConnector;
 import com.primateer.daikoku.ui.dialogs.FormFragment;
+import com.primateer.daikoku.ui.views.TabLayout;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
@@ -207,12 +208,9 @@ public class ShoppingListForm extends Form<ShoppingList> {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// MultiCatalogAction action = new MultiCatalogAction(
-				// getContext(), getResources().getString(
-				// R.string.title_pick_for_shopping));
-				TabDialogAction action = new TabDialogAction(getContext(),
-						getResources().getString(
-								R.string.title_pick_for_shopping));
+				TabLayout tabs = new TabLayout(getContext());
+				tabs.setTitle(getResources().getString(
+						R.string.title_pick_for_shopping));
 
 				Catalog<Product> productCatalog = new Catalog<Product>(
 						Product.class);
@@ -227,8 +225,7 @@ public class ShoppingListForm extends Form<ShoppingList> {
 						});
 				productCatalog.setTitle(getResources().getString(
 						R.string.product));
-				action.add(new CatalogView<Product>(getContext(),
-						productCatalog));
+				tabs.add(new CatalogView<Product>(getContext(), productCatalog));
 
 				Catalog<Recipe> recipeCatalog = new Catalog<Recipe>(
 						Recipe.class);
@@ -243,7 +240,7 @@ public class ShoppingListForm extends Form<ShoppingList> {
 						});
 				recipeCatalog.setTitle(getResources()
 						.getString(R.string.recipe));
-				action.add(new CatalogView<Recipe>(getContext(), recipeCatalog));
+				tabs.add(new CatalogView<Recipe>(getContext(), recipeCatalog));
 
 				DateSpanView dateSpan = new DateSpanView(getContext());
 				dateSpan.addEventListener(DateSpanView.DatesPickedEvent.class,
@@ -254,9 +251,9 @@ public class ShoppingListForm extends Form<ShoppingList> {
 								listAdapter.add(dpe.start, dpe.end);
 							}
 						});
-				action.add(dateSpan);
+				tabs.add(dateSpan);
 
-				Application.getInstance().dispatch(action);
+				new DialogConnector(tabs, getContext()).showDialog();
 			}
 		});
 
