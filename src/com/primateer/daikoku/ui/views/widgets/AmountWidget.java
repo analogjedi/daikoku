@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
@@ -23,7 +22,8 @@ import com.primateer.daikoku.model.Catalog.Loader;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
-import com.primateer.daikoku.ui.actions.CatalogAction;
+import com.primateer.daikoku.ui.dialogs.CatalogView;
+import com.primateer.daikoku.ui.views.connector.DialogConnector;
 import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 
@@ -65,10 +65,11 @@ public class AmountWidget extends Form<Amount> {
 									}
 								}
 							});
-					CatalogAction<Unit> action = new CatalogAction<Unit>(
-							getContext(), catalog, getResources().getString(
+					DialogConnector connector = new DialogConnector(
+							new CatalogView<Unit>(getContext(), catalog),
+							getContext(), getResources().getString(
 									R.string.title_pick_unit));
-					Application.getInstance().dispatch(action);
+					connector.showDialog();
 				}
 			});
 		}

@@ -22,7 +22,8 @@ import com.primateer.daikoku.model.Nutrient.Type;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Goal.Scope;
-import com.primateer.daikoku.ui.actions.CatalogAction;
+import com.primateer.daikoku.ui.dialogs.CatalogView;
+import com.primateer.daikoku.ui.views.connector.DialogConnector;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
@@ -221,10 +222,11 @@ public class GoalSetForm extends Form<GoalSet> {
 								listAdapter.add(ev.selection);
 							}
 						});
-				CatalogAction<Nutrient.Type> action = new CatalogAction<Nutrient.Type>(
-						getContext(), catalog, getResources().getString(
+				DialogConnector connector = new DialogConnector(
+						new CatalogView<Nutrient.Type>(getContext(), catalog),
+						getContext(), getResources().getString(
 								R.string.title_pick_nutrient_type));
-				Application.getInstance().dispatch(action);
+				connector.showDialog();
 			}
 		});
 

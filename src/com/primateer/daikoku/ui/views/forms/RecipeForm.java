@@ -29,9 +29,9 @@ import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
-import com.primateer.daikoku.ui.actions.CatalogAction;
 import com.primateer.daikoku.ui.actions.TabDialogAction;
 import com.primateer.daikoku.ui.dialogs.CatalogView;
+import com.primateer.daikoku.ui.views.connector.DialogConnector;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
@@ -107,10 +107,11 @@ public class RecipeForm extends Form<Recipe> {
 											((Catalog.SelectionEvent<Product>) event).selection));
 								}
 							});
-					CatalogAction<Product> action = new CatalogAction<Product>(
-							getContext(), catalog, getResources().getString(
+					DialogConnector connector = new DialogConnector(
+							new CatalogView<Product>(getContext(), catalog),
+							getContext(), getResources().getString(
 									R.string.title_pick_product));
-					Application.getInstance().dispatch(action);
+					connector.showDialog();
 				}
 			});
 
