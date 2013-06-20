@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.forms;
+package com.primateer.daikoku.ui.forms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,24 +16,22 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Event;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.NutrientSet;
 import com.primateer.daikoku.model.vos.Nutrition;
-import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
-import com.primateer.daikoku.ui.views.widgets.AddButton;
-import com.primateer.daikoku.ui.views.widgets.AmountWidget;
-import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
-import com.primateer.daikoku.ui.views.widgets.ListWidget;
-import com.primateer.daikoku.ui.views.widgets.ReferenceAmountWidget;
-import com.primateer.daikoku.ui.views.widgets.Separator;
-import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
+import com.primateer.daikoku.ui.lists.DataRowListAdapter;
+import com.primateer.daikoku.ui.lists.DataRowWidget;
+import com.primateer.daikoku.ui.widgets.AddButton;
+import com.primateer.daikoku.ui.widgets.DeleteRowButton;
+import com.primateer.daikoku.ui.widgets.ListWidget;
+import com.primateer.daikoku.ui.widgets.Separator;
 
 public class NutritionForm extends Form<Nutrition> {
 
-	private static class NutrientRowWidget extends AmountWidget implements
+	private static class NutrientRowWidget extends AmountForm implements
 			DataRowWidget<Nutrient> {
 
 		private TextView label;
@@ -143,7 +141,7 @@ public class NutritionForm extends Form<Nutrition> {
 		}
 	}
 
-	private AmountWidget referenceAmount;
+	private AmountForm referenceAmount;
 	private ListWidget nutrientList;
 	private NutrientListAdapter listAdapter;
 	private AddButton addButton;
@@ -162,7 +160,7 @@ public class NutritionForm extends Form<Nutrition> {
 		});
 
 		// reference amount
-		referenceAmount = new ReferenceAmountWidget(context);
+		referenceAmount = new ReferenceAmountForm(context);
 
 		// nutrient list
 		nutrientList = new ListWidget(context);

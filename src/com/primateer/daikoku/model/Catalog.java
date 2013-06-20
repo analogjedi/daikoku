@@ -3,8 +3,9 @@ package com.primateer.daikoku.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.primateer.daikoku.Event;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.db.DBController;
-import com.primateer.daikoku.model.Event.Listener;
 
 public class Catalog<T extends ValueObject> extends ArrayList<T> implements
 		Event.Registry {

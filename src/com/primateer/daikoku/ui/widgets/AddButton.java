@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.widgets;
+package com.primateer.daikoku.ui.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.forms;
+package com.primateer.daikoku.ui.forms;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,10 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Event;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.model.Catalog;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.GoalSet;
 import com.primateer.daikoku.model.Nutrient;
 import com.primateer.daikoku.model.Nutrient.Type;
@@ -23,13 +23,12 @@ import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Goal.Scope;
 import com.primateer.daikoku.ui.dialogs.CatalogView;
-import com.primateer.daikoku.ui.dialogs.DialogConnector;
-import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
-import com.primateer.daikoku.ui.views.widgets.AddButton;
-import com.primateer.daikoku.ui.views.widgets.AmountWidget;
-import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
-import com.primateer.daikoku.ui.views.widgets.ListWidget;
-import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
+import com.primateer.daikoku.ui.dialogs.DialogViewConnector;
+import com.primateer.daikoku.ui.lists.DataRowListAdapter;
+import com.primateer.daikoku.ui.lists.DataRowWidget;
+import com.primateer.daikoku.ui.widgets.AddButton;
+import com.primateer.daikoku.ui.widgets.DeleteRowButton;
+import com.primateer.daikoku.ui.widgets.ListWidget;
 
 public class GoalSetForm extends Form<GoalSet> {
 
@@ -40,7 +39,7 @@ public class GoalSetForm extends Form<GoalSet> {
 		private DeleteRowButton deleteButton;
 		private TextView nutrientTypeView;
 		private TextView goalTypeView;
-		private AmountWidget amountView;
+		private AmountForm amountView;
 		private Goal.Type goalType;
 		private Nutrient.Type nutrientType;
 
@@ -74,10 +73,10 @@ public class GoalSetForm extends Form<GoalSet> {
 					LayoutParams.WRAP_CONTENT, 0.2f);
 			goalTypeLayout.gravity = Gravity.CENTER;
 
-			amountView = new AmountWidget(context);
+			amountView = new AmountForm(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 1.0f);
-			amountView.addEventListener(AmountWidget.AmountChangedEvent.class,
+			amountView.addEventListener(AmountForm.AmountChangedEvent.class,
 					new Event.Listener() {
 						@Override
 						public void onEvent(Event event) {
@@ -225,7 +224,7 @@ public class GoalSetForm extends Form<GoalSet> {
 				catalog.setTitle(getResources().getString(
 						R.string.title_pick_nutrient_type));
 
-				new DialogConnector(new CatalogView<Nutrient.Type>(
+				new DialogViewConnector(new CatalogView<Nutrient.Type>(
 						getContext(), catalog), getContext()).showDialog();
 			}
 		});

@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.widgets;
+package com.primateer.daikoku.ui.widgets;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -16,10 +16,10 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.primateer.daikoku.Event;
 import com.primateer.daikoku.Helper;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
-import com.primateer.daikoku.model.Event.SimpleDispatcher;
+import com.primateer.daikoku.Event.Listener;
+import com.primateer.daikoku.Event.SimpleDispatcher;
 import com.primateer.daikoku.ui.dialogs.DatePickerFragment;
 
 public class DateWidget extends LinearLayout implements

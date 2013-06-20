@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.forms;
+package com.primateer.daikoku.ui.forms;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,12 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Event;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Component;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.GoalRegistry;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
@@ -30,16 +30,15 @@ import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.ui.dialogs.CatalogView;
-import com.primateer.daikoku.ui.dialogs.DialogConnector;
-import com.primateer.daikoku.ui.views.TabLayout;
-import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
-import com.primateer.daikoku.ui.views.widgets.AddButton;
-import com.primateer.daikoku.ui.views.widgets.AmountWidget;
-import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
-import com.primateer.daikoku.ui.views.widgets.LabelWidget;
-import com.primateer.daikoku.ui.views.widgets.ListWidget;
-import com.primateer.daikoku.ui.views.widgets.NutritionWatchWidget;
-import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
+import com.primateer.daikoku.ui.dialogs.DialogViewConnector;
+import com.primateer.daikoku.ui.dialogs.TabView;
+import com.primateer.daikoku.ui.lists.DataRowListAdapter;
+import com.primateer.daikoku.ui.lists.DataRowWidget;
+import com.primateer.daikoku.ui.widgets.AddButton;
+import com.primateer.daikoku.ui.widgets.DeleteRowButton;
+import com.primateer.daikoku.ui.widgets.LabelWidget;
+import com.primateer.daikoku.ui.widgets.ListWidget;
+import com.primateer.daikoku.ui.widgets.NutritionWatchWidget;
 
 public class RecipeForm extends Form<Recipe> {
 
@@ -71,7 +70,7 @@ public class RecipeForm extends Form<Recipe> {
 		private Component component;
 		private DeleteRowButton deleteButton;
 		private TextView selectView;
-		private AmountWidget amountView;
+		private AmountForm amountView;
 		private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
 		public ComponentRowWidget(Context context) {
@@ -109,20 +108,20 @@ public class RecipeForm extends Form<Recipe> {
 							});
 					catalog.setTitle(getResources().getString(
 							R.string.title_pick_product));
-					new DialogConnector(new CatalogView<Product>(getContext(),
+					new DialogViewConnector(new CatalogView<Product>(getContext(),
 							catalog), getContext()).showDialog();
 				}
 			});
 
-			amountView = new AmountWidget(context);
+			amountView = new AmountForm(context);
 			LinearLayout.LayoutParams amountLayout = new LayoutParams(0,
 					LayoutParams.WRAP_CONTENT, 0.6f);
 			amountLayout.gravity = Gravity.CENTER;
-			amountView.addEventListener(AmountWidget.AmountChangedEvent.class,
+			amountView.addEventListener(AmountForm.AmountChangedEvent.class,
 					new Event.Listener() {
 						@Override
 						public void onEvent(Event event) {
-							Amount amount = ((AmountWidget.AmountChangedEvent) event).amount;
+							Amount amount = ((AmountForm.AmountChangedEvent) event).amount;
 							component = new Component(component.product, amount);
 							dispatcher.dispatch(new ChangedEvent());
 						}
@@ -203,7 +202,7 @@ public class RecipeForm extends Form<Recipe> {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				TabLayout tabs = new TabLayout(getContext());
+				TabView tabs = new TabView(getContext());
 				tabs.setTitle(getResources().getString(
 						R.string.title_pick_ingredients));
 
@@ -248,7 +247,7 @@ public class RecipeForm extends Form<Recipe> {
 						.getString(R.string.recipe));
 				tabs.add(new CatalogView<Recipe>(getContext(), recipeCatalog));
 
-				new DialogConnector(tabs, getContext()).showDialog();
+				new DialogViewConnector(tabs, getContext()).showDialog();
 			}
 		});
 

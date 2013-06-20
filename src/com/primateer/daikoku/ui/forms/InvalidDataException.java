@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.forms;
+package com.primateer.daikoku.ui.forms;
 
 public class InvalidDataException extends Exception {
 	public InvalidDataException(String msg) {

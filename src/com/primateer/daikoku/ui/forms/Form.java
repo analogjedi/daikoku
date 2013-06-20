@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.forms;
+package com.primateer.daikoku.ui.forms;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewParent;
 import android.widget.LinearLayout;
 
-import com.primateer.daikoku.model.Event;
+import com.primateer.daikoku.Event;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.model.Event.Listener;
 
 public abstract class Form<T> extends LinearLayout implements
 		Event.Registry {

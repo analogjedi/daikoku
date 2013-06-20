@@ -1,9 +1,9 @@
-package com.primateer.daikoku.ui.views.widgets.row;
+package com.primateer.daikoku.ui.lists;
 
 import android.view.View;
 
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.ui.views.forms.InvalidDataException;
+import com.primateer.daikoku.Event;
+import com.primateer.daikoku.ui.forms.InvalidDataException;
 
 public interface DataRowWidget<T> extends Event.Registry {
 	

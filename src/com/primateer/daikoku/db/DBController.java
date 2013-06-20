@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.primateer.daikoku.Event;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.model.Day;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.GoalSet;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.model.vos.Goal;

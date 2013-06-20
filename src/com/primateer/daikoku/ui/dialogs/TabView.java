@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views;
+package com.primateer.daikoku.ui.dialogs;
 
 import java.util.HashMap;
 
@@ -9,11 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
-import com.primateer.daikoku.ui.dialogs.DialogView;
+import com.primateer.daikoku.Event;
+import com.primateer.daikoku.Event.Listener;
 
-public class TabLayout extends LinearLayout implements DialogView {
+public class TabView extends LinearLayout implements DialogView {
 
 	private HashMap<String, View> tabs = new HashMap<String, View>();
 	private HashMap<String, View> pages = new HashMap<String, View>();
@@ -24,11 +23,11 @@ public class TabLayout extends LinearLayout implements DialogView {
 
 	private Event.SimpleDispatcher dispatcher = new Event.SimpleDispatcher();
 
-	public TabLayout(Context context) {
+	public TabView(Context context) {
 		this(context, null);
 	}
 
-	public TabLayout(Context context, AttributeSet attrs) {
+	public TabView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.setOrientation(VERTICAL);
 

@@ -17,15 +17,15 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Event;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.db.DBController;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.ui.views.forms.Form;
-import com.primateer.daikoku.ui.views.forms.InvalidDataException;
-import com.primateer.daikoku.ui.views.widgets.Separator;
+import com.primateer.daikoku.ui.forms.Form;
+import com.primateer.daikoku.ui.forms.InvalidDataException;
+import com.primateer.daikoku.ui.widgets.Separator;
 
 public class FormFragment<T> extends DialogFragment implements Event.Registry {
 

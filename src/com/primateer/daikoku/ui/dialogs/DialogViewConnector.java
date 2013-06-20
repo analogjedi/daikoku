@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.primateer.daikoku.model.Event;
+import com.primateer.daikoku.Event;
 
-public class DialogConnector {
+public class DialogViewConnector {
 
 	private Dialog dialog;
 
-	public DialogConnector(DialogView view, Context context) {
+	public DialogViewConnector(DialogView view, Context context) {
 		view.addEventListener(DialogView.DismissedEvent.class,
 				new Event.Listener() {
 					@Override
@@ -33,7 +33,7 @@ public class DialogConnector {
 		launcher.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogConnector.this.showDialog();
+				DialogViewConnector.this.showDialog();
 			}
 		});
 	}

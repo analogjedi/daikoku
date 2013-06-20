@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.widgets;
+package com.primateer.daikoku.ui.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,7 +6,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.ui.views.forms.InvalidDataException;
+import com.primateer.daikoku.ui.forms.InvalidDataException;
 
 public class LabelWidget extends EditText {
 

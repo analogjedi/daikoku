@@ -6,15 +6,15 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.primateer.daikoku.Event;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Catalog;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
-import com.primateer.daikoku.ui.views.widgets.AddButton;
-import com.primateer.daikoku.ui.views.widgets.ListWidget;
-import com.primateer.daikoku.ui.views.widgets.Separator;
+import com.primateer.daikoku.ui.lists.CatalogListAdapter;
+import com.primateer.daikoku.ui.widgets.AddButton;
+import com.primateer.daikoku.ui.widgets.ListWidget;
+import com.primateer.daikoku.ui.widgets.Separator;
 
 @SuppressLint("ViewConstructor")
 public class CatalogView<T extends ValueObject> extends LinearLayout implements

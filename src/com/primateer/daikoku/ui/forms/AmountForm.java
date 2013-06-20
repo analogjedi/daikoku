@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.widgets;
+package com.primateer.daikoku.ui.forms;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,20 +14,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.primateer.daikoku.Event;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Catalog.Loader;
-import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Unit;
 import com.primateer.daikoku.model.UnitRegistry;
 import com.primateer.daikoku.ui.dialogs.CatalogView;
-import com.primateer.daikoku.ui.dialogs.DialogConnector;
-import com.primateer.daikoku.ui.views.forms.Form;
-import com.primateer.daikoku.ui.views.forms.InvalidDataException;
+import com.primateer.daikoku.ui.dialogs.DialogViewConnector;
 
-public class AmountWidget extends Form<Amount> {
+public class AmountForm extends Form<Amount> {
 
 	private class UnitSelector extends Button {
 		private Unit unit;
@@ -57,7 +55,7 @@ public class AmountWidget extends Form<Amount> {
 									try {
 										dispatcher
 												.dispatch(new AmountChangedEvent(
-														AmountWidget.this
+														AmountForm.this
 																.getData()));
 									} catch (InvalidDataException e) {
 										Helper.logErrorStackTrace(this, e,
@@ -68,7 +66,7 @@ public class AmountWidget extends Form<Amount> {
 					catalog.setTitle(getResources().getString(
 							R.string.title_pick_unit));
 
-					new DialogConnector(new CatalogView<Unit>(getContext(),
+					new DialogViewConnector(new CatalogView<Unit>(getContext(),
 							catalog), getContext()).showDialog();
 				}
 			});
@@ -148,7 +146,7 @@ public class AmountWidget extends Form<Amount> {
 				if (amount.value != this.value) {
 					this.value = amount.value;
 					dispatcher.dispatch(new AmountChangedEvent(
-							AmountWidget.this.getData()));
+							AmountForm.this.getData()));
 				}
 			} catch (IllegalArgumentException e) {
 				// invalid value string; do nothing
@@ -171,7 +169,7 @@ public class AmountWidget extends Form<Amount> {
 	private ValueField valueView;
 	private UnitSelector unitView;
 
-	public AmountWidget(Context context, AttributeSet attrs) {
+	public AmountForm(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		this.setOrientation(LinearLayout.HORIZONTAL);
@@ -190,7 +188,7 @@ public class AmountWidget extends Form<Amount> {
 		this.addView(unitView, unitLayout);
 	}
 
-	public AmountWidget(Context context) {
+	public AmountForm(Context context) {
 		this(context, null);
 	}
 

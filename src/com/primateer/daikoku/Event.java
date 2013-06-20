@@ -1,4 +1,4 @@
-package com.primateer.daikoku.model;
+package com.primateer.daikoku;
 
 import java.util.ArrayList;
 import java.util.HashMap;

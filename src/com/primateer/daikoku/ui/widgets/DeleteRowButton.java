@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.widgets;
+package com.primateer.daikoku.ui.widgets;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.primateer.daikoku.Application;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
+import com.primateer.daikoku.Event;
+import com.primateer.daikoku.ui.lists.DataRowWidget;
 
 @SuppressLint("ViewConstructor")
 public class DeleteRowButton extends ImageButton {

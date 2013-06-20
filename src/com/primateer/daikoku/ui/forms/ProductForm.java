@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.forms;
+package com.primateer.daikoku.ui.forms;
 
 import android.content.Context;
 import android.widget.Button;
@@ -7,26 +7,24 @@ import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.vos.Nutrition;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.ui.dialogs.FormFragment;
-import com.primateer.daikoku.ui.views.widgets.LabelWidget;
-import com.primateer.daikoku.ui.views.widgets.ReferenceAmountWidget;
-import com.primateer.daikoku.ui.views.widgets.UnitsAmountWidget;
+import com.primateer.daikoku.ui.widgets.LabelWidget;
 
 public class ProductForm extends Form<Product> {
 
 	private LabelWidget label;
-	private ReferenceAmountWidget amount;
+	private ReferenceAmountForm amount;
 	Form<Nutrition> nutritionForm;
-	private UnitsAmountWidget units;
+	private UnitsAmountForm units;
 
 	public ProductForm(final Context context) {
 		super(context);
 
 		label = new LabelWidget(context);
 
-		amount = new ReferenceAmountWidget(context);
+		amount = new ReferenceAmountForm(context);
 		amount.setLabelText(R.string.amount);
 
-		units = new UnitsAmountWidget(context);
+		units = new UnitsAmountForm(context);
 
 		Button nutritionButton = new Button(context);
 		FormFragment<Nutrition> fragment = new FormFragment<Nutrition>();
@@ -42,7 +40,7 @@ public class ProductForm extends Form<Product> {
 
 	@Override
 	public void validate()
-			throws com.primateer.daikoku.ui.views.forms.InvalidDataException {
+			throws com.primateer.daikoku.ui.forms.InvalidDataException {
 		label.validate();
 		if (nutritionForm.getData() == null) {
 			throw new InvalidDataException(getResources().getString(

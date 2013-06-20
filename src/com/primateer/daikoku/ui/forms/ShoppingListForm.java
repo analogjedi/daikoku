@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.forms;
+package com.primateer.daikoku.ui.forms;
 
 import java.util.Date;
 
@@ -14,25 +14,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Event;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.Catalog;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.ShoppingList;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.model.vos.ShoppingItem;
 import com.primateer.daikoku.ui.dialogs.CatalogView;
 import com.primateer.daikoku.ui.dialogs.DateSpanView;
-import com.primateer.daikoku.ui.dialogs.DialogConnector;
+import com.primateer.daikoku.ui.dialogs.DialogViewConnector;
 import com.primateer.daikoku.ui.dialogs.FormFragment;
-import com.primateer.daikoku.ui.views.TabLayout;
-import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
-import com.primateer.daikoku.ui.views.widgets.AddButton;
-import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
-import com.primateer.daikoku.ui.views.widgets.ListWidget;
-import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
+import com.primateer.daikoku.ui.dialogs.TabView;
+import com.primateer.daikoku.ui.lists.DataRowListAdapter;
+import com.primateer.daikoku.ui.lists.DataRowWidget;
+import com.primateer.daikoku.ui.widgets.AddButton;
+import com.primateer.daikoku.ui.widgets.DeleteRowButton;
+import com.primateer.daikoku.ui.widgets.ListWidget;
 
 public class ShoppingListForm extends Form<ShoppingList> {
 
@@ -208,7 +208,7 @@ public class ShoppingListForm extends Form<ShoppingList> {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				TabLayout tabs = new TabLayout(getContext());
+				TabView tabs = new TabView(getContext());
 				tabs.setTitle(getResources().getString(
 						R.string.title_pick_for_shopping));
 
@@ -253,7 +253,7 @@ public class ShoppingListForm extends Form<ShoppingList> {
 						});
 				tabs.add(dateSpan);
 
-				new DialogConnector(tabs, getContext()).showDialog();
+				new DialogViewConnector(tabs, getContext()).showDialog();
 			}
 		});
 

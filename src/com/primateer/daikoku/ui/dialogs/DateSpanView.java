@@ -9,10 +9,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Event;
 import com.primateer.daikoku.R;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
-import com.primateer.daikoku.ui.views.widgets.DateWidget;
+import com.primateer.daikoku.Event.Listener;
+import com.primateer.daikoku.ui.widgets.DateWidget;
 
 public class DateSpanView extends LinearLayout implements DialogView {
 

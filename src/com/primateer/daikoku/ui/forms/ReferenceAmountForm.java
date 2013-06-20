@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.widgets;
+package com.primateer.daikoku.ui.forms;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -10,11 +10,11 @@ import com.primateer.daikoku.model.Amount;
 import com.primateer.daikoku.model.NutrientRegistry;
 import com.primateer.daikoku.model.Unit;
 
-public class ReferenceAmountWidget extends AmountWidget {
+public class ReferenceAmountForm extends AmountForm {
 
 	private TextView label;
 	
-	public ReferenceAmountWidget(Context context) {
+	public ReferenceAmountForm(Context context) {
 		super(context);
 		label = new TextView(context);
 		label.setText(Application.getContext().getString(R.string.reference_amount));

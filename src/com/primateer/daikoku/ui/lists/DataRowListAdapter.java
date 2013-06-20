@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.lists;
+package com.primateer.daikoku.ui.lists;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
+import com.primateer.daikoku.Event;
 import com.primateer.daikoku.Helper;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
-import com.primateer.daikoku.ui.views.forms.InvalidDataException;
-import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
+import com.primateer.daikoku.Event.Listener;
+import com.primateer.daikoku.ui.forms.InvalidDataException;
 
 public abstract class DataRowListAdapter<T> implements ListAdapter,
 		Event.Registry {

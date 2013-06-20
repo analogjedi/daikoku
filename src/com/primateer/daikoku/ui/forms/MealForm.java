@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.forms;
+package com.primateer.daikoku.ui.forms;
 
 import java.util.Date;
 
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.primateer.daikoku.R;
 import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Recipe;
-import com.primateer.daikoku.ui.views.widgets.DateWidget;
+import com.primateer.daikoku.ui.widgets.DateWidget;
 
 public class MealForm extends RecipeForm {
 

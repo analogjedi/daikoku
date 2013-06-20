@@ -1,4 +1,4 @@
-package com.primateer.daikoku.ui.views.widgets.row;
+package com.primateer.daikoku.ui.lists;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,12 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.primateer.daikoku.Application;
-import com.primateer.daikoku.model.Event;
-import com.primateer.daikoku.model.Event.Listener;
+import com.primateer.daikoku.Event;
+import com.primateer.daikoku.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
 import com.primateer.daikoku.ui.dialogs.FormFragment;
-import com.primateer.daikoku.ui.views.forms.Form;
-import com.primateer.daikoku.ui.views.widgets.DeleteRowButton;
+import com.primateer.daikoku.ui.forms.Form;
+import com.primateer.daikoku.ui.widgets.DeleteRowButton;
 
 public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 		implements DataRowWidget<T> {
