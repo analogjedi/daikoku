@@ -16,6 +16,9 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.primateer.daikoku.db.DBController;
+import com.primateer.daikoku.model.ValueObject;
+
 public class Helper {
 
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat(
@@ -43,14 +46,14 @@ public class Helper {
 				Integer.parseInt(m.group(3)));
 		return c.getTime();
 	}
-	
+
 	public static Date addDays(Date base, int days) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(base);
 		c.add(Calendar.DATE, days);
 		return c.getTime();
 	}
-	
+
 	public static boolean isSameDay(Date date1, Date date2) {
 		if (date1 == null || date2 == null) {
 			return false;
@@ -107,5 +110,18 @@ public class Helper {
 					}
 				});
 		builder.create().show();
+	}
+
+	public static void deleteOnConfirmation(Context context,
+			final ValueObject item) {
+		Helper.executeUponConfirmation(context, context.getResources()
+				.getString(R.string.dialog_confirm_delete_title), context
+				.getResources().getString(R.string.dialog_confirm_delete_msg)
+				+ " " + item.toString(), new Runnable() {
+			@Override
+			public void run() {
+				DBController.getInstance().delete(item);
+			}
+		});
 	}
 }

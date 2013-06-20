@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Day;
@@ -21,7 +22,6 @@ import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Meal;
 import com.primateer.daikoku.model.vos.Meal.State;
 import com.primateer.daikoku.ui.actions.Action;
-import com.primateer.daikoku.ui.actions.DeleteDataAction;
 import com.primateer.daikoku.ui.actions.FormAction;
 import com.primateer.daikoku.ui.views.lists.CatalogListAdapter;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
@@ -71,9 +71,7 @@ public class MealPlanView extends LinearLayout {
 
 		@Override
 		public void onDelete(View v) {
-			Action action = new DeleteDataAction<Meal>(getItemFromView(v),
-					getContext());
-			Application.getInstance().dispatch(action);
+			Helper.deleteOnConfirmation(v.getContext(), getItemFromView(v));
 		}
 
 		@Override

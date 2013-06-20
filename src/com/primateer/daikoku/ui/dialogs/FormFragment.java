@@ -13,24 +13,24 @@ import android.widget.LinearLayout.LayoutParams;
 import com.primateer.daikoku.Application;
 import com.primateer.daikoku.Helper;
 import com.primateer.daikoku.R;
+import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.Event.Listener;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.ui.actions.Action;
-import com.primateer.daikoku.ui.actions.SaveDataAction;
 import com.primateer.daikoku.ui.views.forms.Form;
 import com.primateer.daikoku.ui.views.forms.InvalidDataException;
 import com.primateer.daikoku.ui.views.widgets.Separator;
 
 public class FormFragment<T> extends DialogFragment implements Event.Registry {
-	
+
 	public static class AcceptEvent<T> extends Event {
 		public final T data;
+
 		public AcceptEvent(T data) {
 			this.data = data;
 		}
 	}
-	
+
 	public static class CancelEvent extends Event {
 	}
 
@@ -68,10 +68,8 @@ public class FormFragment<T> extends DialogFragment implements Event.Registry {
 					form.validate();
 					data = form.getData();
 					if (data instanceof ValueObject) {
-						@SuppressWarnings({ "rawtypes", "unchecked" })
-						Action action = new SaveDataAction((ValueObject) form
-								.getData());
-						Application.getInstance().dispatch(action);
+						DBController.getInstance().register(
+								(ValueObject) form.getData());
 					}
 				} catch (InvalidDataException e) {
 					Helper.displayErrorMessage(getActivity(), getResources()

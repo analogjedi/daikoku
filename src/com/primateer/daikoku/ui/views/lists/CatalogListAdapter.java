@@ -5,12 +5,11 @@ import java.util.List;
 import android.content.Context;
 import android.view.View;
 
-import com.primateer.daikoku.Application;
+import com.primateer.daikoku.Helper;
+import com.primateer.daikoku.db.DBController;
 import com.primateer.daikoku.model.Catalog;
 import com.primateer.daikoku.model.Event;
 import com.primateer.daikoku.model.ValueObject;
-import com.primateer.daikoku.ui.actions.DeleteDataAction;
-import com.primateer.daikoku.ui.actions.SaveDataAction;
 import com.primateer.daikoku.ui.views.widgets.row.CatalogRowWidget;
 import com.primateer.daikoku.ui.views.widgets.row.DataRowWidget;
 
@@ -57,19 +56,18 @@ public class CatalogListAdapter<T extends ValueObject> extends
 
 	@Override
 	public void add(T item) {
-		Application.getInstance().dispatch(new SaveDataAction<T>(item));
+		DBController.getInstance().register(item);
 		super.add(item);
 	}
 
 	@Override
 	public void onDelete(View v) {
-		Application.getInstance().dispatch(
-				new DeleteDataAction<T>(getItemFromView(v), v.getContext()));
+		Helper.deleteOnConfirmation(v.getContext(), getItemFromView(v));
 	}
 
 	@Override
 	public void remove(T item) {
-		Application.getInstance().dispatch(new DeleteDataAction<T>(item, null));
+		DBController.getInstance().delete(item);
 		super.remove(item);
 	}
 }
