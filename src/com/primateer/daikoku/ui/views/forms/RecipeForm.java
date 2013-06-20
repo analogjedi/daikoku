@@ -30,7 +30,8 @@ import com.primateer.daikoku.model.vos.Goal;
 import com.primateer.daikoku.model.vos.Product;
 import com.primateer.daikoku.model.vos.Recipe;
 import com.primateer.daikoku.ui.actions.CatalogAction;
-import com.primateer.daikoku.ui.actions.MultiCatalogAction;
+import com.primateer.daikoku.ui.actions.TabDialogAction;
+import com.primateer.daikoku.ui.dialogs.CatalogView;
 import com.primateer.daikoku.ui.views.lists.DataRowListAdapter;
 import com.primateer.daikoku.ui.views.widgets.AddButton;
 import com.primateer.daikoku.ui.views.widgets.AmountWidget;
@@ -202,7 +203,7 @@ public class RecipeForm extends VoForm<Recipe> {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MultiCatalogAction action = new MultiCatalogAction(
+				TabDialogAction action = new TabDialogAction(
 						getContext(), getResources().getString(
 								R.string.title_pick_ingredients));
 
@@ -222,7 +223,7 @@ public class RecipeForm extends VoForm<Recipe> {
 						});
 				productCatalog.setTitle(getResources().getString(
 						R.string.product));
-				action.add(productCatalog);
+				action.add(new CatalogView<Product>(getContext(),productCatalog));
 
 				Catalog<Recipe> recipeCatalog = new Catalog<Recipe>(
 						Recipe.class);
@@ -245,7 +246,7 @@ public class RecipeForm extends VoForm<Recipe> {
 						});
 				recipeCatalog.setTitle(getResources()
 						.getString(R.string.recipe));
-				action.add(recipeCatalog);
+				action.add(new CatalogView<Recipe>(getContext(),recipeCatalog));
 
 				Application.getInstance().dispatch(action);
 			}
