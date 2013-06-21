@@ -28,7 +28,8 @@ public class ProductForm extends Form<Product> {
 
 		Button nutritionButton = new Button(context);
 		FormFragment<Nutrition> fragment = new FormFragment<Nutrition>();
-		fragment.show(getContext());
+		fragment.setupForm(context, Nutrition.class);
+		fragment.connectLauncher(nutritionButton);
 		nutritionForm = fragment.getForm();
 
 		this.addView(label);
