@@ -123,7 +123,8 @@ public class GoalSetForm extends Form<GoalSet> {
 
 		private void setNutrientType(Nutrient.Type type) {
 			this.nutrientType = type;
-			nutrientTypeView.setText(nutrientType.getName());
+			nutrientTypeView.setText(nutrientType.getName() + " ("
+					+ nutrientType.id + ")");
 		}
 
 		@Override
