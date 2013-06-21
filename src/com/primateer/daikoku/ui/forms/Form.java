@@ -82,6 +82,11 @@ public abstract class Form<T> extends LinearLayout implements Event.Registry {
 			dataId = ((ValueObject) data).getId();
 		}
 		fillFields(data);
+		try {
+			dispatcher.dispatch(new DataChangedEvent<T>(getData()));
+		} catch (InvalidDataException e) {
+			// don't notify on invalid data
+		}
 	}
 
 	@Override
