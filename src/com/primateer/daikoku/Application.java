@@ -32,6 +32,8 @@ public class Application extends android.app.Application {
 	public static final int TEXTCOLOR_GREEN = 0xff008000;
 	public static final int TEXTCOLOR_BLUE = 0xff000080;
 	public static final int TEXTCOLOR_RED = 0xff800000;
+	
+	public static final int LAYOUT_MIN_BUTTON_HEIGHT = 60;
 
 	private static Application instance;
 	private static Context alternateContext;
