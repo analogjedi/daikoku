@@ -66,7 +66,7 @@ public class GoalsActivity extends FragmentActivity {
 				LayoutParams.WRAP_CONTENT, 0.5f));
 		buttonLayout.addView(cancelButton, new LayoutParams(0,
 				LayoutParams.WRAP_CONTENT, 0.5f));
-		content.addView(form, new LayoutParams(LayoutParams.WRAP_CONTENT, 0,
+		content.addView(form, new LayoutParams(LayoutParams.MATCH_PARENT, 0,
 				1.0f));
 		content.addView(new Separator(this));
 		content.addView(buttonLayout);
