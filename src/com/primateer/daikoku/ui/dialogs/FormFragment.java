@@ -45,10 +45,10 @@ public class FormFragment<T> extends DialogFragment implements Event.Registry {
 	public Form<T> getForm() {
 		return form;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void setupForm(Context context, T data) {
-		this.setupForm(context, (Class<T>)data.getClass());
+		this.setupForm(context, (Class<T>) data.getClass());
 		form.setData(data);
 	}
 
@@ -56,7 +56,7 @@ public class FormFragment<T> extends DialogFragment implements Event.Registry {
 	public void setupForm(Context context, Class<T> dataClass) {
 		try {
 			Class<Form<T>> formClass = (Class<Form<T>>) Class
-					.forName("com.primateer.daikoku.ui.views.forms."
+					.forName("com.primateer.daikoku.ui.forms."
 							+ dataClass.getSimpleName() + "Form");
 			Constructor<Form<T>> constructor = formClass
 					.getConstructor(Context.class);

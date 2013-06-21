@@ -206,7 +206,7 @@ public class AmountForm extends Form<Amount> {
 
 	@Override
 	public void validate() throws InvalidDataException {
-		getData();
+		gatherData();
 	}
 
 	@Override

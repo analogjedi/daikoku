@@ -31,13 +31,14 @@ public class CatalogListAdapter<T extends ValueObject> extends
 	@Override
 	protected DataRowWidget<T> newWidget(Context context) {
 		final CatalogRowWidget<T> widget = new CatalogRowWidget<T>(context);
-		widget.setEditable(((Catalog<T>) data).isEditable());
-		widget.setDataClass(((Catalog<T>) data).dataClass);
+		if (getCatalog().isEditable()) {
+			widget.setupForm(getCatalog().dataClass);
+		}
 		widget.addEventListener(CatalogRowWidget.SelectedEvent.class,
 				new Event.Listener() {
 					@Override
 					public void onEvent(Event event) {
-						((Catalog<T>) data).select(widget.getRowData());
+						getCatalog().select(widget.getRowData());
 					}
 				});
 		return widget;
@@ -48,7 +49,7 @@ public class CatalogListAdapter<T extends ValueObject> extends
 	}
 
 	public void reload() {
-		((Catalog<T>) data).reload();
+		getCatalog().reload();
 		super.notifyObservers();
 	}
 

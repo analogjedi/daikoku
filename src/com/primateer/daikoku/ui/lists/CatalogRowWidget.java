@@ -69,14 +69,16 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 		this.addView(deleteButton, deleteLayout);
 		this.addView(editButton, editLayout);
 		this.addView(selectView, selectLayout);
+
+		this.setEditable(false);
 	}
 
-	public void setEditable(boolean editable) {
+	private void setEditable(boolean editable) {
 		deleteButton.setVisibility(editable ? View.VISIBLE : View.GONE);
 		editButton.setVisibility(editable ? View.VISIBLE : View.GONE);
 	}
 
-	public void setDataClass(Class<T> dataClass) { // TODO make this private
+	public void setupForm(Class<T> dataClass) { // TODO make this private
 		FormFragment<T> fragment = new FormFragment<T>();
 		fragment.setupForm(getContext(), dataClass);
 		fragment.connectLauncher(editButton);
@@ -90,11 +92,17 @@ public class CatalogRowWidget<T extends ValueObject> extends LinearLayout
 						selectView.setText(bufferedData.toString());
 					}
 				});
+		setEditable(true);
 	}
 
 	@Override
 	public void setRowData(T data) {
-		dataForm.setData(data);
+		if (dataForm != null) {
+			dataForm.setData(data);
+		} else {
+			selectView.setText(data.toString());
+			bufferedData = data;
+		}
 	}
 
 	@Override
